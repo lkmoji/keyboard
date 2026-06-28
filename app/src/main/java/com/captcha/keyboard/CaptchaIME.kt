@@ -15,15 +15,12 @@ class CaptchaIME : InputMethodService() {
 
     private val handler = Handler(Looper.getMainLooper())
     private var fileObserver: FileObserver? = null
-    private val watchFile = File("/sdcard/captcha_input.txt")
+    private val watchFile by lazy { File("/sdcard/Android/media/com.arizona.game/captcha_input.txt") }
 
     private var isNumMode = false
     private var isShift = false
     private var isRu = false
 
-    // ============================================================
-    // Раскладки
-    // ============================================================
     private val numRow = listOf("1","2","3","4","5","6","7","8","9","0")
 
     private val enKeys = listOf(
@@ -47,9 +44,6 @@ class CaptchaIME : InputMethodService() {
         listOf("ABC","space",".","↵")
     )
 
-    // ============================================================
-    // Построение клавиатуры
-    // ============================================================
     override fun onCreateInputView(): View {
         startFileWatcher()
         return buildKeyboard()
@@ -62,7 +56,6 @@ class CaptchaIME : InputMethodService() {
             setPadding(4, 8, 4, 8)
         }
 
-        // Ряд цифр (всегда сверху кроме numMode)
         if (!isNumMode) {
             root.addView(buildRow(numRow, showAsNum = true))
         }
@@ -142,9 +135,6 @@ class CaptchaIME : InputMethodService() {
         handler.postDelayed({ btn.setBackgroundColor(bgColor(key)) }, 80)
     }
 
-    // ============================================================
-    // Обработка нажатий
-    // ============================================================
     private fun handleKey(key: String) {
         val ic = currentInputConnection ?: return
         when (key) {
@@ -168,12 +158,11 @@ class CaptchaIME : InputMethodService() {
         setInputView(buildKeyboard())
     }
 
-    // ============================================================
-    // Автоввод из файла
-    // ============================================================
     private fun startFileWatcher() {
-        watchFile.parentFile?.mkdirs()
-        if (!watchFile.exists()) watchFile.createNewFile()
+        try {
+            watchFile.parentFile?.mkdirs()
+            if (!watchFile.exists()) watchFile.createNewFile()
+        } catch (e: Exception) { }
         fileObserver = object : FileObserver(watchFile.absolutePath, CLOSE_WRITE) {
             override fun onEvent(event: Int, path: String?) {
                 val text = try { watchFile.readText().trim() } catch (e: Exception) { return }
