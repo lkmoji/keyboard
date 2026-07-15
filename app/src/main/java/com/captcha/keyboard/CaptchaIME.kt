@@ -30,7 +30,7 @@ class CaptchaIME : InputMethodService() {
     private val KEY_HEIGHT get() = 40.dp
     private val KEY_MARGIN_H get() = 2.dp
     private val ROW_MARGIN_V get() = 3.dp
-    private val CORNER_RADIUS get() = 6.dpF
+    private val CORNER_RADIUS get() = 6f.dpF
 
     // ---------- Palette (dark, iOS/Gboard-inspired) ----------
     private val COLOR_BG = Color.parseColor("#202023")
