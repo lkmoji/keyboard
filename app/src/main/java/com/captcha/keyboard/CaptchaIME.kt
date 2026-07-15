@@ -28,11 +28,12 @@ class CaptchaIME : InputMethodService() {
     private var isRu = false
     private var isSettingsOpen = false
     private var isSettingsLoading = false
+    private var backspaceRunnable: Runnable? = null
 
     // ---------- Layout tuning ----------
-    private val KEY_HEIGHT get() = if (isLandscape()) 32.dp else 40.dp
+    private val KEY_HEIGHT get() = if (isLandscape()) 34.dp else 46.dp
     private val KEY_MARGIN_H get() = 2.dp
-    private val ROW_MARGIN_V get() = if (isLandscape()) 1.dp else 3.dp
+    private val ROW_MARGIN_V get() = if (isLandscape()) 2.dp else 4.dp
     private val CORNER_RADIUS get() = 6f.dpF
 
     // ---------- Palette (dark, iOS/Gboard-inspired) ----------
@@ -52,14 +53,14 @@ class CaptchaIME : InputMethodService() {
         listOf("q","w","e","r","t","y","u","i","o","p"),
         listOf("a","s","d","f","g","h","j","k","l"),
         listOf("⇧","z","x","c","v","b","n","m","⌫"),
-        listOf("123","RU","space",".","↵")
+        listOf("123","RU",",","space",".","↵")
     )
 
     private val ruKeys = listOf(
         listOf("й","ц","у","к","е","н","г","ш","щ","з","х"),
         listOf("ф","ы","в","а","п","р","о","л","д","ж","э"),
         listOf("⇧","я","ч","с","м","и","т","ь","б","ю","⌫"),
-        listOf("123","EN","space",".","↵")
+        listOf("123","EN",",","space",".","↵")
     )
 
     private val numKeys = listOf(
@@ -156,6 +157,49 @@ class CaptchaIME : InputMethodService() {
         }
     }
 
+    /** Backspace needs its own touch handling: one immediate delete on press,
+     *  then fast repeated deletes for as long as the key stays held down. */
+    @android.annotation.SuppressLint("ClickableViewAccessibility")
+    private fun setBackspaceTouchHandling(view: View) {
+        view.setOnTouchListener { v, event ->
+            when (event.actionMasked) {
+                MotionEvent.ACTION_DOWN -> {
+                    v.isPressed = true
+                    v.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
+                    currentInputConnection?.deleteSurroundingText(1, 0)
+                    startBackspaceRepeat()
+                    true
+                }
+                MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
+                    v.isPressed = false
+                    stopBackspaceRepeat()
+                    true
+                }
+                else -> false
+            }
+        }
+    }
+
+    private fun startBackspaceRepeat() {
+        stopBackspaceRepeat()
+        val runnable = object : Runnable {
+            override fun run() {
+                currentInputConnection?.deleteSurroundingText(1, 0)
+                handler.postDelayed(this, 50L)
+            }
+        }
+        backspaceRunnable = runnable
+        // Wait a beat before the fast-repeat kicks in, so a normal single tap
+        // doesn't accidentally delete twice.
+        handler.postDelayed(runnable, 350L)
+    }
+
+    private fun stopBackspaceRepeat() {
+        backspaceRunnable?.let { handler.removeCallbacks(it) }
+        backspaceRunnable = null
+    }
+
+
     private fun makeButton(key: String, isDigitRow: Boolean = false, rowLen: Int = 10): Button {
         return Button(this).apply {
             val isControl = key in controlKeys
@@ -202,7 +246,11 @@ class CaptchaIME : InputMethodService() {
                 setMargins(KEY_MARGIN_H, 0, KEY_MARGIN_H, 0)
             }
 
-            instantTap(this) { handleKey(key) }
+            if (key == "⌫") {
+                setBackspaceTouchHandling(this)
+            } else {
+                instantTap(this) { handleKey(key) }
+            }
         }
     }
 
@@ -461,6 +509,7 @@ class CaptchaIME : InputMethodService() {
 
     override fun onDestroy() {
         fileObserver?.stopWatching()
+        stopBackspaceRepeat()
         super.onDestroy()
     }
 
