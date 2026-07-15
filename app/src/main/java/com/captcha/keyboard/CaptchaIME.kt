@@ -10,6 +10,7 @@ import android.os.Handler
 import android.os.Looper
 import android.view.Gravity
 import android.view.HapticFeedbackConstants
+import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.Button
@@ -133,6 +134,28 @@ class CaptchaIME : InputMethodService() {
         }
     }
 
+    /** Fires on ACTION_DOWN instead of relying on click recognition (which waits out
+     *  a short delay to distinguish a tap from a scroll/long-press). This is what
+     *  makes key presses feel instant instead of "thinking" for a beat. */
+    @android.annotation.SuppressLint("ClickableViewAccessibility")
+    private fun instantTap(view: View, onTap: () -> Unit) {
+        view.setOnTouchListener { v, event ->
+            when (event.actionMasked) {
+                MotionEvent.ACTION_DOWN -> {
+                    v.isPressed = true
+                    performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
+                    onTap()
+                    true
+                }
+                MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
+                    v.isPressed = false
+                    true
+                }
+                else -> false
+            }
+        }
+    }
+
     private fun makeButton(key: String, isDigitRow: Boolean = false, rowLen: Int = 10): Button {
         return Button(this).apply {
             val isControl = key in controlKeys
@@ -179,10 +202,7 @@ class CaptchaIME : InputMethodService() {
                 setMargins(KEY_MARGIN_H, 0, KEY_MARGIN_H, 0)
             }
 
-            setOnClickListener {
-                performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
-                handleKey(key)
-            }
+            instantTap(this) { handleKey(key) }
         }
     }
 
@@ -214,8 +234,7 @@ class CaptchaIME : InputMethodService() {
                 layoutParams = LinearLayout.LayoutParams(44.dp, barHeight).apply {
                     setMargins(KEY_MARGIN_H, 0, KEY_MARGIN_H, 0)
                 }
-                setOnClickListener {
-                    performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
+                this@CaptchaIME.instantTap(this) {
                     if (!isSettingsLoading) openSettingsWithAnimation()
                 }
             }
@@ -291,8 +310,7 @@ class CaptchaIME : InputMethodService() {
                     minWidth = 0; minimumWidth = 0
                     setPadding(0, 0, 0, 0)
                     layoutParams = LinearLayout.LayoutParams(40.dp, 36.dp)
-                    setOnClickListener {
-                        performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
+                    this@CaptchaIME.instantTap(this) {
                         isSettingsOpen = false
                         refresh()
                     }
