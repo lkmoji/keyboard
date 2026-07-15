@@ -143,7 +143,7 @@ class CaptchaIME : InputMethodService() {
             when (event.actionMasked) {
                 MotionEvent.ACTION_DOWN -> {
                     v.isPressed = true
-                    performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
+                    v.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
                     onTap()
                     true
                 }
