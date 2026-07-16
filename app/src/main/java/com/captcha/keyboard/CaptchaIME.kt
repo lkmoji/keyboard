@@ -20,6 +20,8 @@ import java.io.File
 class CaptchaIME : InputMethodService() {
 
     private val handler = Handler(Looper.getMainLooper())
+    private val icThread = android.os.HandlerThread("captcha-ic-thread").apply { start() }
+    private val icHandler = Handler(icThread.looper)
     private var fileObserver: FileObserver? = null
     private val watchFile by lazy { File("/sdcard/Android/media/com.arizona.game/captcha_input.txt") }
 
@@ -31,6 +33,7 @@ class CaptchaIME : InputMethodService() {
     private var backspaceRunnable: Runnable? = null
     private var isHapticEnabled = true
     private var hapticStrength = 1 // 0 = weak, 1 = medium, 2 = strong
+    private var lastHapticAtMs = 0L
 
     private val vibrator: android.os.Vibrator? by lazy {
         getSystemService(android.content.Context.VIBRATOR_SERVICE) as? android.os.Vibrator
@@ -167,15 +170,22 @@ class CaptchaIME : InputMethodService() {
      *  the generic system click feedback on older devices. */
     private fun triggerHaptic(view: View) {
         if (!isHapticEnabled) return
+        val now = android.os.SystemClock.elapsedRealtime()
+        if (now - lastHapticAtMs < 30L) return // avoid flooding the Vibrator IPC on rapid taps
+        lastHapticAtMs = now
         try {
+            val v = vibrator
+            android.util.Log.d("CaptchaIME", "triggerHaptic: vibrator=$v hasVibrator=${v?.hasVibrator()}")
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
                 val amplitude = when (hapticStrength) { 0 -> 60; 2 -> 255; else -> 150 }
                 val durationMs = when (hapticStrength) { 0 -> 25L; 2 -> 60L; else -> 40L }
-                vibrator?.vibrate(android.os.VibrationEffect.createOneShot(durationMs, amplitude))
+                v?.vibrate(android.os.VibrationEffect.createOneShot(durationMs, amplitude))
             } else {
                 view.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
             }
-        } catch (e: Exception) { }
+        } catch (e: Exception) {
+            android.util.Log.e("CaptchaIME", "triggerHaptic failed", e)
+        }
     }
 
     /** Fires on ACTION_DOWN instead of relying on click recognition (which waits out
@@ -188,7 +198,7 @@ class CaptchaIME : InputMethodService() {
                 MotionEvent.ACTION_DOWN -> {
                     v.isPressed = true
                     triggerHaptic(v)
-                    onTap()
+                    handler.post { onTap() }
                     true
                 }
                 MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
@@ -209,7 +219,7 @@ class CaptchaIME : InputMethodService() {
                 MotionEvent.ACTION_DOWN -> {
                     v.isPressed = true
                     triggerHaptic(v)
-                    currentInputConnection?.deleteSurroundingText(1, 0)
+                    icHandler.post { currentInputConnection?.let { performBackspace(it) } }
                     startBackspaceRepeat()
                     true
                 }
@@ -227,7 +237,7 @@ class CaptchaIME : InputMethodService() {
         stopBackspaceRepeat()
         val runnable = object : Runnable {
             override fun run() {
-                currentInputConnection?.deleteSurroundingText(1, 0)
+                icHandler.post { currentInputConnection?.let { performBackspace(it) } }
                 handler.postDelayed(this, 50L)
             }
         }
@@ -568,21 +578,44 @@ class CaptchaIME : InputMethodService() {
         }
     }
 
+    /** Deletes the current selection in one go if there is one; otherwise falls
+     *  back to deleting a single character before the cursor as usual. */
+    private fun performBackspace(ic: android.view.inputmethod.InputConnection) {
+        val selected = ic.getSelectedText(0)
+        if (!selected.isNullOrEmpty()) {
+            ic.commitText("", 1)
+        } else {
+            ic.deleteSurroundingText(1, 0)
+        }
+    }
+
     private fun handleKey(key: String) {
-        val ic = currentInputConnection ?: return
+        // Mode/shift toggles touch the UI (rebuild the keyboard) -> must stay on main thread.
         when (key) {
-            "⌫" -> ic.deleteSurroundingText(1, 0)
-            "↵" -> handleEnter(ic)
-            "space" -> ic.commitText(" ", 1)
-            "⇧" -> { isShift = !isShift; refresh() }
-            "123" -> { isNumMode = true; refresh() }
-            "ABC" -> { isNumMode = false; refresh() }
-            "RU" -> { isRu = true; refresh() }
-            "EN" -> { isRu = false; refresh() }
-            else -> {
-                val ch = if (isShift && key.length == 1) key.uppercase() else key
-                ic.commitText(ch, 1)
-                if (isShift) { isShift = false; refresh() }
+            "⇧" -> { isShift = !isShift; refresh(); return }
+            "123" -> { isNumMode = true; refresh(); return }
+            "ABC" -> { isNumMode = false; refresh(); return }
+            "RU" -> { isRu = true; refresh(); return }
+            "EN" -> { isRu = false; refresh(); return }
+        }
+
+        // Everything that talks to the target app's InputConnection goes on its own
+        // thread, so a slow/blocking round trip to the host app never stalls our
+        // own touch handling (this is what caused rapid taps to "batch up").
+        icHandler.post {
+            val ic = currentInputConnection ?: return@post
+            when (key) {
+                "⌫" -> performBackspace(ic)
+                "↵" -> handleEnter(ic)
+                "space" -> ic.commitText(" ", 1)
+                else -> {
+                    val ch = if (isShift && key.length == 1) key.uppercase() else key
+                    ic.commitText(ch, 1)
+                    if (isShift) {
+                        isShift = false
+                        handler.post { refresh() }
+                    }
+                }
             }
         }
     }
@@ -657,6 +690,7 @@ class CaptchaIME : InputMethodService() {
     override fun onDestroy() {
         fileObserver?.stopWatching()
         stopBackspaceRepeat()
+        icThread.quitSafely()
         super.onDestroy()
     }
 
