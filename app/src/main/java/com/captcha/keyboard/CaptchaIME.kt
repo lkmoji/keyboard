@@ -637,3 +637,10 @@ class CaptchaIME : InputMethodService() {
         stopBackspaceRepeat()
         super.onDestroy()
     }
+
+    private val Int.dp: Int get() = (this * resources.displayMetrics.density).toInt()
+    private val Float.dpF: Float get() = this * resources.displayMetrics.density
+
+    private fun isLandscape(): Boolean =
+        resources.configuration.orientation == android.content.res.Configuration.ORIENTATION_LANDSCAPE
+}
