@@ -30,6 +30,7 @@ class CaptchaIME : InputMethodService() {
     private var isRu = false
     private var isSettingsOpen = false
     private var isSettingsLoading = false
+    private var isClipboardOpen = false
     private var backspaceRunnable: Runnable? = null
     private var isHapticEnabled = true
     private var hapticStrength = 1 // 0 = weak, 1 = medium, 2 = strong
@@ -37,6 +38,65 @@ class CaptchaIME : InputMethodService() {
 
     private val vibrator: android.os.Vibrator? by lazy {
         getSystemService(android.content.Context.VIBRATOR_SERVICE) as? android.os.Vibrator
+    }
+
+    private val CLIP_RETENTION_MS = 6 * 60 * 60 * 1000L // keep clipboard history for at least 6 hours
+
+    private val clipboardManager: android.content.ClipboardManager by lazy {
+        getSystemService(CLIPBOARD_SERVICE) as android.content.ClipboardManager
+    }
+    private val clipListener = android.content.ClipboardManager.OnPrimaryClipChangedListener {
+        onClipboardChanged()
+    }
+
+    override fun onCreate() {
+        super.onCreate()
+        // Registered here (not onCreateInputView) so copies are captured system-wide,
+        // even while our keyboard isn't the one currently shown.
+        try { clipboardManager.addPrimaryClipChangedListener(clipListener) } catch (e: Exception) { }
+    }
+
+    private fun onClipboardChanged() {
+        try {
+            val clip = clipboardManager.primaryClip ?: return
+            if (clip.itemCount == 0) return
+            val text = clip.getItemAt(0).coerceToText(this)?.toString()?.trim() ?: return
+            if (text.isEmpty()) return
+            addClipEntry(text)
+        } catch (e: Exception) { }
+    }
+
+    private fun addClipEntry(text: String) {
+        val list = loadClipEntries().toMutableList()
+        if (list.isNotEmpty() && list[0].second == text) return // skip exact-duplicate re-copy
+        list.add(0, System.currentTimeMillis() to text)
+        saveClipEntries(list.take(50)) // hard cap so storage doesn't grow unbounded
+    }
+
+    /** Returns entries newer than CLIP_RETENTION_MS, oldest ones are dropped automatically. */
+    private fun loadClipEntries(): List<Pair<Long, String>> {
+        return try {
+            val prefs = getSharedPreferences("clip_history", MODE_PRIVATE)
+            val raw = prefs.getString("entries", null) ?: return emptyList()
+            val arr = org.json.JSONArray(raw)
+            val now = System.currentTimeMillis()
+            (0 until arr.length()).mapNotNull { i ->
+                val obj = arr.getJSONObject(i)
+                val ts = obj.getLong("ts")
+                if (now - ts <= CLIP_RETENTION_MS) ts to obj.getString("text") else null
+            }
+        } catch (e: Exception) { emptyList() }
+    }
+
+    private fun saveClipEntries(list: List<Pair<Long, String>>) {
+        try {
+            val prefs = getSharedPreferences("clip_history", MODE_PRIVATE)
+            val arr = org.json.JSONArray()
+            for ((ts, text) in list) {
+                arr.put(org.json.JSONObject().apply { put("ts", ts); put("text", text) })
+            }
+            prefs.edit().putString("entries", arr.toString()).apply()
+        } catch (e: Exception) { }
     }
 
     // ---------- Layout tuning ----------
@@ -129,6 +189,11 @@ class CaptchaIME : InputMethodService() {
 
         if (isSettingsOpen) {
             root.addView(buildSettingsPanel())
+            return root
+        }
+
+        if (isClipboardOpen) {
+            root.addView(buildClipboardPanel())
             return root
         }
 
@@ -343,6 +408,28 @@ class CaptchaIME : InputMethodService() {
             }
             addView(gear)
 
+            val clipBtn = Button(this@CaptchaIME).apply {
+                text = "⎘"
+                textSize = 14f
+                setTextColor(COLOR_TEXT_DIM)
+                background = keyDrawable("⚙")
+                stateListAnimator = null
+                isAllCaps = false
+                includeFontPadding = false
+                isSingleLine = true
+                minWidth = 0; minimumWidth = 0
+                minHeight = 0; minimumHeight = 0
+                setPadding(0, 0, 0, 0)
+                layoutParams = LinearLayout.LayoutParams(44.dp, barHeight).apply {
+                    setMargins(KEY_MARGIN_H, 0, KEY_MARGIN_H, 0)
+                }
+                this@CaptchaIME.instantTap(this) {
+                    isClipboardOpen = true
+                    refresh()
+                }
+            }
+            addView(clipBtn)
+
             // Track that shows the loading bar animating across, and stays
             // empty otherwise -> keeps row height constant either way.
             val track = android.widget.FrameLayout(this@CaptchaIME).apply {
@@ -391,6 +478,156 @@ class CaptchaIME : InputMethodService() {
     }
 
     /** Placeholder settings screen: title + back button. Add real options here later. */
+    /** Shared header used by both the settings and clipboard panels: back arrow + title. */
+    private fun buildPanelHeader(title: String, onBack: () -> Unit): LinearLayout {
+        return LinearLayout(this).apply {
+            orientation = LinearLayout.HORIZONTAL
+            gravity = Gravity.CENTER_VERTICAL
+            layoutParams = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT
+            ).apply { setMargins(4.dp, 0, 4.dp, 8.dp) }
+
+            val back = Button(this@CaptchaIME).apply {
+                text = "←"
+                textSize = 16f
+                setTextColor(COLOR_TEXT)
+                background = keyDrawable("⚙")
+                stateListAnimator = null
+                isAllCaps = false
+                includeFontPadding = false
+                minWidth = 0; minimumWidth = 0
+                setPadding(0, 0, 0, 0)
+                layoutParams = LinearLayout.LayoutParams(40.dp, 36.dp)
+                this@CaptchaIME.instantTap(this) { onBack() }
+            }
+            addView(back)
+
+            val titleView = android.widget.TextView(this@CaptchaIME).apply {
+                text = title
+                textSize = 15f
+                setTextColor(COLOR_TEXT)
+                typeface = Typeface.DEFAULT_BOLD
+                gravity = Gravity.CENTER
+                layoutParams = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f)
+            }
+            addView(titleView)
+
+            addView(View(this@CaptchaIME).apply {
+                layoutParams = LinearLayout.LayoutParams(40.dp, 36.dp)
+            })
+        }
+    }
+
+    /** Clipboard history panel: tap an entry to paste it, × to remove it,
+     *  entries older than CLIP_RETENTION_MS are already filtered out by loadClipEntries(). */
+    private fun buildClipboardPanel(): LinearLayout {
+        return LinearLayout(this).apply {
+            orientation = LinearLayout.VERTICAL
+
+            addView(buildPanelHeader("Буфер обмена") {
+                isClipboardOpen = false
+                refresh()
+            })
+
+            val entries = loadClipEntries()
+
+            if (entries.isEmpty()) {
+                addView(android.widget.TextView(this@CaptchaIME).apply {
+                    text = "Пусто. Скопируйте что-нибудь — появится здесь."
+                    textSize = 13f
+                    setTextColor(COLOR_TEXT_DIM)
+                    gravity = Gravity.CENTER
+                    layoutParams = LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT, 90.dp
+                    )
+                })
+            } else {
+                val scroll = android.widget.ScrollView(this@CaptchaIME).apply {
+                    layoutParams = LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT, 150.dp
+                    )
+                }
+                val list = LinearLayout(this@CaptchaIME).apply {
+                    orientation = LinearLayout.VERTICAL
+                    layoutParams = LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT
+                    )
+                }
+                for ((ts, text) in entries) {
+                    list.addView(buildClipRow(ts, text))
+                }
+                scroll.addView(list)
+                addView(scroll)
+
+                val clearAll = Button(this@CaptchaIME).apply {
+                    text = "Очистить всё"
+                    textSize = 12f
+                    setTextColor(COLOR_TEXT_DIM)
+                    background = pillDrawable(COLOR_KEY_SPECIAL)
+                    stateListAnimator = null
+                    isAllCaps = false
+                    includeFontPadding = false
+                    minWidth = 0; minimumWidth = 0
+                    setPadding(0, 0, 0, 0)
+                    layoutParams = LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT, 36.dp
+                    ).apply { topMargin = 8.dp }
+                    this@CaptchaIME.instantTap(this) {
+                        saveClipEntries(emptyList())
+                        refresh()
+                    }
+                }
+                addView(clearAll)
+            }
+        }
+    }
+
+    private fun buildClipRow(timestamp: Long, text: String): LinearLayout {
+        return LinearLayout(this).apply {
+            orientation = LinearLayout.HORIZONTAL
+            gravity = Gravity.CENTER_VERTICAL
+            background = pillDrawable(COLOR_KEY)
+            layoutParams = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT
+            ).apply { bottomMargin = 6.dp }
+            setPadding(10.dp, 8.dp, 8.dp, 8.dp)
+
+            val preview = android.widget.TextView(this@CaptchaIME).apply {
+                text = if (text.length > 60) text.take(60) + "…" else text
+                textSize = 13f
+                setTextColor(COLOR_TEXT)
+                maxLines = 2
+                layoutParams = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f)
+            }
+            addView(preview)
+
+            val del = Button(this@CaptchaIME).apply {
+                text = "×"
+                textSize = 16f
+                setTextColor(COLOR_TEXT_DIM)
+                background = null
+                stateListAnimator = null
+                isAllCaps = false
+                includeFontPadding = false
+                minWidth = 0; minimumWidth = 0
+                setPadding(8.dp, 0, 0, 0)
+                layoutParams = LinearLayout.LayoutParams(32.dp, 32.dp)
+                this@CaptchaIME.instantTap(this) {
+                    val remaining = loadClipEntries().filterNot { it.first == timestamp && it.second == text }
+                    saveClipEntries(remaining)
+                    refresh()
+                }
+            }
+            addView(del)
+
+            this@CaptchaIME.instantTap(this) {
+                icHandler.post { currentInputConnection?.commitText(text, 1) }
+                isClipboardOpen = false
+                refresh()
+            }
+        }
+    }
+
     private fun buildSettingsPanel(): LinearLayout {
         return LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
@@ -696,6 +933,7 @@ class CaptchaIME : InputMethodService() {
         fileObserver?.stopWatching()
         stopBackspaceRepeat()
         icThread.quitSafely()
+        try { clipboardManager.removePrimaryClipChangedListener(clipListener) } catch (e: Exception) { }
         super.onDestroy()
     }
 
