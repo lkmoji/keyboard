@@ -82,7 +82,9 @@ class CaptchaIME : InputMethodService() {
     override fun onCreateInputView(): View {
         return try {
             startFileWatcher()
-            buildKeyboard()
+            val view = buildKeyboard()
+            paintSystemWindowToMatchKeyboard()
+            view
         } catch (e: Exception) {
             // Never let a transient failure here brick the keyboard until a reboot —
             // fall back to a minimal but functional layout instead.
@@ -92,6 +94,25 @@ class CaptchaIME : InputMethodService() {
                 LinearLayout(this).apply { setBackgroundColor(COLOR_BG) }
             }
         }
+    }
+
+    /** Colors the IME window itself (not just our view) so the gesture-navigation
+     *  strip below the keyboard matches our background instead of showing the
+     *  system's default black — this is what makes Gboard look "seamless" there. */
+    private fun paintSystemWindowToMatchKeyboard() {
+        try {
+            window?.window?.apply {
+                setBackgroundDrawable(GradientDrawable().apply { setColor(COLOR_BG) })
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O_MR1) {
+                    navigationBarColor = COLOR_BG
+                }
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                    var flags = decorView.systemUiVisibility
+                    flags = flags and android.view.View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR.inv()
+                    decorView.systemUiVisibility = flags
+                }
+            }
+        } catch (e: Exception) { }
     }
 
     private fun buildKeyboard(): LinearLayout {
@@ -148,8 +169,8 @@ class CaptchaIME : InputMethodService() {
         if (!isHapticEnabled) return
         try {
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-                val amplitude = when (hapticStrength) { 0 -> 35; 2 -> 255; else -> 110 }
-                val durationMs = when (hapticStrength) { 0 -> 8L; 2 -> 25L; else -> 14L }
+                val amplitude = when (hapticStrength) { 0 -> 60; 2 -> 255; else -> 150 }
+                val durationMs = when (hapticStrength) { 0 -> 25L; 2 -> 60L; else -> 40L }
                 vibrator?.vibrate(android.os.VibrationEffect.createOneShot(durationMs, amplitude))
             } else {
                 view.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
@@ -594,6 +615,7 @@ class CaptchaIME : InputMethodService() {
     private fun refresh() {
         try {
             setInputView(buildKeyboard())
+            paintSystemWindowToMatchKeyboard()
         } catch (e: Exception) {
             isSettingsOpen = false
             isSettingsLoading = false
