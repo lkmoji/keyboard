@@ -74,9 +74,10 @@ class CaptchaIME : InputMethodService() {
 
     private val numKeys = listOf(
         listOf("1","2","3","4","5","6","7","8","9","0"),
-        listOf("-","/",":",";","(",")","%","&","@","\""),
-        listOf("#","!","?","*","_","=","€","£","⌫"),
-        listOf("ABC","space",".","↵")
+        listOf("@","#","$","%","&","-","+","(",")","/"),
+        listOf("*","\"","'",":",";","!","?","~","`"),
+        listOf("<",">","{","}","[","]","|","\\","⌫"),
+        listOf("ABC",",","space",".","↵")
     )
 
     // Keys that are "controls" rather than characters -> smaller/bolder label, dimmer bg
@@ -293,8 +294,11 @@ class CaptchaIME : InputMethodService() {
                 else -> 1f
             }
 
-            layoutParams = LinearLayout.LayoutParams(0, KEY_HEIGHT, weight).apply {
-                setMargins(KEY_MARGIN_H, 0, KEY_MARGIN_H, 0)
+            val effectiveHeight = if (isDigitRow) KEY_HEIGHT - 4.dp else KEY_HEIGHT
+            val effectiveMarginH = if (isDigitRow) KEY_MARGIN_H + 2.dp else KEY_MARGIN_H
+
+            layoutParams = LinearLayout.LayoutParams(0, effectiveHeight, weight).apply {
+                setMargins(effectiveMarginH, 0, effectiveMarginH, 0)
             }
 
             if (key == "⌫") {
