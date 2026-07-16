@@ -26,7 +26,21 @@ class MainActivity : Activity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(buildScreen())
+        setContentView(safeBuildScreen())
+    }
+
+    override fun onResume() {
+        super.onResume()
+        // Re-check status every time the user comes back from Settings.
+        setContentView(safeBuildScreen())
+    }
+
+    private fun safeBuildScreen(): LinearLayout {
+        return try {
+            buildScreen()
+        } catch (e: Exception) {
+            LinearLayout(this).apply { setBackgroundColor(COLOR_BG) }
+        }
     }
 
     private fun buildScreen(): LinearLayout {
@@ -124,19 +138,21 @@ class MainActivity : Activity() {
     }
 
     private fun isKeyboardEnabled(): Boolean {
-        val enabledIds = Settings.Secure.getString(contentResolver, Settings.Secure.ENABLED_INPUT_METHODS) ?: ""
-        return enabledIds.contains(packageName)
+        return try {
+            val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.enabledInputMethodList.any { it.packageName == packageName }
+        } catch (e: Exception) {
+            false
+        }
     }
 
     private fun isKeyboardSelected(): Boolean {
-        val currentId = Settings.Secure.getString(contentResolver, Settings.Secure.DEFAULT_INPUT_METHOD) ?: ""
-        return currentId.contains(packageName)
-    }
-
-    override fun onResume() {
-        super.onResume()
-        // Re-check status every time the user comes back from Settings.
-        setContentView(buildScreen())
+        return try {
+            val currentId = Settings.Secure.getString(contentResolver, Settings.Secure.DEFAULT_INPUT_METHOD) ?: ""
+            currentId.contains(packageName)
+        } catch (e: Exception) {
+            false
+        }
     }
 
     private fun actionButton(label: String, isPrimary: Boolean, onTap: () -> Unit): Button {
