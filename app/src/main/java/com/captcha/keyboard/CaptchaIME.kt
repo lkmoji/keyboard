@@ -40,9 +40,9 @@ class CaptchaIME : InputMethodService() {
     }
 
     // ---------- Layout tuning ----------
-    private val KEY_HEIGHT get() = if (isLandscape()) 34.dp else 40.dp
+    private val KEY_HEIGHT get() = if (isLandscape()) 34.dp else 44.dp
     private val KEY_MARGIN_H get() = 2.dp
-    private val ROW_MARGIN_V get() = if (isLandscape()) 2.dp else 3.dp
+    private val ROW_MARGIN_V get() = if (isLandscape()) 2.dp else 4.dp
     private val CORNER_RADIUS get() = 6f.dpF
 
     // ---------- Palette (dark, iOS/Gboard-inspired) ----------
@@ -174,18 +174,14 @@ class CaptchaIME : InputMethodService() {
         if (now - lastHapticAtMs < 30L) return // avoid flooding the Vibrator IPC on rapid taps
         lastHapticAtMs = now
         try {
-            val v = vibrator
-            android.util.Log.d("CaptchaIME", "triggerHaptic: vibrator=$v hasVibrator=${v?.hasVibrator()}")
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
                 val amplitude = when (hapticStrength) { 0 -> 60; 2 -> 255; else -> 150 }
                 val durationMs = when (hapticStrength) { 0 -> 25L; 2 -> 60L; else -> 40L }
-                v?.vibrate(android.os.VibrationEffect.createOneShot(durationMs, amplitude))
+                vibrator?.vibrate(android.os.VibrationEffect.createOneShot(durationMs, amplitude))
             } else {
                 view.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
             }
-        } catch (e: Exception) {
-            android.util.Log.e("CaptchaIME", "triggerHaptic failed", e)
-        }
+        } catch (e: Exception) { }
     }
 
     /** Fires on ACTION_DOWN instead of relying on click recognition (which waits out
@@ -604,18 +600,23 @@ class CaptchaIME : InputMethodService() {
         // own touch handling (this is what caused rapid taps to "batch up").
         icHandler.post {
             val ic = currentInputConnection ?: return@post
-            when (key) {
-                "⌫" -> performBackspace(ic)
-                "↵" -> handleEnter(ic)
-                "space" -> ic.commitText(" ", 1)
-                else -> {
-                    val ch = if (isShift && key.length == 1) key.uppercase() else key
-                    ic.commitText(ch, 1)
-                    if (isShift) {
-                        isShift = false
-                        handler.post { refresh() }
+            ic.beginBatchEdit()
+            try {
+                when (key) {
+                    "⌫" -> performBackspace(ic)
+                    "↵" -> handleEnter(ic)
+                    "space" -> ic.commitText(" ", 1)
+                    else -> {
+                        val ch = if (isShift && key.length == 1) key.uppercase() else key
+                        ic.commitText(ch, 1)
+                        if (isShift) {
+                            isShift = false
+                            handler.post { refresh() }
+                        }
                     }
                 }
+            } finally {
+                ic.endBatchEdit()
             }
         }
     }
