@@ -220,6 +220,8 @@ class CaptchaIME : InputMethodService() {
         return LinearLayout(this).apply {
             orientation = LinearLayout.HORIZONTAL
             gravity = Gravity.CENTER
+            // Allow each finger to hit a different key simultaneously
+            isMotionEventSplittingEnabled = true
             layoutParams = LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT
@@ -257,13 +259,15 @@ class CaptchaIME : InputMethodService() {
     private fun instantTap(view: View, onTap: () -> Unit) {
         view.setOnTouchListener { v, event ->
             when (event.actionMasked) {
-                MotionEvent.ACTION_DOWN -> {
+                MotionEvent.ACTION_DOWN,
+                MotionEvent.ACTION_POINTER_DOWN -> {
                     v.isPressed = true
                     triggerHaptic(v)
-                    handler.post { onTap() }
+                    onTap()
                     true
                 }
-                MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
+                MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL,
+                MotionEvent.ACTION_POINTER_UP -> {
                     v.isPressed = false
                     true
                 }
