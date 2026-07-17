@@ -167,10 +167,14 @@ class CaptchaIME : InputMethodService() {
     // Keys that are "controls" rather than characters -> smaller/bolder label, dimmer bg
     private val controlKeys = setOf("⇧","⌫","123","ABC","EN","RU","↵","⚙")
 
+    // Ссылка на корневую вьюшку клавиатуры — нужна для точного расчёта высоты в onComputeInsets
+    private var keyboardRootView: View? = null
+
     override fun onCreateInputView(): View {
         return try {
             startFileWatcher()
             val view = buildKeyboard()
+            keyboardRootView = view
             paintSystemWindowToMatchKeyboard()
             view
         } catch (e: Exception) {
@@ -426,6 +430,7 @@ class CaptchaIME : InputMethodService() {
                 isSingleLine = true
                 minWidth = 0; minimumWidth = 0
                 minHeight = 0; minimumHeight = 0
+                height = barHeight
                 setPadding(0, 0, 0, 0)
                 layoutParams = LinearLayout.LayoutParams(44.dp, barHeight).apply {
                     setMargins(KEY_MARGIN_H, 0, KEY_MARGIN_H, 0)
@@ -447,6 +452,7 @@ class CaptchaIME : InputMethodService() {
                 isSingleLine = true
                 minWidth = 0; minimumWidth = 0
                 minHeight = 0; minimumHeight = 0
+                height = barHeight
                 setPadding(0, 0, 0, 0)
                 layoutParams = LinearLayout.LayoutParams(44.dp, barHeight).apply {
                     setMargins(KEY_MARGIN_H, 0, KEY_MARGIN_H, 0)
@@ -952,20 +958,22 @@ class CaptchaIME : InputMethodService() {
         }
     }
 
+    // Запрещаем fullscreen-режим в ландшафте — именно он создаёт
+    // огромное пустое пространство над клавиатурой.
+    override fun onEvaluateFullscreenMode(): Boolean = false
+
     override fun onComputeInsets(outInsets: Insets) {
         super.onComputeInsets(outInsets)
-        // In landscape, the IME window can be taller than our actual keyboard view.
-        // Tell the system exactly where our content ends so apps don't get
-        // pushed up by the empty black space above it.
+        // Сообщаем системе точную высоту клавиатуры чтобы приложения
+        // (Telegram и др.) правильно поднимали поле ввода.
         try {
+            val root = keyboardRootView ?: return
             val decorView = window?.window?.decorView ?: return
-            val keyboardView = decorView.findViewById<android.view.View>(android.R.id.content)
-            val keyboardHeight = keyboardView?.height ?: 0
-            val decorHeight = decorView.height
-            val topInset = if (decorHeight > keyboardHeight && keyboardHeight > 0)
-                decorHeight - keyboardHeight else 0
-            outInsets.contentTopInsets = topInset
-            outInsets.visibleTopInsets = topInset
+            val loc = IntArray(2)
+            root.getLocationInWindow(loc)
+            val keyboardTop = loc[1]
+            outInsets.contentTopInsets = keyboardTop
+            outInsets.visibleTopInsets = keyboardTop
         } catch (e: Exception) { }
     }
 
