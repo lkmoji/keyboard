@@ -582,7 +582,7 @@ class CaptchaIME : InputMethodService() {
         }
     }
 
-    private fun buildClipRow(timestamp: Long, text: String): LinearLayout {
+    private fun buildClipRow(timestamp: Long, clipText: String): LinearLayout {
         return LinearLayout(this).apply {
             orientation = LinearLayout.HORIZONTAL
             gravity = Gravity.CENTER_VERTICAL
@@ -593,7 +593,7 @@ class CaptchaIME : InputMethodService() {
             setPadding(10.dp, 8.dp, 8.dp, 8.dp)
 
             val preview = android.widget.TextView(this@CaptchaIME).apply {
-                text = if (text.length > 60) text.take(60) + "…" else text
+                text = if (clipText.length > 60) clipText.take(60) + "…" else clipText
                 textSize = 13f
                 setTextColor(COLOR_TEXT)
                 maxLines = 2
@@ -613,7 +613,7 @@ class CaptchaIME : InputMethodService() {
                 setPadding(8.dp, 0, 0, 0)
                 layoutParams = LinearLayout.LayoutParams(32.dp, 32.dp)
                 this@CaptchaIME.instantTap(this) {
-                    val remaining = loadClipEntries().filterNot { it.first == timestamp && it.second == text }
+                    val remaining = loadClipEntries().filterNot { it.first == timestamp && it.second == clipText }
                     saveClipEntries(remaining)
                     refresh()
                 }
@@ -621,7 +621,7 @@ class CaptchaIME : InputMethodService() {
             addView(del)
 
             this@CaptchaIME.instantTap(this) {
-                icHandler.post { currentInputConnection?.commitText(text, 1) }
+                icHandler.post { currentInputConnection?.commitText(clipText, 1) }
                 isClipboardOpen = false
                 refresh()
             }
