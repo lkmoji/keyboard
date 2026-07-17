@@ -3,6 +3,7 @@ package com.captcha.keyboard
 import android.graphics.Color
 import android.graphics.Typeface
 import android.graphics.drawable.GradientDrawable
+import android.graphics.drawable.InsetDrawable
 import android.graphics.drawable.StateListDrawable
 import android.inputmethodservice.InputMethodService
 import android.inputmethodservice.InputMethodService.Insets
@@ -270,10 +271,11 @@ class CaptchaIME : InputMethodService() {
             gravity = Gravity.CENTER
             // Allow each finger to hit a different key simultaneously
             isMotionEventSplittingEnabled = true
+            // Вертикальные отступы убраны — зазор между рядами создаётся через InsetDrawable
             layoutParams = LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT
-            ).apply { setMargins(0, ROW_MARGIN_V, 0, ROW_MARGIN_V) }
+            )
 
             for (key in keys) {
                 addView(makeButton(key, isDigitRow, keys.size))
@@ -412,11 +414,10 @@ class CaptchaIME : InputMethodService() {
             }
 
             val effectiveHeight = if (isDigitRow) DIGIT_ROW_HEIGHT else KEY_HEIGHT
-            val effectiveMarginH = KEY_MARGIN_H
 
-            layoutParams = LinearLayout.LayoutParams(0, effectiveHeight, weight).apply {
-                setMargins(effectiveMarginH, 0, effectiveMarginH, 0)
-            }
+            // Маргины убраны — кнопка занимает всё пространство без мёртвых зон.
+            // Визуальный зазор между кнопками создаётся через InsetDrawable в keyDrawable().
+            layoutParams = LinearLayout.LayoutParams(0, effectiveHeight, weight)
 
             if (key == "⌫") {
                 setBackspaceTouchHandling(this)
@@ -858,10 +859,16 @@ class CaptchaIME : InputMethodService() {
             in controlKeys -> COLOR_KEY_SPECIAL to COLOR_KEY_SPECIAL_PRESSED
             else -> COLOR_KEY to COLOR_KEY_PRESSED
         }
-        fun pill(color: Int) = GradientDrawable().apply {
-            shape = GradientDrawable.RECTANGLE
-            cornerRadius = CORNER_RADIUS
-            setColor(color)
+        // Зазор между кнопками — только визуальный, touch area без пробелов
+        val gap = KEY_MARGIN_H
+        val vGap = ROW_MARGIN_V / 2
+        fun pill(color: Int): InsetDrawable {
+            val shape = GradientDrawable().apply {
+                shape = GradientDrawable.RECTANGLE
+                cornerRadius = CORNER_RADIUS
+                setColor(color)
+            }
+            return InsetDrawable(shape, gap, vGap, gap, vGap)
         }
         return StateListDrawable().apply {
             addState(intArrayOf(android.R.attr.state_pressed), pill(pressed))
