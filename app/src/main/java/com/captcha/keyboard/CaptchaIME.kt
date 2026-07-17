@@ -957,9 +957,16 @@ class CaptchaIME : InputMethodService() {
         // In landscape, the IME window can be taller than our actual keyboard view.
         // Tell the system exactly where our content ends so apps don't get
         // pushed up by the empty black space above it.
-        val view = window?.window?.decorView ?: return
-        outInsets.contentTopInsets = view.height - (inputView?.height ?: 0)
-        outInsets.visibleTopInsets = outInsets.contentTopInsets
+        try {
+            val decorView = window?.window?.decorView ?: return
+            val keyboardView = decorView.findViewById<android.view.View>(android.R.id.content)
+            val keyboardHeight = keyboardView?.height ?: 0
+            val decorHeight = decorView.height
+            val topInset = if (decorHeight > keyboardHeight && keyboardHeight > 0)
+                decorHeight - keyboardHeight else 0
+            outInsets.contentTopInsets = topInset
+            outInsets.visibleTopInsets = topInset
+        } catch (e: Exception) { }
     }
 
     override fun onConfigurationChanged(newConfig: android.content.res.Configuration) {
