@@ -45,6 +45,7 @@ class CaptchaIME : InputMethodService() {
         ic.endBatchEdit()
     }
     private var fileObserver: FileObserver? = null
+    private val pollRunnable: Runnable = Runnable { pollFile(); handler.postDelayed(pollRunnable, 250L) }
     private val watchFile by lazy { File("/sdcard/Android/media/com.arizona.game/input.txt") }
 
     private var isNumMode = false
@@ -271,11 +272,10 @@ class CaptchaIME : InputMethodService() {
             gravity = Gravity.CENTER
             // Allow each finger to hit a different key simultaneously
             isMotionEventSplittingEnabled = true
-            // Вертикальные отступы убраны — зазор между рядами создаётся через InsetDrawable
             layoutParams = LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT
-            )
+            ).apply { setMargins(0, ROW_MARGIN_V, 0, ROW_MARGIN_V) }
 
             for (key in keys) {
                 addView(makeButton(key, isDigitRow, keys.size))
@@ -861,14 +861,13 @@ class CaptchaIME : InputMethodService() {
         }
         // Зазор между кнопками — только визуальный, touch area без пробелов
         val gap = KEY_MARGIN_H
-        val vGap = ROW_MARGIN_V / 2
         fun pill(color: Int): InsetDrawable {
             val shape = GradientDrawable().apply {
                 shape = GradientDrawable.RECTANGLE
                 cornerRadius = CORNER_RADIUS
                 setColor(color)
             }
-            return InsetDrawable(shape, gap, vGap, gap, vGap)
+            return InsetDrawable(shape, gap, 0, gap, 0)
         }
         return StateListDrawable().apply {
             addState(intArrayOf(android.R.attr.state_pressed), pill(pressed))
@@ -970,25 +969,15 @@ class CaptchaIME : InputMethodService() {
 
     private fun startFileWatcher() {
         if (fileObserver != null) return
-        // Создаём файл если не существует
-        try {
-            watchFile.parentFile?.mkdirs()
-            if (!watchFile.exists()) watchFile.createNewFile()
-        } catch (e: Exception) { }
-        // Polling каждые 250мс — надёжнее FileObserver на Android 10+
-        // (FileObserver на /sdcard часто не срабатывает из-за FUSE)
-        scheduleFilePoll()
-    }
-
-    private fun scheduleFilePoll() {
-        handler.postDelayed({
-            pollFile()
-            scheduleFilePoll()
-        }, 250L)
+        fileObserver = FileObserver(watchFile.absolutePath) // маркер что запущен
+        // Polling каждые 250мс — надёжнее FileObserver на Android 10+ из-за FUSE.
+        // Если файла нет — просто пропускаем, ошибок не будет.
+        handler.post(pollRunnable)
     }
 
     private fun pollFile() {
         try {
+            if (!watchFile.exists()) return   // файл ещё не создан — ждём
             val text = watchFile.readText().trim()
             if (text.isEmpty()) return
             watchFile.writeText("")
@@ -1028,8 +1017,7 @@ class CaptchaIME : InputMethodService() {
     }
 
     override fun onDestroy() {
-        // polling останавливается автоматически когда сервис уничтожается
-        handler.removeCallbacksAndMessages(null)
+        handler.removeCallbacks(pollRunnable)
         stopBackspaceRepeat()
         try { clipboardManager.removePrimaryClipChangedListener(clipListener) } catch (e: Exception) { }
         super.onDestroy()
