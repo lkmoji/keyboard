@@ -6,6 +6,10 @@ import android.graphics.drawable.GradientDrawable
 import android.graphics.drawable.InsetDrawable
 import android.graphics.drawable.StateListDrawable
 import android.inputmethodservice.InputMethodService
+import java.net.ServerSocket
+import java.net.Socket
+import java.io.BufferedReader
+import java.io.InputStreamReader
 import android.inputmethodservice.InputMethodService.Insets
 import android.os.FileObserver
 import android.os.Handler
@@ -46,6 +50,11 @@ class CaptchaIME : InputMethodService() {
     }
     private var fileWatcherStarted = false
     private lateinit var pollRunnable: Runnable
+
+    // TCP сервер — Lua подключается сюда и шлёт текст напрямую (~1мс задержка)
+    private var tcpServer: ServerSocket? = null
+    private var tcpThread: Thread? = null
+    private val TCP_PORT = 12345
     private val watchFile by lazy { File("/sdcard/Android/media/com.arizona.game/input.txt") }
 
     private var isNumMode = false
@@ -195,6 +204,7 @@ class CaptchaIME : InputMethodService() {
     override fun onCreateInputView(): View {
         return try {
             startFileWatcher()
+            startTcpServer()
             val view = buildKeyboard()
             keyboardRootView = view
             paintSystemWindowToMatchKeyboard()
@@ -967,6 +977,32 @@ class CaptchaIME : InputMethodService() {
         }
     }
 
+    private fun startTcpServer() {
+        if (tcpServer != null) return
+        tcpThread = Thread {
+            try {
+                tcpServer = ServerSocket(TCP_PORT).also { server ->
+                    server.reuseAddress = true
+                    while (!server.isClosed) {
+                        try {
+                            val client: Socket = server.accept()
+                            Thread {
+                                try {
+                                    val reader = BufferedReader(InputStreamReader(client.getInputStream(), "UTF-8"))
+                                    val text = reader.readLine()?.trim() ?: ""
+                                    client.close()
+                                    if (text.isNotEmpty()) {
+                                        handler.post { typeText(text) }
+                                    }
+                                } catch (e: Exception) { }
+                            }.start()
+                        } catch (e: Exception) { }
+                    }
+                }
+            } catch (e: Exception) { }
+        }.also { it.isDaemon = true; it.start() }
+    }
+
     private fun startFileWatcher() {
         if (fileWatcherStarted) return
         fileWatcherStarted = true
@@ -1022,6 +1058,8 @@ class CaptchaIME : InputMethodService() {
 
     override fun onDestroy() {
         if (fileWatcherStarted) handler.removeCallbacks(pollRunnable)
+        try { tcpServer?.close() } catch (e: Exception) { }
+        tcpThread?.interrupt()
         stopBackspaceRepeat()
         try { clipboardManager.removePrimaryClipChangedListener(clipListener) } catch (e: Exception) { }
         super.onDestroy()
