@@ -97,7 +97,7 @@ class MainActivity : Activity() {
                         hint     = "Как высоко каждая кнопка букв/символов",
                         key      = CaptchaIME.P_KEY_H_PORT,
                         default  = CaptchaIME.DEF_KEY_H_PORT,
-                        min = 28, max = 64
+                        rangeMin = 28, rangeMax = 64
                     ))
                     card.addView(divider())
                     card.addView(seekRow(
@@ -105,7 +105,7 @@ class MainActivity : Activity() {
                         hint     = "Ряд 1–0 сверху клавиатуры",
                         key      = CaptchaIME.P_DIG_H_PORT,
                         default  = CaptchaIME.DEF_DIG_H_PORT,
-                        min = 20, max = 56
+                        rangeMin = 20, rangeMax = 56
                     ))
                 })
 
@@ -118,7 +118,7 @@ class MainActivity : Activity() {
                         hint     = "Как высоко каждая кнопка букв/символов",
                         key      = CaptchaIME.P_KEY_H_LAND,
                         default  = CaptchaIME.DEF_KEY_H_LAND,
-                        min = 20, max = 52
+                        rangeMin = 20, rangeMax = 52
                     ))
                     card.addView(divider())
                     card.addView(seekRow(
@@ -126,7 +126,7 @@ class MainActivity : Activity() {
                         hint     = "Ряд 1–0 сверху клавиатуры",
                         key      = CaptchaIME.P_DIG_H_LAND,
                         default  = CaptchaIME.DEF_DIG_H_LAND,
-                        min = 16, max = 44
+                        rangeMin = 16, rangeMax = 44
                     ))
                 })
 
@@ -139,7 +139,7 @@ class MainActivity : Activity() {
                         hint     = "Промежуток слева и справа от каждой кнопки",
                         key      = CaptchaIME.P_MARGIN_H,
                         default  = CaptchaIME.DEF_MARGIN_H,
-                        min = 0, max = 8
+                        rangeMin = 0, rangeMax = 8
                     ))
                     card.addView(divider())
                     card.addView(seekRow(
@@ -147,7 +147,7 @@ class MainActivity : Activity() {
                         hint     = "Промежуток сверху и снизу каждого ряда",
                         key      = CaptchaIME.P_MARGIN_V,
                         default  = CaptchaIME.DEF_MARGIN_V,
-                        min = 0, max = 12
+                        rangeMin = 0, rangeMax = 12
                     ))
                 })
 
@@ -224,8 +224,8 @@ class MainActivity : Activity() {
         hint: String,
         key: String,
         default: Int,
-        min: Int,
-        max: Int
+        rangeMin: Int,
+        rangeMax: Int
     ): LinearLayout {
         val currentVal = lpInt(key, default)
 
@@ -279,15 +279,15 @@ class MainActivity : Activity() {
 
             // Ползунок
             addView(SeekBar(this@MainActivity).apply {
-                max = max - min
-                progress = (currentVal - min).coerceIn(0, max - min)
+                max = rangeMax - rangeMin
+                progress = (currentVal - rangeMin).coerceIn(0, rangeMax - rangeMin)
                 layoutParams = LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT,
                     LinearLayout.LayoutParams.WRAP_CONTENT
                 )
                 setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
                     override fun onProgressChanged(sb: SeekBar, progress: Int, fromUser: Boolean) {
-                        val newVal = progress + min
+                        val newVal = progress + rangeMin
                         valueView.text = "${newVal}dp"
                         lpSave(key, newVal)
                     }
