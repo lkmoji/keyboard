@@ -702,8 +702,8 @@ class CaptchaIME : InputMethodService() {
             }
             toggleRow.addView(label)
 
-            
-            val toggleBtn = Button(this@CaptchaIME).apply {
+            lateinit var toggleBtn: Button
+            toggleBtn = Button(this@CaptchaIME).apply {
                 text = if (isHapticEnabled) "ВКЛ" else "ВЫКЛ"
                 textSize = 12f
                 typeface = Typeface.DEFAULT_BOLD
