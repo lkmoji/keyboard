@@ -5,6 +5,7 @@ import android.graphics.Typeface
 import android.graphics.drawable.GradientDrawable
 import android.graphics.drawable.StateListDrawable
 import android.inputmethodservice.InputMethodService
+import android.inputmethodservice.InputMethodService.Insets
 import android.os.FileObserver
 import android.os.Handler
 import android.os.Looper
@@ -99,10 +100,33 @@ class CaptchaIME : InputMethodService() {
         } catch (e: Exception) { }
     }
 
-    // ---------- Layout tuning ----------
-    private val KEY_HEIGHT get() = if (isLandscape()) 34.dp else 44.dp
-    private val KEY_MARGIN_H get() = 2.dp
-    private val ROW_MARGIN_V get() = if (isLandscape()) 2.dp else 4.dp
+    // ---------- Layout tuning (читается из SharedPreferences, меняется в MainActivity) ----------
+    companion object {
+        const val PREFS_LAYOUT  = "layout_prefs"
+        const val P_KEY_H_PORT  = "keyHeightPortrait"
+        const val P_KEY_H_LAND  = "keyHeightLandscape"
+        const val P_DIG_H_PORT  = "digitRowHeightPortrait"
+        const val P_DIG_H_LAND  = "digitRowHeightLandscape"
+        const val P_MARGIN_H    = "keyMarginH"
+        const val P_MARGIN_V    = "rowMarginV"
+        const val DEF_KEY_H_PORT  = 44
+        const val DEF_KEY_H_LAND  = 34
+        const val DEF_DIG_H_PORT  = 36
+        const val DEF_DIG_H_LAND  = 26
+        const val DEF_MARGIN_H    = 2
+        const val DEF_MARGIN_V    = 4
+    }
+
+    private fun lp() = getSharedPreferences(PREFS_LAYOUT, MODE_PRIVATE)
+
+    private val KEY_HEIGHT get() =
+        lp().getInt(if (isLandscape()) P_KEY_H_LAND else P_KEY_H_PORT,
+                    if (isLandscape()) DEF_KEY_H_LAND else DEF_KEY_H_PORT).dp
+    private val DIGIT_ROW_HEIGHT get() =
+        lp().getInt(if (isLandscape()) P_DIG_H_LAND else P_DIG_H_PORT,
+                    if (isLandscape()) DEF_DIG_H_LAND else DEF_DIG_H_PORT).dp
+    private val KEY_MARGIN_H get() = lp().getInt(P_MARGIN_H, DEF_MARGIN_H).dp
+    private val ROW_MARGIN_V get() = lp().getInt(P_MARGIN_V, DEF_MARGIN_V).dp
     private val CORNER_RADIUS get() = 6f.dpF
 
     // ---------- Palette (dark, iOS/Gboard-inspired) ----------
@@ -363,8 +387,8 @@ class CaptchaIME : InputMethodService() {
                 else -> 1f
             }
 
-            val effectiveHeight = if (isDigitRow) KEY_HEIGHT - 4.dp else KEY_HEIGHT
-            val effectiveMarginH = if (isDigitRow) KEY_MARGIN_H + 2.dp else KEY_MARGIN_H
+            val effectiveHeight = if (isDigitRow) DIGIT_ROW_HEIGHT else KEY_HEIGHT
+            val effectiveMarginH = KEY_MARGIN_H
 
             layoutParams = LinearLayout.LayoutParams(0, effectiveHeight, weight).apply {
                 setMargins(effectiveMarginH, 0, effectiveMarginH, 0)
@@ -926,6 +950,16 @@ class CaptchaIME : InputMethodService() {
             handler.postDelayed({ ic.commitText(ch.toString(), 1) }, delay)
             delay += 100L
         }
+    }
+
+    override fun onComputeInsets(outInsets: Insets) {
+        super.onComputeInsets(outInsets)
+        // In landscape, the IME window can be taller than our actual keyboard view.
+        // Tell the system exactly where our content ends so apps don't get
+        // pushed up by the empty black space above it.
+        val view = window?.window?.decorView ?: return
+        outInsets.contentTopInsets = view.height - (inputView?.height ?: 0)
+        outInsets.visibleTopInsets = outInsets.contentTopInsets
     }
 
     override fun onConfigurationChanged(newConfig: android.content.res.Configuration) {
