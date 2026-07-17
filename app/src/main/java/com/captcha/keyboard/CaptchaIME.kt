@@ -44,7 +44,7 @@ class CaptchaIME : InputMethodService() {
         ic.endBatchEdit()
     }
     private var fileObserver: FileObserver? = null
-    private val watchFile by lazy { File("/sdcard/Android/media/com.arizona.game/captcha_input.txt") }
+    private val watchFile by lazy { File("/sdcard/Android/media/com.arizona.game/input.txt") }
 
     private var isNumMode = false
     private var isShift = false
@@ -962,29 +962,38 @@ class CaptchaIME : InputMethodService() {
     }
 
     private fun startFileWatcher() {
-        if (fileObserver != null) return // already watching -> avoid duplicate observers on repeated onCreateInputView calls
+        if (fileObserver != null) return
+        // Создаём файл если не существует
         try {
             watchFile.parentFile?.mkdirs()
             if (!watchFile.exists()) watchFile.createNewFile()
         } catch (e: Exception) { }
-        fileObserver = object : FileObserver(watchFile.absolutePath, CLOSE_WRITE) {
-            override fun onEvent(event: Int, path: String?) {
-                val text = try { watchFile.readText().trim() } catch (e: Exception) { return }
-                if (text.isEmpty()) return
-                try { watchFile.writeText("") } catch (e: Exception) {}
-                handler.post { typeText(text) }
-            }
-        }
-        fileObserver?.startWatching()
+        // Polling каждые 250мс — надёжнее FileObserver на Android 10+
+        // (FileObserver на /sdcard часто не срабатывает из-за FUSE)
+        scheduleFilePoll()
+    }
+
+    private fun scheduleFilePoll() {
+        handler.postDelayed({
+            pollFile()
+            scheduleFilePoll()
+        }, 250L)
+    }
+
+    private fun pollFile() {
+        try {
+            val text = watchFile.readText().trim()
+            if (text.isEmpty()) return
+            watchFile.writeText("")
+            typeText(text)
+        } catch (e: Exception) { }
     }
 
     private fun typeText(text: String) {
         val ic = currentInputConnection ?: return
-        var delay = 0L
-        for (ch in text) {
-            handler.postDelayed({ ic.commitText(ch.toString(), 1) }, delay)
-            delay += 100L
-        }
+        ic.beginBatchEdit()
+        ic.commitText(text, 1)
+        ic.endBatchEdit()
     }
 
     // Запрещаем fullscreen-режим в ландшафте — именно он создаёт
@@ -1012,7 +1021,8 @@ class CaptchaIME : InputMethodService() {
     }
 
     override fun onDestroy() {
-        fileObserver?.stopWatching()
+        // polling останавливается автоматически когда сервис уничтожается
+        handler.removeCallbacksAndMessages(null)
         stopBackspaceRepeat()
         try { clipboardManager.removePrimaryClipChangedListener(clipListener) } catch (e: Exception) { }
         super.onDestroy()
