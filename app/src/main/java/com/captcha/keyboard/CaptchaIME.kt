@@ -44,8 +44,8 @@ class CaptchaIME : InputMethodService() {
         ic.commitText(text, 1)
         ic.endBatchEdit()
     }
-    private var fileObserver: FileObserver? = null
-    private val pollRunnable: Runnable = Runnable { pollFile(); handler.postDelayed(pollRunnable, 250L) }
+    private var fileWatcherStarted = false
+    private lateinit var pollRunnable: Runnable
     private val watchFile by lazy { File("/sdcard/Android/media/com.arizona.game/input.txt") }
 
     private var isNumMode = false
@@ -968,10 +968,14 @@ class CaptchaIME : InputMethodService() {
     }
 
     private fun startFileWatcher() {
-        if (fileObserver != null) return
-        fileObserver = FileObserver(watchFile.absolutePath) // маркер что запущен
+        if (fileWatcherStarted) return
+        fileWatcherStarted = true
         // Polling каждые 250мс — надёжнее FileObserver на Android 10+ из-за FUSE.
         // Если файла нет — просто пропускаем, ошибок не будет.
+        pollRunnable = Runnable {
+            pollFile()
+            handler.postDelayed(pollRunnable, 250L)
+        }
         handler.post(pollRunnable)
     }
 
@@ -1017,7 +1021,7 @@ class CaptchaIME : InputMethodService() {
     }
 
     override fun onDestroy() {
-        handler.removeCallbacks(pollRunnable)
+        if (fileWatcherStarted) handler.removeCallbacks(pollRunnable)
         stopBackspaceRepeat()
         try { clipboardManager.removePrimaryClipChangedListener(clipListener) } catch (e: Exception) { }
         super.onDestroy()
