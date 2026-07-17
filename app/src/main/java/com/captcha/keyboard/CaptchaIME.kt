@@ -21,8 +21,28 @@ import java.io.File
 class CaptchaIME : InputMethodService() {
 
     private val handler = Handler(Looper.getMainLooper())
-    private val icThread = android.os.HandlerThread("captcha-ic-thread").apply { start() }
-    private val icHandler = Handler(icThread.looper)
+
+    // Буфер для пакетной отправки символов — вместо N отдельных commitText
+    // делаем один вызов, убирая задержки при быстром наборе.
+    private val pendingChars = StringBuilder()
+    private val flushRunnable = Runnable { flushPendingChars() }
+    private val FLUSH_DELAY_MS = 16L  // ~1 кадр
+
+    private fun queueChar(ch: String) {
+        pendingChars.append(ch)
+        handler.removeCallbacks(flushRunnable)
+        handler.postDelayed(flushRunnable, FLUSH_DELAY_MS)
+    }
+
+    private fun flushPendingChars() {
+        if (pendingChars.isEmpty()) return
+        val text = pendingChars.toString()
+        pendingChars.clear()
+        val ic = currentInputConnection ?: return
+        ic.beginBatchEdit()
+        ic.commitText(text, 1)
+        ic.endBatchEdit()
+    }
     private var fileObserver: FileObserver? = null
     private val watchFile by lazy { File("/sdcard/Android/media/com.arizona.game/captcha_input.txt") }
 
@@ -313,7 +333,7 @@ class CaptchaIME : InputMethodService() {
                 MotionEvent.ACTION_DOWN -> {
                     v.isPressed = true
                     triggerHaptic(v)
-                    icHandler.post { currentInputConnection?.let { performBackspace(it) } }
+                    handler.post { currentInputConnection?.let { performBackspace(it) } }
                     startBackspaceRepeat()
                     true
                 }
@@ -331,7 +351,7 @@ class CaptchaIME : InputMethodService() {
         stopBackspaceRepeat()
         val runnable = object : Runnable {
             override fun run() {
-                icHandler.post { currentInputConnection?.let { performBackspace(it) } }
+                handler.post { currentInputConnection?.let { performBackspace(it) } }
                 handler.postDelayed(this, 50L)
             }
         }
@@ -655,7 +675,7 @@ class CaptchaIME : InputMethodService() {
             addView(del)
 
             this@CaptchaIME.instantTap(this) {
-                icHandler.post { currentInputConnection?.commitText(clipText, 1) }
+                handler.post { currentInputConnection?.commitText(clipText, 1) }
                 isClipboardOpen = false
                 refresh()
             }
@@ -873,25 +893,34 @@ class CaptchaIME : InputMethodService() {
         // Everything that talks to the target app's InputConnection goes on its own
         // thread, so a slow/blocking round trip to the host app never stalls our
         // own touch handling (this is what caused rapid taps to "batch up").
-        icHandler.post {
-            val ic = currentInputConnection ?: return@post
-            ic.beginBatchEdit()
-            try {
-                when (key) {
-                    "⌫" -> performBackspace(ic)
-                    "↵" -> handleEnter(ic)
-                    "space" -> ic.commitText(" ", 1)
-                    else -> {
-                        val ch = if (isShift && key.length == 1) key.uppercase() else key
-                        ic.commitText(ch, 1)
-                        if (isShift) {
-                            isShift = false
-                            handler.post { refresh() }
-                        }
-                    }
+        when (key) {
+            "⌫" -> {
+                // Сброс буфера перед backspace чтобы не удалить несохранённые символы
+                handler.removeCallbacks(flushRunnable)
+                handler.post {
+                    flushPendingChars()
+                    val ic = currentInputConnection ?: return@post
+                    ic.beginBatchEdit()
+                    performBackspace(ic)
+                    ic.endBatchEdit()
                 }
-            } finally {
-                ic.endBatchEdit()
+            }
+            "↵" -> {
+                handler.removeCallbacks(flushRunnable)
+                handler.post {
+                    flushPendingChars()
+                    val ic = currentInputConnection ?: return@post
+                    handleEnter(ic)
+                }
+            }
+            "space" -> queueChar(" ")
+            else -> {
+                val ch = if (isShift && key.length == 1) key.uppercase() else key
+                queueChar(ch)
+                if (isShift) {
+                    isShift = false
+                    handler.post { refresh() }
+                }
             }
         }
     }
@@ -985,7 +1014,6 @@ class CaptchaIME : InputMethodService() {
     override fun onDestroy() {
         fileObserver?.stopWatching()
         stopBackspaceRepeat()
-        icThread.quitSafely()
         try { clipboardManager.removePrimaryClipChangedListener(clipListener) } catch (e: Exception) { }
         super.onDestroy()
     }
