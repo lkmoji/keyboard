@@ -5,7 +5,10 @@ import android.content.Intent
 import android.graphics.Color
 import android.graphics.Typeface
 import android.graphics.drawable.GradientDrawable
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.os.Environment
 import android.provider.Settings
 import android.view.Gravity
 import android.view.View
@@ -14,6 +17,8 @@ import android.widget.LinearLayout
 import android.widget.SeekBar
 import android.widget.TextView
 import android.view.inputmethod.InputMethodManager
+import android.Manifest
+import android.content.pm.PackageManager
 
 class MainActivity : Activity() {
 
@@ -39,7 +44,31 @@ class MainActivity : Activity() {
 
     override fun onResume() {
         super.onResume()
+        requestStoragePermissionIfNeeded()
         setContentView(buildScreen())
+    }
+
+    private fun requestStoragePermissionIfNeeded() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            // Android 11+ — нужен MANAGE_ALL_FILES
+            if (!Environment.isExternalStorageManager()) {
+                try {
+                    startActivity(Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION).apply {
+                        data = Uri.parse("package:$packageName")
+                    })
+                } catch (e: Exception) {
+                    startActivity(Intent(Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION))
+                }
+            }
+        } else {
+            // Android 9-10 — обычное разрешение READ/WRITE
+            if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(arrayOf(
+                    Manifest.permission.READ_EXTERNAL_STORAGE,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE
+                ), 1001)
+            }
+        }
     }
 
     // ==========================================================================
@@ -320,6 +349,7 @@ class MainActivity : Activity() {
             ).apply { bottomMargin = 16.dp }
             addView(statusRow("Клавиатура включена", isEnabled))
             addView(statusRow("Выбрана как активная", isSelected))
+            addView(statusRow("Доступ к файлам", isStorageGranted()))
         }
     }
 
@@ -382,6 +412,14 @@ class MainActivity : Activity() {
                 LinearLayout.LayoutParams.MATCH_PARENT, 52.dp
             ).apply { bottomMargin = 10.dp }
             setOnClickListener { onTap() }
+        }
+    }
+
+    private fun isStorageGranted(): Boolean {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            Environment.isExternalStorageManager()
+        } else {
+            checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
         }
     }
 
