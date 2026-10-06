@@ -1,7 +1,7 @@
 script_author('flupiflufi + dim4ak1337')
-script_name('LesoРуб бот')
+script_name('LesoГђГіГЎ ГЎГ®ГІ')
 script_version('1.8.1')
-script_description("LesoРуб эта бот на лесопилку, он рубит лес!")
+script_description("LesoГђГіГЎ ГЅГІГ  ГЎГ®ГІ Г­Г  Г«ГҐГ±Г®ГЇГЁГ«ГЄГі, Г®Г­ Г°ГіГЎГЁГІ Г«ГҐГ±!")
 
 local mem = require "memory"
 local mad = require("MoonAdditions")
@@ -501,7 +501,7 @@ local center_coords = {
     {-506.93884277344, -38.106510162354, 59.464302062988},
 }
 
-local точки_дАроги = {
+local ГІГ®Г·ГЄГЁ_Г¤ГЂГ°Г®ГЈГЁ = {
     {x = -512.693359375, y = -190.7613067627, z = 78.250762939453},
     {x = -506.49435424805, y = -14.57945728302, z = 56.492931365967}
 }
@@ -691,7 +691,7 @@ local all_anims = {
     "woman_walkpro", "woman_walksexy", "woman_walkshop", "xpressscratch"
 }
 
---колизия
+--ГЄГ®Г«ГЁГ§ГЁГї
 local mainIni = {
     act = {
         cmd = "col",
@@ -812,6 +812,7 @@ config = {
     daily_trees = 0,
     weekly_trees = 0,
     bot_hotkey = 0,
+	menu_hotkey = 0,
     combo_key1 = 0,
     combo_key2 = 0,
     menu_movable = false,
@@ -996,9 +997,9 @@ local TP_OVERLAY_CLICK_INTERVAL = 0.70
 
 -- 16:9 normalized click points, retuned under 1920x1080/UI like on screenshots.
 -- We click several candidate areas instead of one point:
---   1) battlepass close zone (Esc / Закрыть)
---   2) spawn bot dialog action button (Да! / Окей, выдвигаюсь)
---   3) large primary white action button (Отправиться ...)
+--   1) battlepass close zone (Esc / Г‡Г ГЄГ°Г»ГІГј)
+--   2) spawn bot dialog action button (Г„Г ! / ГЋГЄГҐГ©, ГўГ»Г¤ГўГЁГЈГ ГѕГ±Гј)
+--   3) large primary white action button (ГЋГІГЇГ°Г ГўГЁГІГјГ±Гї ...)
 local TP_OVERLAY_CLOSE_POINTS = {
     {0.730, 0.198},
     {0.770, 0.198},
@@ -1043,12 +1044,12 @@ end
 
 
 local sdacha_names = {
-    u8"Первая точка сдачи",
-    u8"Вторая точка сдачи",
-    u8"Третья точка сдачи"
+    u8"ГЏГҐГ°ГўГ Гї ГІГ®Г·ГЄГ  Г±Г¤Г Г·ГЁ",
+    u8"Г‚ГІГ®Г°Г Гї ГІГ®Г·ГЄГ  Г±Г¤Г Г·ГЁ",
+    u8"Г’Г°ГҐГІГјГї ГІГ®Г·ГЄГ  Г±Г¤Г Г·ГЁ"
 }
 
---всякая херь локальная брух
+--ГўГ±ГїГЄГ Гї ГµГҐГ°Гј Г«Г®ГЄГ Г«ГјГ­Г Гї ГЎГ°ГіГµ
 local ImItems_sdacha = imgui.new['const char*'][#sdacha_names](sdacha_names)
 local selected_sdacha = nil
 local current_new_point_index = 1
@@ -1071,17 +1072,17 @@ odejda_buy_started_at = nil
 odejda_buy_enter_sent = false
 local walking = false
 local formatScreenshot = '.jpg'
-selected_tab = u8"Бот"
+selected_tab = u8"ГЃГ®ГІ"
 function is_main_subtab(tab)
-    return tab == u8"Бот"
-        or tab == u8"Анти-бот"
-        or tab == u8"Анти-админ"
-        or tab == u8"Телепорт"
-        or tab == u8"Анти-Еда"
-        or tab == u8"Статистика"
+    return tab == u8"ГЃГ®ГІ"
+        or tab == u8"ГЂГ­ГІГЁ-ГЎГ®ГІ"
+        or tab == u8"ГЂГ­ГІГЁ-Г Г¤Г¬ГЁГ­"
+        or tab == u8"Г’ГҐГ«ГҐГЇГ®Г°ГІ"
+        or tab == u8"ГЂГ­ГІГЁ-Г…Г¤Г "
+        or tab == u8"Г‘ГІГ ГІГЁГ±ГІГЁГЄГ "
 end
 function is_settings_subtab(tab)
-    return tab == u8"Меню"
+    return tab == u8"ГЊГҐГ­Гѕ"
         or tab == u8"Telegram"
 end
 main_dropdown_open = false
@@ -1736,12 +1737,12 @@ local function draw_random_inventory_countdown()
 
     if random_inventory_pending then
         if not random_inventory_opened then
-            text = u8:decode(string.format("Инвентарь откроется через %.1f сек", remaining))
+            text = u8:decode(string.format("Г€Г­ГўГҐГ­ГІГ Г°Гј Г®ГІГЄГ°Г®ГҐГІГ±Гї Г·ГҐГ°ГҐГ§ %.1f Г±ГҐГЄ", remaining))
         else
-            text = u8:decode(string.format("Инвентарь закроется через %.1f сек", remaining))
+            text = u8:decode(string.format("Г€Г­ГўГҐГ­ГІГ Г°Гј Г§Г ГЄГ°Г®ГҐГІГ±Гї Г·ГҐГ°ГҐГ§ %.1f Г±ГҐГЄ", remaining))
         end
     else
-        text = u8:decode(string.format("До открытия инвентаря: %.1f сек", remaining))
+        text = u8:decode(string.format("Г„Г® Г®ГІГЄГ°Г»ГІГЁГї ГЁГ­ГўГҐГ­ГІГ Г°Гї: %.1f Г±ГҐГЄ", remaining))
     end
 
     local y_offset = 0
@@ -2225,10 +2226,10 @@ function ui_minimal_checkbox(str_id, bool)
 end
 
 local method = {
-    u8'Чипсы',
-    u8'Рыба',
-    u8'Оленина',
-    u8'Мешок с мясом'
+    u8'Г—ГЁГЇГ±Г»',
+    u8'ГђГ»ГЎГ ',
+    u8'ГЋГ«ГҐГ­ГЁГ­Г ',
+    u8'ГЊГҐГёГ®ГЄ Г± Г¬ГїГ±Г®Г¬'
 }
 local ImItems = imgui.new['const char*'][#method](method)
 ffi.cdef [[
@@ -2330,7 +2331,7 @@ function applyAnimationSpeed()
     end
 end
 
---красиво насрал пакетами кастомными
+--ГЄГ°Г Г±ГЁГўГ® Г­Г Г±Г°Г Г« ГЇГ ГЄГҐГІГ Г¬ГЁ ГЄГ Г±ГІГ®Г¬Г­Г»Г¬ГЁ
 function sendCustomPacket(text)
     local bs = raknetNewBitStream()
     raknetBitStreamWriteInt8(bs, 220)
@@ -2733,7 +2734,7 @@ function playAlertSound()
         setAudioStreamVolume(alert_audio, 1.0)
         setAudioStreamState(alert_audio, audiostream_state.PLAY)
     else
-        cMsg('Ошибка загрузки звука анти-админа: ' .. path)
+        cMsg('ГЋГёГЁГЎГЄГ  Г§Г ГЈГ°ГіГ§ГЄГЁ Г§ГўГіГЄГ  Г Г­ГІГЁ-Г Г¤Г¬ГЁГ­Г : ' .. path)
     end
 end
 
@@ -2813,7 +2814,7 @@ function main_handle_runtime_toggles(cursor_visible)
             clear_time_probe_state()
             clear_random_inventory_state()
         end
-        syncToggleButton(ti.ICON_TREES .. u8" Бот дерева", cVARS.bot[0])
+        syncToggleButton(ti.ICON_TREES .. u8" ГЃГ®ГІ Г¤ГҐГ°ГҐГўГ ", cVARS.bot[0])
     end
     sync_persistent_runtime_toggles()
     flush_save_cfg_if_needed(false)
@@ -2842,7 +2843,7 @@ function tp_guard_connection_state()
     if (tp_state.active or tp_state.pending or tp_auto_state.armed or tp_auto_state.cleanup_active)
     and not (isSampAvailable() and sampGetGamestate() == 3)
     and not tp_state.connection_closed then
-        tp_mark_connection_closed("отмена телепорта из-за закрытия соединения", not tp_is_manual_reconnect_pending())
+        tp_mark_connection_closed("Г®ГІГ¬ГҐГ­Г  ГІГҐГ«ГҐГЇГ®Г°ГІГ  ГЁГ§-Г§Г  Г§Г ГЄГ°Г»ГІГЁГї Г±Г®ГҐГ¤ГЁГ­ГҐГ­ГЁГї", not tp_is_manual_reconnect_pending())
         if tp_is_manual_reconnect_pending() then
             tp_note_reconnect_progress()
         end
@@ -2854,7 +2855,7 @@ function main()
     if not isSampfuncsLoaded() or not isSampLoaded() then return end
     while not isSampAvailable() do wait(100) end
     hwin = ffi.C.GetActiveWindow()
-    cMsg("Успешно загружен! Используй {ABABAB}/sawbot")
+    cMsg("Г“Г±ГЇГҐГёГ­Г® Г§Г ГЈГ°ГіГ¦ГҐГ­! Г€Г±ГЇГ®Г«ГјГ§ГіГ© {ABABAB}/sawbot")
     lua_thread.create(warning)
     lua_thread.create(warning2)
     load_cfg()
@@ -2897,7 +2898,7 @@ function main()
                 tp_reset_auto_schedule()
             end
         elseif not spawn_ready and tp_auto_state.last_spawned then
-            tp_mark_connection_closed("отмена телепорта из-за закрытия соединения")
+            tp_mark_connection_closed("Г®ГІГ¬ГҐГ­Г  ГІГҐГ«ГҐГЇГ®Г°ГІГ  ГЁГ§-Г§Г  Г§Г ГЄГ°Г»ГІГЁГї Г±Г®ГҐГ¤ГЁГ­ГҐГ­ГЁГї")
         end
         tp_auto_state.last_spawned = spawn_ready
         tp_process_auto_reconnect(spawn_ready)
@@ -2928,7 +2929,7 @@ function main()
             if now - lastBeerTime >= 600 then
                 lastBeerTime = now
                 sampSendChat("/beer")
-                sampAddChatMessage("{00FF00}[AutoBeer]{FFFFFF} Выпито пиво (интервал 10 минут)", -1)
+                sampAddChatMessage("{00FF00}[AutoBeer]{FFFFFF} Г‚Г»ГЇГЁГІГ® ГЇГЁГўГ® (ГЁГ­ГІГҐГ°ГўГ Г« 10 Г¬ГЁГ­ГіГІ)", -1)
             end
         end
         if cVARS.runskincj[0] then
@@ -2937,12 +2938,12 @@ function main()
         if cVARS.stat_status[0] then
             zarabotok = cVARS.derevo_amount[0] * cVARS.derevo_value[0]
             r, g, b, a = rainbow(1, 255, 15)
-            renderFontDrawText(font, (cVARS.bot[0] and 'Статус: Работает!' or 'Статус: Выкл')..'\nКол-во дерева: '..cVARS.derevo_amount[0]..' ('..zarabotok ..'$)', cVARS.x, cVARS.y, (cVARS.rainbowcolor[0] and join_argb(a, r, g, b) or -1))
+            renderFontDrawText(font, (cVARS.bot[0] and 'Г‘ГІГ ГІГіГ±: ГђГ ГЎГ®ГІГ ГҐГІ!' or 'Г‘ГІГ ГІГіГ±: Г‚Г»ГЄГ«')..'\nГЉГ®Г«-ГўГ® Г¤ГҐГ°ГҐГўГ : '..cVARS.derevo_amount[0]..' ('..zarabotok ..'$)', cVARS.x, cVARS.y, (cVARS.rainbowcolor[0] and join_argb(a, r, g, b) or -1))
         end
         if cVARS.time_probe_enabled[0] and cVARS.time_probe_show_remaining[0] then
             y_offset = cVARS.stat_status[0] and 35 or 0
             remaining = get_time_probe_remaining()
-            renderFontDrawText(font, 'До /time: ' .. remaining .. ' сдач', cVARS.x, cVARS.y + y_offset, -1)
+            renderFontDrawText(font, 'Г„Г® /time: ' .. remaining .. ' Г±Г¤Г Г·', cVARS.x, cVARS.y + y_offset, -1)
         end
         draw_random_inventory_countdown()
         if cVARS.antiadmin_skipdialog[0] then
@@ -2955,7 +2956,7 @@ function main()
 				if sampIs3dTextDefined(id) then
 					text, color, posX, posY, posZ, distance, ignore_walls, textPlayerId, veh = sampGet3dTextInfoById(id)
 					distance = getDistanceBetweenCoords3d(posX, posY, posZ, x, y, z)
-                    if text:find("Срубить дерево") and isPointOnScreen(posX,posY,posZ, -1) and distance < 60 then 
+                    if text:find("Г‘Г°ГіГЎГЁГІГј Г¤ГҐГ°ГҐГўГ®") and isPointOnScreen(posX,posY,posZ, -1) and distance < 60 then 
 						wX, wY = convert3DCoordsToScreen(posX,posY,posZ)
 						renderDrawLine(pX,pY,wX,wY, 1,0xFFFFFFFF)
                         renderDrawPolygon(wX,wY,5,5,16,0,0xFF00FFFF)
@@ -3001,7 +3002,7 @@ function main()
                 end
             end
         end
-        --колизия
+        --ГЄГ®Г«ГЁГ§ГЁГї
         if object[0] then
             for k, v in ipairs(getAllObjects()) do
                 if doesObjectExist(v) then
@@ -3060,14 +3061,14 @@ function main()
             end
         end
                 
-        --колизия
+        --ГЄГ®Г«ГЁГ§ГЁГї
         if changepos then
             sampToggleCursor(true)
             x, y = getCursorPos()
             cVARS.x = x
             cVARS.y = y
             if isKeyJustPressed(0x01) then
-               sampAddChatMessage('Позиция сохранена.', -1)
+               sampAddChatMessage('ГЏГ®Г§ГЁГ¶ГЁГї Г±Г®ГµГ°Г Г­ГҐГ­Г .', -1)
                changepos = false
                sampToggleCursor(false)
             end
@@ -3126,11 +3127,11 @@ function main()
                     end
                     state_entered["RUN_CENTER"] = true
                 end
-                nearest_c = получитьПерпендикулярКЦентру()
-                local center_r = получитьПерпендикулярКЦентру()
+                nearest_c = ГЇГ®Г«ГіГ·ГЁГІГјГЏГҐГ°ГЇГҐГ­Г¤ГЁГЄГіГ«ГїГ°ГЉГ–ГҐГ­ГІГ°Гі()
+                local center_r = ГЇГ®Г«ГіГ·ГЁГІГјГЏГҐГ°ГЇГҐГ­Г¤ГЁГЄГіГ«ГїГ°ГЉГ–ГҐГ­ГІГ°Гі()
                 pX, pY, pZ = getCharCoordinates(PLAYER_PED)
                 local distance_to_center = getDistanceBetweenCoords2d(center_r[1], center_r[2], pX, pY)
-                local res = lineVec({x = center_r[1], y = center_r[2]}, {x = точки_дАроги[2].x, y = точки_дАроги[2].y}, (10 - distance_to_center) > 0 and (5 + 10 - distance_to_center) or 5)
+                local res = lineVec({x = center_r[1], y = center_r[2]}, {x = ГІГ®Г·ГЄГЁ_Г¤ГЂГ°Г®ГЈГЁ[2].x, y = ГІГ®Г·ГЄГЁ_Г¤ГЂГ°Г®ГЈГЁ[2].y}, (10 - distance_to_center) > 0 and (5 + 10 - distance_to_center) or 5)
                 runToPoint(res.x, res.y, nearest_c[3])
                 local distance = distPoint(nearest_c[1], nearest_c[2], nearest_c[3])
                 if distance < 5 then
@@ -3222,11 +3223,11 @@ function main()
                     mX, mY, mZ = getCharCoordinates(PLAYER_PED)
                     local distance2d = getDistanceBetweenCoords2d(mX, mY, tx, ty)
                     if os.clock() - set_wait_alt > 15 then
-                        table.insert(ignore_trees, {tx, ty, tz}) -- баним точку нахуй, если она сломана
+                        table.insert(ignore_trees, {tx, ty, tz}) -- ГЎГ Г­ГЁГ¬ ГІГ®Г·ГЄГі Г­Г ГµГіГ©, ГҐГ±Г«ГЁ Г®Г­Г  Г±Г«Г®Г¬Г Г­Г 
                         current_tree_target = nil
                         bot_state = "SEARCH_TREE"
                     elseif distance2d > 1.5 then
-                        bot_state = "SEARCH_TREE" -- если испарилось дерево нахуй блять
+                        bot_state = "SEARCH_TREE" -- ГҐГ±Г«ГЁ ГЁГ±ГЇГ Г°ГЁГ«Г®Г±Гј Г¤ГҐГ°ГҐГўГ® Г­Г ГµГіГ© ГЎГ«ГїГІГј
                     else
                         local distance3d = getDistanceBetweenCoords3d(mX, mY, mZ, tx, ty, tz)
                         walking = false
@@ -3237,7 +3238,7 @@ function main()
                             data.keysData = data.keysData + (last_alt and 1024 or 0)
                             data.send()
                         end
-                        last_alt = not last_alt -- вроде это не надо, ибо обычная синхра сама отправляет и тоже самое сделает
+                        last_alt = not last_alt -- ГўГ°Г®Г¤ГҐ ГЅГІГ® Г­ГҐ Г­Г Г¤Г®, ГЁГЎГ® Г®ГЎГ»Г·Г­Г Гї Г±ГЁГ­ГµГ°Г  Г±Г Г¬Г  Г®ГІГЇГ°Г ГўГ«ГїГҐГІ ГЁ ГІГ®Г¦ГҐ Г±Г Г¬Г®ГҐ Г±Г¤ГҐГ«Г ГҐГІ
                     end
                 end
             elseif bot_state == "ESCAPE_VEHICLE" then
@@ -3251,7 +3252,7 @@ function main()
                     cVARS.bot[0] = false
                     bot_state = "IDLE"
                     if cVARS.telegram[0] then
-                        sendTelegramNotification("Достигнута безопасная точка. Бот выключен.")
+                        sendTelegramNotification("Г„Г®Г±ГІГЁГЈГ­ГіГІГ  ГЎГҐГ§Г®ГЇГ Г±Г­Г Гї ГІГ®Г·ГЄГ . ГЃГ®ГІ ГўГ»ГЄГ«ГѕГ·ГҐГ­.")
                     end
                 end
             elseif bot_state == "ODEJDA_DOLBAEB" then
@@ -3362,20 +3363,20 @@ end
     return argb
 end
 
-function перпендикуляторКПрямойЧерезТочку(точка_прямой_адин, точка_прямой_два, наша_точка)
-    local икс = (точка_прямой_адин.x * точка_прямой_адин.x * наша_точка.x - 2 * точка_прямой_адин.x * точка_прямой_два.x * наша_точка.x + точка_прямой_два.x * точка_прямой_два.x * наша_точка.x + точка_прямой_два.x *
-    (точка_прямой_адин.y - точка_прямой_два.y) * (точка_прямой_адин.y - наша_точка.y) - точка_прямой_адин.x * (точка_прямой_адин.y - точка_прямой_два.y) * (точка_прямой_два.y - наша_точка.y)) / ((точка_прямой_адин.x - точка_прямой_два.x) *
-            (точка_прямой_адин.x - точка_прямой_два.x) + (точка_прямой_адин.y - точка_прямой_два.y) * (точка_прямой_адин.y - точка_прямой_два.y))
-    local игрек = (точка_прямой_два.x * точка_прямой_два.x * точка_прямой_адин.y + точка_прямой_адин.x * точка_прямой_адин.x * точка_прямой_два.y + точка_прямой_два.x * наша_точка.x * (точка_прямой_два.y - точка_прямой_адин.y) - точка_прямой_адин.x *
-    (наша_точка.x * (точка_прямой_два.y - точка_прямой_адин.y) + точка_прямой_два.x * (точка_прямой_адин.y + точка_прямой_два.y)) + (точка_прямой_адин.y - точка_прямой_два.y) * (точка_прямой_адин.y - точка_прямой_два.y) * наша_точка.y) / ((
-                точка_прямой_адин.x - точка_прямой_два.x) * (точка_прямой_адин.x - точка_прямой_два.x) + (точка_прямой_адин.y - точка_прямой_два.y) * (точка_прямой_адин.y - точка_прямой_два.y));
-    return {икс, игрек}
+function ГЇГҐГ°ГЇГҐГ­Г¤ГЁГЄГіГ«ГїГІГ®Г°ГЉГЏГ°ГїГ¬Г®Г©Г—ГҐГ°ГҐГ§Г’Г®Г·ГЄГі(ГІГ®Г·ГЄГ _ГЇГ°ГїГ¬Г®Г©_Г Г¤ГЁГ­, ГІГ®Г·ГЄГ _ГЇГ°ГїГ¬Г®Г©_Г¤ГўГ , Г­Г ГёГ _ГІГ®Г·ГЄГ )
+    local ГЁГЄГ± = (ГІГ®Г·ГЄГ _ГЇГ°ГїГ¬Г®Г©_Г Г¤ГЁГ­.x * ГІГ®Г·ГЄГ _ГЇГ°ГїГ¬Г®Г©_Г Г¤ГЁГ­.x * Г­Г ГёГ _ГІГ®Г·ГЄГ .x - 2 * ГІГ®Г·ГЄГ _ГЇГ°ГїГ¬Г®Г©_Г Г¤ГЁГ­.x * ГІГ®Г·ГЄГ _ГЇГ°ГїГ¬Г®Г©_Г¤ГўГ .x * Г­Г ГёГ _ГІГ®Г·ГЄГ .x + ГІГ®Г·ГЄГ _ГЇГ°ГїГ¬Г®Г©_Г¤ГўГ .x * ГІГ®Г·ГЄГ _ГЇГ°ГїГ¬Г®Г©_Г¤ГўГ .x * Г­Г ГёГ _ГІГ®Г·ГЄГ .x + ГІГ®Г·ГЄГ _ГЇГ°ГїГ¬Г®Г©_Г¤ГўГ .x *
+    (ГІГ®Г·ГЄГ _ГЇГ°ГїГ¬Г®Г©_Г Г¤ГЁГ­.y - ГІГ®Г·ГЄГ _ГЇГ°ГїГ¬Г®Г©_Г¤ГўГ .y) * (ГІГ®Г·ГЄГ _ГЇГ°ГїГ¬Г®Г©_Г Г¤ГЁГ­.y - Г­Г ГёГ _ГІГ®Г·ГЄГ .y) - ГІГ®Г·ГЄГ _ГЇГ°ГїГ¬Г®Г©_Г Г¤ГЁГ­.x * (ГІГ®Г·ГЄГ _ГЇГ°ГїГ¬Г®Г©_Г Г¤ГЁГ­.y - ГІГ®Г·ГЄГ _ГЇГ°ГїГ¬Г®Г©_Г¤ГўГ .y) * (ГІГ®Г·ГЄГ _ГЇГ°ГїГ¬Г®Г©_Г¤ГўГ .y - Г­Г ГёГ _ГІГ®Г·ГЄГ .y)) / ((ГІГ®Г·ГЄГ _ГЇГ°ГїГ¬Г®Г©_Г Г¤ГЁГ­.x - ГІГ®Г·ГЄГ _ГЇГ°ГїГ¬Г®Г©_Г¤ГўГ .x) *
+            (ГІГ®Г·ГЄГ _ГЇГ°ГїГ¬Г®Г©_Г Г¤ГЁГ­.x - ГІГ®Г·ГЄГ _ГЇГ°ГїГ¬Г®Г©_Г¤ГўГ .x) + (ГІГ®Г·ГЄГ _ГЇГ°ГїГ¬Г®Г©_Г Г¤ГЁГ­.y - ГІГ®Г·ГЄГ _ГЇГ°ГїГ¬Г®Г©_Г¤ГўГ .y) * (ГІГ®Г·ГЄГ _ГЇГ°ГїГ¬Г®Г©_Г Г¤ГЁГ­.y - ГІГ®Г·ГЄГ _ГЇГ°ГїГ¬Г®Г©_Г¤ГўГ .y))
+    local ГЁГЈГ°ГҐГЄ = (ГІГ®Г·ГЄГ _ГЇГ°ГїГ¬Г®Г©_Г¤ГўГ .x * ГІГ®Г·ГЄГ _ГЇГ°ГїГ¬Г®Г©_Г¤ГўГ .x * ГІГ®Г·ГЄГ _ГЇГ°ГїГ¬Г®Г©_Г Г¤ГЁГ­.y + ГІГ®Г·ГЄГ _ГЇГ°ГїГ¬Г®Г©_Г Г¤ГЁГ­.x * ГІГ®Г·ГЄГ _ГЇГ°ГїГ¬Г®Г©_Г Г¤ГЁГ­.x * ГІГ®Г·ГЄГ _ГЇГ°ГїГ¬Г®Г©_Г¤ГўГ .y + ГІГ®Г·ГЄГ _ГЇГ°ГїГ¬Г®Г©_Г¤ГўГ .x * Г­Г ГёГ _ГІГ®Г·ГЄГ .x * (ГІГ®Г·ГЄГ _ГЇГ°ГїГ¬Г®Г©_Г¤ГўГ .y - ГІГ®Г·ГЄГ _ГЇГ°ГїГ¬Г®Г©_Г Г¤ГЁГ­.y) - ГІГ®Г·ГЄГ _ГЇГ°ГїГ¬Г®Г©_Г Г¤ГЁГ­.x *
+    (Г­Г ГёГ _ГІГ®Г·ГЄГ .x * (ГІГ®Г·ГЄГ _ГЇГ°ГїГ¬Г®Г©_Г¤ГўГ .y - ГІГ®Г·ГЄГ _ГЇГ°ГїГ¬Г®Г©_Г Г¤ГЁГ­.y) + ГІГ®Г·ГЄГ _ГЇГ°ГїГ¬Г®Г©_Г¤ГўГ .x * (ГІГ®Г·ГЄГ _ГЇГ°ГїГ¬Г®Г©_Г Г¤ГЁГ­.y + ГІГ®Г·ГЄГ _ГЇГ°ГїГ¬Г®Г©_Г¤ГўГ .y)) + (ГІГ®Г·ГЄГ _ГЇГ°ГїГ¬Г®Г©_Г Г¤ГЁГ­.y - ГІГ®Г·ГЄГ _ГЇГ°ГїГ¬Г®Г©_Г¤ГўГ .y) * (ГІГ®Г·ГЄГ _ГЇГ°ГїГ¬Г®Г©_Г Г¤ГЁГ­.y - ГІГ®Г·ГЄГ _ГЇГ°ГїГ¬Г®Г©_Г¤ГўГ .y) * Г­Г ГёГ _ГІГ®Г·ГЄГ .y) / ((
+                ГІГ®Г·ГЄГ _ГЇГ°ГїГ¬Г®Г©_Г Г¤ГЁГ­.x - ГІГ®Г·ГЄГ _ГЇГ°ГїГ¬Г®Г©_Г¤ГўГ .x) * (ГІГ®Г·ГЄГ _ГЇГ°ГїГ¬Г®Г©_Г Г¤ГЁГ­.x - ГІГ®Г·ГЄГ _ГЇГ°ГїГ¬Г®Г©_Г¤ГўГ .x) + (ГІГ®Г·ГЄГ _ГЇГ°ГїГ¬Г®Г©_Г Г¤ГЁГ­.y - ГІГ®Г·ГЄГ _ГЇГ°ГїГ¬Г®Г©_Г¤ГўГ .y) * (ГІГ®Г·ГЄГ _ГЇГ°ГїГ¬Г®Г©_Г Г¤ГЁГ­.y - ГІГ®Г·ГЄГ _ГЇГ°ГїГ¬Г®Г©_Г¤ГўГ .y));
+    return {ГЁГЄГ±, ГЁГЈГ°ГҐГЄ}
 end
 
-function получитьПерпендикулярКЦентру()
+function ГЇГ®Г«ГіГ·ГЁГІГјГЏГҐГ°ГЇГҐГ­Г¤ГЁГЄГіГ«ГїГ°ГЉГ–ГҐГ­ГІГ°Гі()
     mX, mY, mZ = getCharCoordinates(PLAYER_PED)
-    local РеЗуЛьТаТ = перпендикуляторКПрямойЧерезТочку(точки_дАроги[1], точки_дАроги[2], {x = mX, y = mY})
-    return {РеЗуЛьТаТ[1], РеЗуЛьТаТ[2], mZ}
+    local ГђГҐГ‡ГіГ‹ГјГ’Г Г’ = ГЇГҐГ°ГЇГҐГ­Г¤ГЁГЄГіГ«ГїГІГ®Г°ГЉГЏГ°ГїГ¬Г®Г©Г—ГҐГ°ГҐГ§Г’Г®Г·ГЄГі(ГІГ®Г·ГЄГЁ_Г¤ГЂГ°Г®ГЈГЁ[1], ГІГ®Г·ГЄГЁ_Г¤ГЂГ°Г®ГЈГЁ[2], {x = mX, y = mY})
+    return {ГђГҐГ‡ГіГ‹ГјГ’Г Г’[1], ГђГҐГ‡ГіГ‹ГјГ’Г Г’[2], mZ}
 end
 
 function distPoint(x, y, z)
@@ -3398,13 +3399,13 @@ function runToPoint(x, y, z)
         last_check_time = now
         if cVARS.check_stuck[0] then
             if stuck_ticks >= STUCK_THRESHOLD and now - last_stuck_action_time >= STUCK_ACTION_COOLDOWN then
-                cMsg(string.format("Застревание! (%.2f м за %.1fс)", moved, CHECK_INTERVAL))
+                cMsg(string.format("Г‡Г Г±ГІГ°ГҐГўГ Г­ГЁГҐ! (%.2f Г¬ Г§Г  %.1fГ±)", moved, CHECK_INTERVAL))
                 setGameKeyState(14, 255)
                 setGameKeyState(0, math.random() > 0.5 and 220 or -220)
                 wait(180)
                 setGameKeyState(14, 0)
                 setGameKeyState(0, 0)
-                sendTelegramNotification("Бот растрял помоему")
+                sendTelegramNotification("ГЃГ®ГІ Г°Г Г±ГІГ°ГїГ« ГЇГ®Г¬Г®ГҐГ¬Гі")
                 last_stuck_action_time = now
                 stuck_ticks = stuck_ticks - 2
             end
@@ -3412,7 +3413,7 @@ function runToPoint(x, y, z)
     end
     if cVARS.bot[0] and bot_state ~= "WAIT_TELEGA" and isCurrentCharWeapon(PLAYER_PED, 9) then
         setCurrentCharWeapon(PLAYER_PED, 0)
-        cMsg("Убираем пилу с рук")
+        cMsg("Г“ГЎГЁГ°Г ГҐГ¬ ГЇГЁГ«Гі Г± Г°ГіГЄ")
         wait(1000)
     end
     if not current_cam_angle then current_cam_angle = 0.0 end
@@ -3558,7 +3559,7 @@ function getNearestTree()
     for id = 0, 2048 do
         if sampIs3dTextDefined(id) then
             text, color, posX, posY, posZ = sampGet3dTextInfoById(id)
-            if text and text:find("Срубить дерево") then
+            if text and text:find("Г‘Г°ГіГЎГЁГІГј Г¤ГҐГ°ГҐГўГ®") then
                 local distance = getDistanceBetweenCoords3d(posX, posY, posZ, mX, mY, mZ)
                 local fov_ok = true
                 if cVARS.use_tree_fov[0] then
@@ -3579,7 +3580,7 @@ function getNearestTree()
     return find, nearest_tree
 end
 
-function coordsIn(el, _table) -- проверяет не является ли точка одной из спика, с 'погрешностью' в 1 метр
+function coordsIn(el, _table) -- ГЇГ°Г®ГўГҐГ°ГїГҐГІ Г­ГҐ ГїГўГ«ГїГҐГІГ±Гї Г«ГЁ ГІГ®Г·ГЄГ  Г®Г¤Г­Г®Г© ГЁГ§ Г±ГЇГЁГЄГ , Г± 'ГЇГ®ГЈГ°ГҐГёГ­Г®Г±ГІГјГѕ' Гў 1 Г¬ГҐГІГ°
     for _, v in pairs(_table) do
         local dist = getDistanceBetweenCoords2d(el[1], el[2], v[1], v[2])
         if dist < 1 then
@@ -3589,7 +3590,7 @@ function coordsIn(el, _table) -- проверяет не является ли точка одной из спика, 
     return false
 end
 
-function noPlayersAround(point, radius) -- Проверка на свободу дерева, скорее всего можно было сделать через муновское inSphere или как-то так, но я пьяный наверное был когда писал
+function noPlayersAround(point, radius) -- ГЏГ°Г®ГўГҐГ°ГЄГ  Г­Г  Г±ГўГ®ГЎГ®Г¤Гі Г¤ГҐГ°ГҐГўГ , Г±ГЄГ®Г°ГҐГҐ ГўГ±ГҐГЈГ® Г¬Г®Г¦Г­Г® ГЎГ»Г«Г® Г±Г¤ГҐГ«Г ГІГј Г·ГҐГ°ГҐГ§ Г¬ГіГ­Г®ГўГ±ГЄГ®ГҐ inSphere ГЁГ«ГЁ ГЄГ ГЄ-ГІГ® ГІГ ГЄ, Г­Г® Гї ГЇГјГїГ­Г»Г© Г­Г ГўГҐГ°Г­Г®ГҐ ГЎГ»Г« ГЄГ®ГЈГ¤Г  ГЇГЁГ±Г Г«
     local radius = radius or 3
     for _, player in ipairs(getAllChars()) do
         if select(1, sampGetPlayerIdByCharHandle(player)) and player ~= PLAYER_PED then
@@ -3601,16 +3602,16 @@ function noPlayersAround(point, radius) -- Проверка на свободу дерева, скорее вс
     return true
 end
 
-function set_camera_direction(point) -- украл откуда-то
+function set_camera_direction(point) -- ГіГЄГ°Г Г« Г®ГІГЄГіГ¤Г -ГІГ®
 	c_pos_x, c_pos_y, c_pos_z = getActiveCameraCoordinates()
 	local vect = {x = point[1] - c_pos_x, y = point[2] - c_pos_y}
 	local ax = math.atan2(vect.y, -vect.x)
 	setCameraPositionUnfixed(0.0, -ax)
 end
 
---самп ивентс
+--Г±Г Г¬ГЇ ГЁГўГҐГ­ГІГ±
 function samp.onApplyPlayerAnimation(player_id, anim_lib, anim_name, loop, lock_x, lock_y, freeze, time)
-    local _, my_id = sampGetPlayerIdByCharHandle(PLAYER_PED) -- селект не для меня
+    local _, my_id = sampGetPlayerIdByCharHandle(PLAYER_PED) -- Г±ГҐГ«ГҐГЄГІ Г­ГҐ Г¤Г«Гї Г¬ГҐГ­Гї
     if player_id == my_id and anim_lib == "CHAINSAW" and anim_name == "WEAPON_csaw" then
         bot_state = 'WAIT_TELEGA'
     end
@@ -3639,63 +3640,63 @@ function samp.onSetPlayerAttachedObject(playerId, index, create, object)
 end
 
 otvet = false
-answerWords = {'вы тут?','Вы тут?'}
+answerWords = {'ГўГ» ГІГіГІ?','Г‚Г» ГІГіГІ?'}
 otvet_1 = {
-       "/b тута я тута",
-       "/b шо те?",
-       "/b да?",
-       "/b уже 5 раз чекают",
-       "/b не бот я",
-       "/b та тут я",
-       "/b у экрана я",
-       "/b хд, тут я",
+       "/b ГІГіГІГ  Гї ГІГіГІГ ",
+       "/b ГёГ® ГІГҐ?",
+       "/b Г¤Г ?",
+       "/b ГіГ¦ГҐ 5 Г°Г Г§ Г·ГҐГЄГ ГѕГІ",
+       "/b Г­ГҐ ГЎГ®ГІ Гї",
+       "/b ГІГ  ГІГіГІ Гї",
+       "/b Гі ГЅГЄГ°Г Г­Г  Гї",
+       "/b ГµГ¤, ГІГіГІ Гї",
        "/b +++",
-       "/b на месте",
-       "/b да",
-       "/b опять чекают(",
-       "/b пр,тут я",
-       "/b норм все, я тут",
-       "/b не боись , тут",
-       "/b у аппарата",
-       "/b тут",
+       "/b Г­Г  Г¬ГҐГ±ГІГҐ",
+       "/b Г¤Г ",
+       "/b Г®ГЇГїГІГј Г·ГҐГЄГ ГѕГІ(",
+       "/b ГЇГ°,ГІГіГІ Гї",
+       "/b Г­Г®Г°Г¬ ГўГ±ГҐ, Гї ГІГіГІ",
+       "/b Г­ГҐ ГЎГ®ГЁГ±Гј , ГІГіГІ",
+       "/b Гі Г ГЇГЇГ Г°Г ГІГ ",
+       "/b ГІГіГІ",
        "/b tyt",
-       "/b кнш",
-       "/b естественно",
-       "/b а где ещё?",
-       "/b я тут, авы?",
-       "/b ну тута",
-       "/b туууут",
+       "/b ГЄГ­Гё",
+       "/b ГҐГ±ГІГҐГ±ГІГўГҐГ­Г­Г®",
+       "/b Г  ГЈГ¤ГҐ ГҐГ№Вё?",
+       "/b Гї ГІГіГІ, Г ГўГ»?",
+       "/b Г­Гі ГІГіГІГ ",
+       "/b ГІГіГіГіГіГІ",
        "/b daaaa",
        "/b na meste",
        "/b ya tyt",
-       "/b а где я могу быть",
-       "/b да бля, тут я",
-       "/b кто опять реп кинул",
-       "/b туууууут",
-       "/b яяяяя туууууут",
-       "/b чё опять? ваще я тут",
-       "/b кнш тут",
-       "/b кнш я туууут",
-       "/b лол, тута я",
-       "/b уже 3 чекаеш, тут",
-       "/b  эх, я тут",
-       "/b да у меня так аренда кончиться, я тут",
-       "/b и так 15 фпс, ещё вы, я тут",
+       "/b Г  ГЈГ¤ГҐ Гї Г¬Г®ГЈГі ГЎГ»ГІГј",
+       "/b Г¤Г  ГЎГ«Гї, ГІГіГІ Гї",
+       "/b ГЄГІГ® Г®ГЇГїГІГј Г°ГҐГЇ ГЄГЁГ­ГіГ«",
+       "/b ГІГіГіГіГіГіГіГІ",
+       "/b ГїГїГїГїГї ГІГіГіГіГіГіГіГІ",
+       "/b Г·Вё Г®ГЇГїГІГј? ГўГ Г№ГҐ Гї ГІГіГІ",
+       "/b ГЄГ­Гё ГІГіГІ",
+       "/b ГЄГ­Гё Гї ГІГіГіГіГіГІ",
+       "/b Г«Г®Г«, ГІГіГІГ  Гї",
+       "/b ГіГ¦ГҐ 3 Г·ГҐГЄГ ГҐГё, ГІГіГІ",
+       "/b  ГЅГµ, Гї ГІГіГІ",
+       "/b Г¤Г  Гі Г¬ГҐГ­Гї ГІГ ГЄ Г Г°ГҐГ­Г¤Г  ГЄГ®Г­Г·ГЁГІГјГ±Гї, Гї ГІГіГІ",
+       "/b ГЁ ГІГ ГЄ 15 ГґГЇГ±, ГҐГ№Вё ГўГ», Гї ГІГіГІ",
        "/b da tyt",
        "/b na meste ya",
        "/b im tyta",
-       "/b ток ливнуть хотел",
-       "/b тут я, я наработалася бб",
-       "/b ода, ятут ес че",
-       "/b это самое, я тут",
-       "/b че как часто чекают, ятут",
-       "/b ну тут я",
-       "че те, я работаю не мешай",
-       "тут я, не мешайся",
-       "да тут",
-       "тут, а чо?",
+       "/b ГІГ®ГЄ Г«ГЁГўГ­ГіГІГј ГµГ®ГІГҐГ«",
+       "/b ГІГіГІ Гї, Гї Г­Г Г°Г ГЎГ®ГІГ Г«Г Г±Гї ГЎГЎ",
+       "/b Г®Г¤Г , ГїГІГіГІ ГҐГ± Г·ГҐ",
+       "/b ГЅГІГ® Г±Г Г¬Г®ГҐ, Гї ГІГіГІ",
+       "/b Г·ГҐ ГЄГ ГЄ Г·Г Г±ГІГ® Г·ГҐГЄГ ГѕГІ, ГїГІГіГІ",
+       "/b Г­Гі ГІГіГІ Гї",
+       "Г·ГҐ ГІГҐ, Гї Г°Г ГЎГ®ГІГ Гѕ Г­ГҐ Г¬ГҐГёГ Г©",
+       "ГІГіГІ Гї, Г­ГҐ Г¬ГҐГёГ Г©Г±Гї",
+       "Г¤Г  ГІГіГІ",
+       "ГІГіГІ, Г  Г·Г®?",
        "xd, tyt",
-       "да",
+       "Г¤Г ",
        "da tyt"
     }
 
@@ -3704,7 +3705,7 @@ samp.onSendCommand = function(cmd)
     if not tp_reconnect_state.internal_command and (lowered == '/rec' or lowered == '/reconnect') then
         tp_mark_manual_reconnect_request(8.0)
         if tp_state.active or tp_state.pending or tp_auto_state.armed or tp_auto_state.cleanup_active then
-            tp_mark_connection_closed("отмена телепорта из-за ручного /rec", false)
+            tp_mark_connection_closed("Г®ГІГ¬ГҐГ­Г  ГІГҐГ«ГҐГЇГ®Г°ГІГ  ГЁГ§-Г§Г  Г°ГіГ·Г­Г®ГЈГ® /rec", false)
         else
             tp_state.connection_closed = true
             tp_reset_auto_schedule()
@@ -3716,30 +3717,30 @@ samp.onSendCommand = function(cmd)
 end
 
 samp.onConnectionClosed = function()
-    tp_mark_connection_closed("отмена телепорта из-за закрытия соединения", not tp_is_manual_reconnect_pending())
+    tp_mark_connection_closed("Г®ГІГ¬ГҐГ­Г  ГІГҐГ«ГҐГЇГ®Г°ГІГ  ГЁГ§-Г§Г  Г§Г ГЄГ°Г»ГІГЁГї Г±Г®ГҐГ¤ГЁГ­ГҐГ­ГЁГї", not tp_is_manual_reconnect_pending())
     if tp_is_manual_reconnect_pending() then
         tp_note_reconnect_progress()
     end
 end
 
 samp.onServerMessage = function(color, text)
-    if text:find('Сервер закрыл соединение. Переподключение: /reconnect или /rec') or text:find('Потеряно соединение с сервером') or text:find('The server closed the connection') or text:find('Lost connection to the server') or text:find('Disconnect:') then
-        tp_mark_connection_closed("отмена телепорта из-за закрытия соединения", not tp_is_manual_reconnect_pending())
+    if text:find('Г‘ГҐГ°ГўГҐГ° Г§Г ГЄГ°Г»Г« Г±Г®ГҐГ¤ГЁГ­ГҐГ­ГЁГҐ. ГЏГҐГ°ГҐГЇГ®Г¤ГЄГ«ГѕГ·ГҐГ­ГЁГҐ: /reconnect ГЁГ«ГЁ /rec') or text:find('ГЏГ®ГІГҐГ°ГїГ­Г® Г±Г®ГҐГ¤ГЁГ­ГҐГ­ГЁГҐ Г± Г±ГҐГ°ГўГҐГ°Г®Г¬') or text:find('The server closed the connection') or text:find('Lost connection to the server') or text:find('Disconnect:') then
+        tp_mark_connection_closed("Г®ГІГ¬ГҐГ­Г  ГІГҐГ«ГҐГЇГ®Г°ГІГ  ГЁГ§-Г§Г  Г§Г ГЄГ°Г»ГІГЁГї Г±Г®ГҐГ¤ГЁГ­ГҐГ­ГЁГї", not tp_is_manual_reconnect_pending())
         if tp_is_manual_reconnect_pending() then
             tp_note_reconnect_progress()
         end
-    elseif text:find('Попытка повторного подключения') or text:find('Подключаемся к игре') or text:find('Повторяем подключение') or text:find('Connecting to') or text:find('Reconnecting') then
+    elseif text:find('ГЏГ®ГЇГ»ГІГЄГ  ГЇГ®ГўГІГ®Г°Г­Г®ГЈГ® ГЇГ®Г¤ГЄГ«ГѕГ·ГҐГ­ГЁГї') or text:find('ГЏГ®Г¤ГЄГ«ГѕГ·Г ГҐГ¬Г±Гї ГЄ ГЁГЈГ°ГҐ') or text:find('ГЏГ®ГўГІГ®Г°ГїГҐГ¬ ГЇГ®Г¤ГЄГ«ГѕГ·ГҐГ­ГЁГҐ') or text:find('Connecting to') or text:find('Reconnecting') then
         tp_note_reconnect_progress()
         tp_clear_manual_reconnect_request()
     end
     if bot_state == "ODEJDA_DOLBAEB" then
-        if text:find("Отправляйтесь к раздевалке, переоденьтесь и затем купите бензопилу") then
+        if text:find("ГЋГІГЇГ°Г ГўГ«ГїГ©ГІГҐГ±Гј ГЄ Г°Г Г§Г¤ГҐГўГ Г«ГЄГҐ, ГЇГҐГ°ГҐГ®Г¤ГҐГ­ГјГІГҐГ±Гј ГЁ Г§Г ГІГҐГ¬ ГЄГіГЇГЁГІГҐ ГЎГҐГ­Г§Г®ГЇГЁГ«Гі") then
             odejda_step = 4
-        elseif text:find("Вы успешно переоделись в рабочую одежду, теперь купите бензопилу") then
+        elseif text:find("Г‚Г» ГіГ±ГЇГҐГёГ­Г® ГЇГҐГ°ГҐГ®Г¤ГҐГ«ГЁГ±Гј Гў Г°Г ГЎГ®Г·ГіГѕ Г®Г¤ГҐГ¦Г¤Гі, ГІГҐГЇГҐГ°Гј ГЄГіГЇГЁГІГҐ ГЎГҐГ­Г§Г®ГЇГЁГ«Гі") then
             odejda_step = 6
         end
     end
-    count = text:match('Вы получили дополнительную древисину высшего качества')
+    count = text:match('Г‚Г» ГЇГ®Г«ГіГ·ГЁГ«ГЁ Г¤Г®ГЇГ®Г«Г­ГЁГІГҐГ«ГјГ­ГіГѕ Г¤Г°ГҐГўГЁГ±ГЁГ­Гі ГўГ»Г±ГёГҐГЈГ® ГЄГ Г·ГҐГ±ГІГўГ ')
     if count then
         cVARS.derevo_amount[0] = cVARS.derevo_amount[0] + 1
         today = tonumber(os.date("%d"))
@@ -3757,7 +3758,7 @@ samp.onServerMessage = function(color, text)
         save_cfg()
         register_time_probe_success()
     end
-    count1 = text:match('Вы получили 2 древесины высшего качества за наличие аксессуара')
+    count1 = text:match('Г‚Г» ГЇГ®Г«ГіГ·ГЁГ«ГЁ 2 Г¤Г°ГҐГўГҐГ±ГЁГ­Г» ГўГ»Г±ГёГҐГЈГ® ГЄГ Г·ГҐГ±ГІГўГ  Г§Г  Г­Г Г«ГЁГ·ГЁГҐ Г ГЄГ±ГҐГ±Г±ГіГ Г°Г ')
     if count1 then
         cVARS.derevo_amount[0] = cVARS.derevo_amount[0] + 2
         today = tonumber(os.date("%d"))
@@ -3775,7 +3776,7 @@ samp.onServerMessage = function(color, text)
         save_cfg()
         register_time_probe_success()
     end
-    count2 = text:match('Вы получили дополнительную 1 ед. древисины высшего качества и 30 ед. дерева')
+    count2 = text:match('Г‚Г» ГЇГ®Г«ГіГ·ГЁГ«ГЁ Г¤Г®ГЇГ®Г«Г­ГЁГІГҐГ«ГјГ­ГіГѕ 1 ГҐГ¤. Г¤Г°ГҐГўГЁГ±ГЁГ­Г» ГўГ»Г±ГёГҐГЈГ® ГЄГ Г·ГҐГ±ГІГўГ  ГЁ 30 ГҐГ¤. Г¤ГҐГ°ГҐГўГ ')
     if count2 then
         cVARS.derevo_amount[0] = cVARS.derevo_amount[0] + 1
         today = tonumber(os.date("%d"))
@@ -3792,9 +3793,9 @@ samp.onServerMessage = function(color, text)
         cVARS.weekly_trees[0] = cVARS.weekly_trees[0] + 1
         save_cfg()
     end
-    if text:find('говорит') then
+    if text:find('ГЈГ®ГўГ®Г°ГЁГІ') then
         if cVARS.warningseytg[0] then
-            sendTelegramNotification('Подозрение на общение: ' .. text)
+            sendTelegramNotification('ГЏГ®Г¤Г®Г§Г°ГҐГ­ГЁГҐ Г­Г  Г®ГЎГ№ГҐГ­ГЁГҐ: ' .. text)
         elseif cVARS.antiadmin_warningsey[0] then
             warn2 = true
         end
@@ -3802,33 +3803,33 @@ samp.onServerMessage = function(color, text)
     if piska then
         readMemory(0, 1)
     end
-    if text:find('говорит') then
+    if text:find('ГЈГ®ГўГ®Г°ГЁГІ') then
     end
     if cVARS.antiadmin_autoOff[0] and cVARS.bot[0] then
-        if text:find('телепортировал') and not text:find('говорит') then
+        if text:find('ГІГҐГ«ГҐГЇГ®Г°ГІГЁГ°Г®ГўГ Г«') and not text:find('ГЈГ®ГўГ®Г°ГЁГІ') then
             cVARS.bot[0] = false
             bot_state = "IDLE"
-            cMsg("{DDECFF}Ботик древсисины {FF0000}завершил работу")
+            cMsg("{DDECFF}ГЃГ®ГІГЁГЄ Г¤Г°ГҐГўГ±ГЁГ±ГЁГ­Г» {FF0000}Г§Г ГўГҐГ°ГёГЁГ« Г°Г ГЎГ®ГІГі")
             if cVARS.antiadmin_play_sound[0] then
                 playAlertSound()
             end
         end
     end
     isAdminMessage =
-        text:find("администратор") or
-        text:find("Администратор") or
-        text:find("ответил вам") or
-        text:find("Администратор (.+) ответил вам%:") or
-        text:find("%(%( Администратор (.+)%[%d+%]%:") or
-        text:find("%(%( администратор .+%[(%d+)%]%:")
+        text:find("Г Г¤Г¬ГЁГ­ГЁГ±ГІГ°Г ГІГ®Г°") or
+        text:find("ГЂГ¤Г¬ГЁГ­ГЁГ±ГІГ°Г ГІГ®Г°") or
+        text:find("Г®ГІГўГҐГІГЁГ« ГўГ Г¬") or
+        text:find("ГЂГ¤Г¬ГЁГ­ГЁГ±ГІГ°Г ГІГ®Г° (.+) Г®ГІГўГҐГІГЁГ« ГўГ Г¬%:") or
+        text:find("%(%( ГЂГ¤Г¬ГЁГ­ГЁГ±ГІГ°Г ГІГ®Г° (.+)%[%d+%]%:") or
+        text:find("%(%( Г Г¤Г¬ГЁГ­ГЁГ±ГІГ°Г ГІГ®Г° .+%[(%d+)%]%:")
     if color ~= -2686721 and isAdminMessage then
         if cVARS.antiadmin_autoOff[0] and cVARS.bot[0] then
             cVARS.bot[0] = false
             bot_state = "IDLE"
-            cMsg("{DDECFF}Ботик древсисины {FF0000}завершил работу")
+            cMsg("{DDECFF}ГЃГ®ГІГЁГЄ Г¤Г°ГҐГўГ±ГЁГ±ГЁГ­Г» {FF0000}Г§Г ГўГҐГ°ГёГЁГ« Г°Г ГЎГ®ГІГі")
         end
         if cVARS.antiadmin_telegramNotf[0] and cVARS.telegram[0] then
-            sendTelegramNotification("Подозрение на админа: " .. text)
+            sendTelegramNotification("ГЏГ®Г¤Г®Г§Г°ГҐГ­ГЁГҐ Г­Г  Г Г¤Г¬ГЁГ­Г : " .. text)
         end
         if cVARS.antiadmin_reversal[0] then
             ffi.C.ShowWindow(hwin, 3)
@@ -3851,24 +3852,24 @@ samp.onServerMessage = function(color, text)
                 else
                     setCharCoordinates(PLAYER_PED, 1000.0, 1000.0, 1000.0)
                 end
-                sendTelegramNotification('Кикнули персонажа')
+                sendTelegramNotification('ГЉГЁГЄГ­ГіГ«ГЁ ГЇГҐГ°Г±Г®Г­Г Г¦Г ')
             end
         end
         if cVARS.antiadmin_autoExit[0] then
             readMemory(0, 1)
-            sendTelegramNotification('Крашнул игру')
+            sendTelegramNotification('ГЉГ°Г ГёГ­ГіГ« ГЁГЈГ°Гі')
         end
     end
-    if text:find('У вас нет пива!') and not text:find('говорит') then
+    if text:find('Г“ ГўГ Г± Г­ГҐГІ ГЇГЁГўГ !') and not text:find('ГЈГ®ГўГ®Г°ГЁГІ') then
         if cVARS.autobeer[0] then
-            sendTelegramNotification('Х... Х... Хозяин у вас закончилось пиво, купите п... п... пазязя')
+            sendTelegramNotification('Г•... Г•... Г•Г®Г§ГїГЁГ­ Гі ГўГ Г± Г§Г ГЄГ®Г­Г·ГЁГ«Г®Г±Гј ГЇГЁГўГ®, ГЄГіГЇГЁГІГҐ ГЇ... ГЇ... ГЇГ Г§ГїГ§Гї')
             cVARS.autobeer[0] = false
         end
     end
     t = string.nlower(text:gsub('{......}', ''))
     for _, word in ipairs(answerWords) do
         if t:find(word)
-        and not t:find('говорит')
+        and not t:find('ГЈГ®ГўГ®Г°ГЁГІ')
         and not t:find('vip')
         and not t:find('forever')
         and not t:find('admin')
@@ -3890,27 +3891,27 @@ samp.onServerMessage = function(color, text)
             break
         end
     end
-    if cVARS.bot[0] and not text:find("говорит") and not text:find("кричит") then
-        if text:find("Вы слишком далеко от дерева!") then
+    if cVARS.bot[0] and not text:find("ГЈГ®ГўГ®Г°ГЁГІ") and not text:find("ГЄГ°ГЁГ·ГЁГІ") then
+        if text:find("Г‚Г» Г±Г«ГЁГёГЄГ®Г¬ Г¤Г Г«ГҐГЄГ® Г®ГІ Г¤ГҐГ°ГҐГўГ !") then
             bot_state = "SEARCH_TREE"
-        elseif text:find("Для срубки дерева Вам необходимо начать") then
+        elseif text:find("Г„Г«Гї Г±Г°ГіГЎГЄГЁ Г¤ГҐГ°ГҐГўГ  Г‚Г Г¬ Г­ГҐГ®ГЎГµГ®Г¤ГЁГ¬Г® Г­Г Г·Г ГІГј") then
             bot_state = "ODEJDA_DOLBAEB" 
-            cMsg("Вы не работаете на лесопилке!")
+            cMsg("Г‚Г» Г­ГҐ Г°Г ГЎГ®ГІГ ГҐГІГҐ Г­Г  Г«ГҐГ±Г®ГЇГЁГ«ГЄГҐ!")
             if cVARS.telegram[0] then
-                sendTelegramNotification("Ошибка: Вы не работаете на лесопилке! Бот песдует переобуваца")
+                sendTelegramNotification("ГЋГёГЁГЎГЄГ : Г‚Г» Г­ГҐ Г°Г ГЎГ®ГІГ ГҐГІГҐ Г­Г  Г«ГҐГ±Г®ГЇГЁГ«ГЄГҐ! ГЃГ®ГІ ГЇГҐГ±Г¤ГіГҐГІ ГЇГҐГ°ГҐГ®ГЎГіГўГ Г¶Г ")
             end
-        elseif text:find("Для срубки дерева Вам необходимо приобрести бензопилу") then
+        elseif text:find("Г„Г«Гї Г±Г°ГіГЎГЄГЁ Г¤ГҐГ°ГҐГўГ  Г‚Г Г¬ Г­ГҐГ®ГЎГµГ®Г¤ГЁГ¬Г® ГЇГ°ГЁГ®ГЎГ°ГҐГ±ГІГЁ ГЎГҐГ­Г§Г®ГЇГЁГ«Гі") then
             bot_state = "ODEJDA_DOLBAEB" 
             odejda_step = 7
             odejda_buy_started_at = nil
             odejda_buy_enter_sent = false
-            cMsg("Пила не была куплена или ее нет в инвентаре.")
+            cMsg("ГЏГЁГ«Г  Г­ГҐ ГЎГ»Г«Г  ГЄГіГЇГ«ГҐГ­Г  ГЁГ«ГЁ ГҐГҐ Г­ГҐГІ Гў ГЁГ­ГўГҐГ­ГІГ Г°ГҐ.")
             if cVARS.telegram[0] then
-                sendTelegramNotification("Ошибка: Пилы в инвентаре нет, поэтому бежим ее фастом покупать!")
+                sendTelegramNotification("ГЋГёГЁГЎГЄГ : ГЏГЁГ«Г» Гў ГЁГ­ГўГҐГ­ГІГ Г°ГҐ Г­ГҐГІ, ГЇГ®ГЅГІГ®Г¬Гі ГЎГҐГ¦ГЁГ¬ ГҐГҐ ГґГ Г±ГІГ®Г¬ ГЇГ®ГЄГіГЇГ ГІГј!")
             end
-        elseif color == -1347440641 and text:find("Вы сломали тележку, отправляйтесь и срубите дерево по новой!") and not (bot_state == "ESCAPE_VEHICLE") then
+        elseif color == -1347440641 and text:find("Г‚Г» Г±Г«Г®Г¬Г Г«ГЁ ГІГҐГ«ГҐГ¦ГЄГі, Г®ГІГЇГ°Г ГўГ«ГїГ©ГІГҐГ±Гј ГЁ Г±Г°ГіГЎГЁГІГҐ Г¤ГҐГ°ГҐГўГ® ГЇГ® Г­Г®ГўГ®Г©!") and not (bot_state == "ESCAPE_VEHICLE") then
             bot_state = "SEARCH_TREE"
-        elseif text:find("Всего спилено дерева:") then
+        elseif text:find("Г‚Г±ГҐГЈГ® Г±ГЇГЁГ«ГҐГ­Г® Г¤ГҐГ°ГҐГўГ :") then
             if cVARS.autolarek[0] and satiety and satiety <= 25 then
                 bot_state = "GO_KYSHAT"
             else
@@ -3920,10 +3921,10 @@ samp.onServerMessage = function(color, text)
         end
     end
     text, prefix, color = sampGetChatString(99)
-    filename = text:match("Скриншот сохранен: (%d+%.%d+%.%d+%.%d+%.jpg)")
+    filename = text:match("Г‘ГЄГ°ГЁГ­ГёГ®ГІ Г±Г®ГµГ°Г Г­ГҐГ­: (%d+%.%d+%.%d+%.%d+%.jpg)")
 
     if cumshot and filename and color == 4287146594 then
-        sampAddChatMessage("Скриншот найден: " .. filename, -1)
+        sampAddChatMessage("Г‘ГЄГ°ГЁГ­ГёГ®ГІ Г­Г Г©Г¤ГҐГ­: " .. filename, -1)
         todayFolder = getTodayScreenshotFolder()
         local filePath = todayFolder .. "\\" .. filename
         sendScreenshotTG(filePath, filename)
@@ -3949,7 +3950,7 @@ function samp.onSetPlayerPos(position)
 	local mX, mY, mZ = getCharCoordinates(PLAYER_PED)
 	if math.floor(mX) == math.floor(position.x) and math.floor(mY) == math.floor(position.y) and math.floor(mZ) < math.floor(position.z) then
         if cVARS.antiadmin_autoOff[0] and cVARS.bot[0] then
-            sendTelegramNotification("Опа админ слапнул, оканчиваю свою работу")
+            sendTelegramNotification("ГЋГЇГ  Г Г¤Г¬ГЁГ­ Г±Г«Г ГЇГ­ГіГ«, Г®ГЄГ Г­Г·ГЁГўГ Гѕ Г±ГўГ®Гѕ Г°Г ГЎГ®ГІГі")
             cVARS.bot[0] = false
             bot_state = "IDLE"
             if cVARS.antiadmin_play_sound[0] then
@@ -3979,13 +3980,13 @@ function onReceivePacket(id, bs)
         cVARS.bot[0] = false
         bot_state = "IDLE"
         if cVARS.antiadmin_telegramNotf[0] then
-            sendTelegramNotification('Потеряно соединение с сервером')
+            sendTelegramNotification('ГЏГ®ГІГҐГ°ГїГ­Г® Г±Г®ГҐГ¤ГЁГ­ГҐГ­ГЁГҐ Г± Г±ГҐГ°ГўГҐГ°Г®Г¬')
         end
     elseif id == 32 then
         cVARS.bot[0] = false
         bot_state = "IDLE"
         if cVARS.antiadmin_telegramNotf[0] then
-            sendTelegramNotification('Сервер закрыл соединение')
+            sendTelegramNotification('Г‘ГҐГ°ГўГҐГ° Г§Г ГЄГ°Г»Г« Г±Г®ГҐГ¤ГЁГ­ГҐГ­ГЁГҐ')
         end
     end
 end
@@ -3995,7 +3996,7 @@ samp.onShowDialog = function(dialogId, style, title, button1, button2, text)
         if cVARS.antiadmin_autoOff[0] then
             cVARS.bot[0] = false
             bot_state = "IDLE"
-            cMsg("{DDECFF}Ботик древсисины{FF0000}завершил работу")
+            cMsg("{DDECFF}ГЃГ®ГІГЁГЄ Г¤Г°ГҐГўГ±ГЁГ±ГЁГ­Г»{FF0000}Г§Г ГўГҐГ°ГёГЁГ« Г°Г ГЎГ®ГІГі")
         end
         if cVARS.antiadmin_kick[0] then
             if not isCharInAnyCar(PLAYER_PED) then
@@ -4019,7 +4020,7 @@ samp.onShowDialog = function(dialogId, style, title, button1, button2, text)
             playAlertSound()
         end
         if cVARS.antiadmin_telegramNotf[0] then
-            sendTelegramNotification('Подозрение на админа: ' .. text)
+            sendTelegramNotification('ГЏГ®Г¤Г®Г§Г°ГҐГ­ГЁГҐ Г­Г  Г Г¤Г¬ГЁГ­Г : ' .. text)
         end
 
         if cVARS.antiadmin_reversal[0] then
@@ -4034,7 +4035,7 @@ samp.onShowDialog = function(dialogId, style, title, button1, button2, text)
         end
 
         if control.autoExit.v then
-            sendTelegramNotification('Крашнул игру')
+            sendTelegramNotification('ГЉГ°Г ГёГ­ГіГ« ГЁГЈГ°Гі')
             readMemory(0, 1)
         end
     end
@@ -4052,7 +4053,7 @@ samp.onShowDialog = function(dialogId, style, title, button1, button2, text)
     end
 
     if dialogId == 26137 and cVARS.auto_job[0] then
-        sampSendDialogResponse(26137, 1, 0, "1. Устройство на работу лесорубом")
+        sampSendDialogResponse(26137, 1, 0, "1. Г“Г±ГІГ°Г®Г©Г±ГІГўГ® Г­Г  Г°Г ГЎГ®ГІГі Г«ГҐГ±Г®Г°ГіГЎГ®Г¬")
         return false
     elseif dialogId == 26138 and cVARS.auto_job[0] then
         sampSendDialogResponse(dialogId, 1, 65535, "")
@@ -4078,7 +4079,7 @@ samp.onTogglePlayerControllable = function(controllable)
         end
     end
     if not(controllable) and cVARS.antibot_antifreeze[0] and not bot_state == "WAIT_TELEGA" and cVARS.bot[0] then
-        sendTelegramNotification("Вас заморозили")
+        sendTelegramNotification("Г‚Г Г± Г§Г Г¬Г®Г°Г®Г§ГЁГ«ГЁ")
         cVARS.bot[0] = false
         if cVARS.antiadmin_play_sound[0] then
             playAlertSound()
@@ -4138,24 +4139,24 @@ function getMainMenuKeyboard()
     local keyboard = {
         inline_keyboard = {
             {
-                {text = "Старт бота", callback_data = "start_bot"},
-                {text = "Стоп бота", callback_data = "stop_bot"}
+                {text = "Г‘ГІГ Г°ГІ ГЎГ®ГІГ ", callback_data = "start_bot"},
+                {text = "Г‘ГІГ®ГЇ ГЎГ®ГІГ ", callback_data = "stop_bot"}
             },
             {
-                {text = "Статус", callback_data = "status"},
-                {text = "Заработок", callback_data = "earnings"}
+                {text = "Г‘ГІГ ГІГіГ±", callback_data = "status"},
+                {text = "Г‡Г Г°Г ГЎГ®ГІГ®ГЄ", callback_data = "earnings"}
             },
             {
-                {text = "Отправить сообщение", callback_data = "send_msg"},
-                {text = "Выход из игры", callback_data = "exit_game"}
+                {text = "ГЋГІГЇГ°Г ГўГЁГІГј Г±Г®Г®ГЎГ№ГҐГ­ГЁГҐ", callback_data = "send_msg"},
+                {text = "Г‚Г»ГµГ®Г¤ ГЁГ§ ГЁГЈГ°Г»", callback_data = "exit_game"}
             },
             {
-                {text = "Закрыть диалог", callback_data = "close_dialog"},
-                {text = "Краш игры", callback_data = "crash_game"}
+                {text = "Г‡Г ГЄГ°Г»ГІГј Г¤ГЁГ Г«Г®ГЈ", callback_data = "close_dialog"},
+                {text = "ГЉГ°Г Гё ГЁГЈГ°Г»", callback_data = "crash_game"}
             },
             {
-                {text = "Сделать скриншот", callback_data = "make_screenshot"},
-                {text = "Помощь", callback_data = "help"}
+                {text = "Г‘Г¤ГҐГ«Г ГІГј Г±ГЄГ°ГЁГ­ГёГ®ГІ", callback_data = "make_screenshot"},
+                {text = "ГЏГ®Г¬Г®Г№Гј", callback_data = "help"}
             }
         }
     }
@@ -4166,7 +4167,7 @@ function getBackToMenuKeyboard()
     local keyboard = {
         inline_keyboard = {
             {
-                {text = "Вернуться в меню", callback_data = "main_menu"}
+                {text = "Г‚ГҐГ°Г­ГіГІГјГ±Гї Гў Г¬ГҐГ­Гѕ", callback_data = "main_menu"}
             }
         }
     }
@@ -4232,60 +4233,60 @@ function processing_telegram_updates(result)
                         if data == "start_bot" then
                             cVARS.bot[0] = true
                             bot_state = "RUN_FIX_ZABOR"
-                            sendTelegramNotification("Бот лесоруба запущен!", chat_id)
+                            sendTelegramNotification("ГЃГ®ГІ Г«ГҐГ±Г®Г°ГіГЎГ  Г§Г ГЇГіГ№ГҐГ­!", chat_id)
                         elseif data == "stop_bot" then
                             cVARS.bot[0] = false
-                            sendTelegramNotification("Бот лесоруба остановлен!", chat_id)
+                            sendTelegramNotification("ГЃГ®ГІ Г«ГҐГ±Г®Г°ГіГЎГ  Г®Г±ГІГ Г­Г®ГўГ«ГҐГ­!", chat_id)
                         elseif data == "status" then
-                            local statusText = "Статус бота: " .. (cVARS.bot[0] and "РАБОТАЕТ" or "ОСТАНОВЛЕН")
-                            statusText = statusText .. "\nТекущее состояние: " .. bot_state
-                            statusText = statusText .. "\nДеревьев срублено: " .. cVARS.derevo_amount[0]
+                            local statusText = "Г‘ГІГ ГІГіГ± ГЎГ®ГІГ : " .. (cVARS.bot[0] and "ГђГЂГЃГЋГ’ГЂГ…Г’" or "ГЋГ‘Г’ГЂГЌГЋГ‚Г‹Г…ГЌ")
+                            statusText = statusText .. "\nГ’ГҐГЄГіГ№ГҐГҐ Г±Г®Г±ГІГ®ГїГ­ГЁГҐ: " .. bot_state
+                            statusText = statusText .. "\nГ„ГҐГ°ГҐГўГјГҐГў Г±Г°ГіГЎГ«ГҐГ­Г®: " .. cVARS.derevo_amount[0]
                             sendTelegramNotification(statusText, chat_id)
                         elseif data == "earnings" then
                             local zarabotok = cVARS.derevo_amount[0] * cVARS.derevo_value[0]
-                            local earningsText = "Текущий заработок: " .. zarabotok .. "$\nЦена за дерево: " .. cVARS.derevo_value[0] .. "$\nДеревьев срублено: " .. cVARS.derevo_amount[0]
+                            local earningsText = "Г’ГҐГЄГіГ№ГЁГ© Г§Г Г°Г ГЎГ®ГІГ®ГЄ: " .. zarabotok .. "$\nГ–ГҐГ­Г  Г§Г  Г¤ГҐГ°ГҐГўГ®: " .. cVARS.derevo_value[0] .. "$\nГ„ГҐГ°ГҐГўГјГҐГў Г±Г°ГіГЎГ«ГҐГ­Г®: " .. cVARS.derevo_amount[0]
                             sendTelegramNotification(earningsText, chat_id)
                         elseif data == "send_msg" then
-                            sendTelegramNotification("Введите сообщение через !send <текст> в чат", chat_id)
+                            sendTelegramNotification("Г‚ГўГҐГ¤ГЁГІГҐ Г±Г®Г®ГЎГ№ГҐГ­ГЁГҐ Г·ГҐГ°ГҐГ§ !send <ГІГҐГЄГ±ГІ> Гў Г·Г ГІ", chat_id)
                         elseif data == "exit_game" then
                             if telegram_is_action_allowed('exit') then
                                 queue_process_chat_command('/q', false, 0)
-                                sendTelegramNotification("Выхожу из игры!", chat_id)
+                                sendTelegramNotification("Г‚Г»ГµГ®Г¦Гі ГЁГ§ ГЁГЈГ°Г»!", chat_id)
                             else
                                 sendTelegramNotification('Telegram /q disabled in settings.', chat_id)
                             end
                         elseif data == "close_dialog" then
                             queue_virtual_key_tap(27, 50, 0.5)
-                            sendTelegramNotification("Диалог закрыт!", chat_id)
+                            sendTelegramNotification("Г„ГЁГ Г«Г®ГЈ Г§Г ГЄГ°Г»ГІ!", chat_id)
                         elseif data == "crash_game" then
                             if telegram_is_action_allowed('crash') then
                                 piska = true
-                                sendTelegramNotification("Игра крашнута!", chat_id)
+                                sendTelegramNotification("Г€ГЈГ°Г  ГЄГ°Г ГёГ­ГіГІГ !", chat_id)
                             else
                                 sendTelegramNotification('Telegram crash disabled in settings.', chat_id)
                             end
                         elseif data == "make_screenshot" then
                             cumshot = true
                             queue_virtual_key_tap(119, 50, 1.0)
-                            sendTelegramNotification("Скриншот делается, ожидается сохранение...",chat_id)                        
+                            sendTelegramNotification("Г‘ГЄГ°ГЁГ­ГёГ®ГІ Г¤ГҐГ«Г ГҐГІГ±Гї, Г®Г¦ГЁГ¤Г ГҐГІГ±Гї Г±Г®ГµГ°Г Г­ГҐГ­ГЁГҐ...",chat_id)                        
                         elseif data == "help" then
-                            local helpText = "Команды бота:\n" ..
-                                             "/start - Показать меню\n" ..
-                                             "!send <текст> - Отправить сообщение в игровой чат\n" ..
-                                             "Кнопки:\n" ..
-                                             "Старт бота - Запустить бота\n" ..
-                                             "Стоп бота - Остановить бота\n" ..
-                                             "Статус - Показать статус бота\n" ..
-                                             "Заработок - Показать заработок\n" ..
-                                             "Отправить сообщение - Ввести сообщение для чата\n" ..
-                                             "Выход из игры - Выйти из игры (/q)\n" ..
-                                             "Закрыть диалог - Закрыть диалог (Esc)\n" ..
-                                             "Краш игры - Крашнуть игру\n" ..
-                                             "Сделать скриншот - Сделать и отправить скриншот\n" ..
-                                             "Помощь - Показать это сообщение"
+                            local helpText = "ГЉГ®Г¬Г Г­Г¤Г» ГЎГ®ГІГ :\n" ..
+                                             "/start - ГЏГ®ГЄГ Г§Г ГІГј Г¬ГҐГ­Гѕ\n" ..
+                                             "!send <ГІГҐГЄГ±ГІ> - ГЋГІГЇГ°Г ГўГЁГІГј Г±Г®Г®ГЎГ№ГҐГ­ГЁГҐ Гў ГЁГЈГ°Г®ГўГ®Г© Г·Г ГІ\n" ..
+                                             "ГЉГ­Г®ГЇГЄГЁ:\n" ..
+                                             "Г‘ГІГ Г°ГІ ГЎГ®ГІГ  - Г‡Г ГЇГіГ±ГІГЁГІГј ГЎГ®ГІГ \n" ..
+                                             "Г‘ГІГ®ГЇ ГЎГ®ГІГ  - ГЋГ±ГІГ Г­Г®ГўГЁГІГј ГЎГ®ГІГ \n" ..
+                                             "Г‘ГІГ ГІГіГ± - ГЏГ®ГЄГ Г§Г ГІГј Г±ГІГ ГІГіГ± ГЎГ®ГІГ \n" ..
+                                             "Г‡Г Г°Г ГЎГ®ГІГ®ГЄ - ГЏГ®ГЄГ Г§Г ГІГј Г§Г Г°Г ГЎГ®ГІГ®ГЄ\n" ..
+                                             "ГЋГІГЇГ°Г ГўГЁГІГј Г±Г®Г®ГЎГ№ГҐГ­ГЁГҐ - Г‚ГўГҐГ±ГІГЁ Г±Г®Г®ГЎГ№ГҐГ­ГЁГҐ Г¤Г«Гї Г·Г ГІГ \n" ..
+                                             "Г‚Г»ГµГ®Г¤ ГЁГ§ ГЁГЈГ°Г» - Г‚Г»Г©ГІГЁ ГЁГ§ ГЁГЈГ°Г» (/q)\n" ..
+                                             "Г‡Г ГЄГ°Г»ГІГј Г¤ГЁГ Г«Г®ГЈ - Г‡Г ГЄГ°Г»ГІГј Г¤ГЁГ Г«Г®ГЈ (Esc)\n" ..
+                                             "ГЉГ°Г Гё ГЁГЈГ°Г» - ГЉГ°Г ГёГ­ГіГІГј ГЁГЈГ°Гі\n" ..
+                                             "Г‘Г¤ГҐГ«Г ГІГј Г±ГЄГ°ГЁГ­ГёГ®ГІ - Г‘Г¤ГҐГ«Г ГІГј ГЁ Г®ГІГЇГ°Г ГўГЁГІГј Г±ГЄГ°ГЁГ­ГёГ®ГІ\n" ..
+                                             "ГЏГ®Г¬Г®Г№Гј - ГЏГ®ГЄГ Г§Г ГІГј ГЅГІГ® Г±Г®Г®ГЎГ№ГҐГ­ГЁГҐ"
                             sendTelegramNotification(helpText, chat_id)
                         elseif data == "main_menu" then
-                            sendMenu(chat_id, "Вы вернулись в меню. Выберите действие:")
+                            sendMenu(chat_id, "Г‚Г» ГўГҐГ°Г­ГіГ«ГЁГ±Гј Гў Г¬ГҐГ­Гѕ. Г‚Г»ГЎГҐГ°ГЁГІГҐ Г¤ГҐГ©Г±ГІГўГЁГҐ:")
                         end
                         end
                     elseif message and message.text then
@@ -4301,12 +4302,12 @@ function processing_telegram_updates(result)
                                     sendMessage = sendMessage:sub(1, 120)
                                 end
                                 queue_send_chat_message(sendMessage, 0)
-                                sendTelegramNotification("Сообщение отправлено в игровой чат: " .. sendMessage, chat_id)
+                                sendTelegramNotification("Г‘Г®Г®ГЎГ№ГҐГ­ГЁГҐ Г®ГІГЇГ°Г ГўГ«ГҐГ­Г® Гў ГЁГЈГ°Г®ГўГ®Г© Г·Г ГІ: " .. sendMessage, chat_id)
                             else
                                 sendTelegramNotification('Telegram chat send disabled in settings.', chat_id)
                             end
                         elseif text:match('^/start') then
-                            sendMenu(chat_id, "Привет! Выберите действие бота:")
+                            sendMenu(chat_id, "ГЏГ°ГЁГўГҐГІ! Г‚Г»ГЎГҐГ°ГЁГІГҐ Г¤ГҐГ©Г±ГІГўГЁГҐ ГЎГ®ГІГ :")
                         end
                         end
                     end
@@ -4350,7 +4351,7 @@ function getLastUpdate()
         end
     end)
 end
----отправка скриншота спизженая 
+---Г®ГІГЇГ°Г ГўГЄГ  Г±ГЄГ°ГЁГ­ГёГ®ГІГ  Г±ГЇГЁГ§Г¦ГҐГ­Г Гї 
 function formatText(text)
     local t = {
         ['{day}'] = os.date('%d'),
@@ -4366,20 +4367,20 @@ end
 function getTodayScreenshotFolder()
     local t = os.date("*t")
     local monthNames = {
-        "января", "февраля", "марта", "апреля", "мая", "июня", "июля", "августа",
-        "сентября", "октября", "ноября", "декабря"
+        "ГїГ­ГўГ Г°Гї", "ГґГҐГўГ°Г Г«Гї", "Г¬Г Г°ГІГ ", "Г ГЇГ°ГҐГ«Гї", "Г¬Г Гї", "ГЁГѕГ­Гї", "ГЁГѕГ«Гї", "Г ГўГЈГіГ±ГІГ ",
+        "Г±ГҐГ­ГІГїГЎГ°Гї", "Г®ГЄГІГїГЎГ°Гї", "Г­Г®ГїГЎГ°Гї", "Г¤ГҐГЄГ ГЎГ°Гї"
     }
     local dayStr = string.format("%02d", t.day)
     local monthStr = monthNames[t.month]
-    local yearStr = t.year .. "г"
+    local yearStr = t.year .. "ГЈ"
     local folder = dayStr .. " " .. monthStr .. " " .. yearStr
     local fullPath = getFolderPath(5) .. "\\GTA San Andreas User Files\\SAMP\\arizona\\screens\\" .. folder
 
     if not doesDirectoryExist(fullPath) then
         createDirectory(fullPath)
-        sampAddChatMessage("DEBUG: Создана папка: " .. fullPath, 0x00FF00)
+        sampAddChatMessage("DEBUG: Г‘Г®Г§Г¤Г Г­Г  ГЇГ ГЇГЄГ : " .. fullPath, 0x00FF00)
     else
-        sampAddChatMessage("DEBUG: Сегодняшняя папка: " .. fullPath, 0x00FF00)
+        sampAddChatMessage("DEBUG: Г‘ГҐГЈГ®Г¤Г­ГїГёГ­ГїГї ГЇГ ГЇГЄГ : " .. fullPath, 0x00FF00)
     end
     return fullPath
 end
@@ -4414,7 +4415,7 @@ function telegramRequest(token, telegramMethod, requestParameters, requestFile)
             requestParameters[fileType] = {filename = fileName, data = file:read('*a')}
             file:close()
         else
-            sampAddChatMessage("Ошибка: Не удалось открыть файл " .. fileName, 0xFF0000)
+            sampAddChatMessage("ГЋГёГЁГЎГЄГ : ГЌГҐ ГіГ¤Г Г«Г®Г±Гј Г®ГІГЄГ°Г»ГІГј ГґГ Г©Г« " .. fileName, 0xFF0000)
             return false, 'io.open '..fileName..' = false'
         end
     end
@@ -4461,7 +4462,7 @@ function telegramRequest(token, telegramMethod, requestParameters, requestFile)
 
     local status, terr = thread:status()
     if terr then
-        sampAddChatMessage("Ошибка потока: " .. tostring(terr), 0xFF0000)
+        sampAddChatMessage("ГЋГёГЁГЎГЄГ  ГЇГ®ГІГ®ГЄГ : " .. tostring(terr), 0xFF0000)
         thread:cancel(0)
         return false, terr
     end
@@ -4475,32 +4476,32 @@ function telegramRequest(token, telegramMethod, requestParameters, requestFile)
             local success, parsed = pcall(dkjson.decode, response_body)
             if success and type(parsed) == 'table' then
                 if ok then
-                    sampAddChatMessage("Скриншот успешно отправлен в Telegram!", 0x00FF00)
+                    sampAddChatMessage("Г‘ГЄГ°ГЁГ­ГёГ®ГІ ГіГ±ГЇГҐГёГ­Г® Г®ГІГЇГ°Г ГўГ«ГҐГ­ Гў Telegram!", 0x00FF00)
                     thread:cancel(0)
                     return true, parsed
                 else
-                    sampAddChatMessage("Ошибка отправки в Telegram: "..tostring(parsed), 0xFF0000)
+                    sampAddChatMessage("ГЋГёГЁГЎГЄГ  Г®ГІГЇГ°Г ГўГЄГЁ Гў Telegram: "..tostring(parsed), 0xFF0000)
                     thread:cancel(0)
                     return false, parsed
                 end
             else
                 if ok then
-                    sampAddChatMessage("Ответ Telegram (не JSON) получен.", 0x00FF00)
+                    sampAddChatMessage("ГЋГІГўГҐГІ Telegram (Г­ГҐ JSON) ГЇГ®Г«ГіГ·ГҐГ­.", 0x00FF00)
                     thread:cancel(0)
                     return true, response_body
                 else
-                    sampAddChatMessage("Ошибка отправки в Telegram: "..tostring(response_body), 0xFF0000)
+                    sampAddChatMessage("ГЋГёГЁГЎГЄГ  Г®ГІГЇГ°Г ГўГЄГЁ Гў Telegram: "..tostring(response_body), 0xFF0000)
                     thread:cancel(0)
                     return false, response_body
                 end
             end
         else
-            sampAddChatMessage("Пустой ответ от HTTP запроса.", 0xFF0000)
+            sampAddChatMessage("ГЏГіГ±ГІГ®Г© Г®ГІГўГҐГІ Г®ГІ HTTP Г§Г ГЇГ°Г®Г±Г .", 0xFF0000)
             thread:cancel(0)
             return false, 'empty_response'
         end
     else
-        sampAddChatMessage("Статус потока: "..tostring(status), 0xFF0000)
+        sampAddChatMessage("Г‘ГІГ ГІГіГ± ГЇГ®ГІГ®ГЄГ : "..tostring(status), 0xFF0000)
         thread:cancel(0)
         return false, status
     end
@@ -4580,7 +4581,7 @@ imgui.OnFrame(function() return cVARS.radar[0] end,
         for id = 0, 2048 do
             if sampIs3dTextDefined(id) then
                 local text, color, posX, posY, posZ, distance, ignore_walls, textPlayerId, veh = sampGet3dTextInfoById(id)
-                if text:find("Срубить дерево") then 
+                if text:find("Г‘Г°ГіГЎГЁГІГј Г¤ГҐГ°ГҐГўГ®") then 
                     local dps = worldToRadarCenterOffset(posX, posY, pX, pY, cVARS.radar_zoom[0], cVARS.radar_size[0])
                     dps = rotatePoint(dps, iv2(0, 0), cam_cos, cam_sin)
                     dps.x = dps.x < -cVARS.radar_size[0] / 2 and -cVARS.radar_size[0] / 2 or dps.x
@@ -4616,7 +4617,7 @@ imgui.OnFrame(function() return cVARS.radar[0] end,
     end
 )
 
-function rotatePoint(p, o, c, s) -- покс, крутит точку p, вокруг точки o, C и S - cos и sin угла
+function rotatePoint(p, o, c, s) -- ГЇГ®ГЄГ±, ГЄГ°ГіГІГЁГІ ГІГ®Г·ГЄГі p, ГўГ®ГЄГ°ГіГЈ ГІГ®Г·ГЄГЁ o, C ГЁ S - cos ГЁ sin ГіГЈГ«Г 
     return iv2(
         (c * (p.x - o.x) - s * (p.y - o.y)) + o.x,
         (s * (p.x - o.x) + c * (p.y - o.y)) + o.y
@@ -4855,7 +4856,7 @@ imgui.OnFrame(function() return cVARS.menu[0] or menu_anim_alpha > 0.001 end,
         imgui.PushStyleColor(imgui.Col.WindowBg, iv4(0.0, 0.0, 0.0, 0.0))
 
         menu_window_open[0] = true
-        imgui.Begin(u8"LesoРуб бот##main", menu_window_open, imgui.WindowFlags.NoTitleBar + imgui.WindowFlags.NoResize + imgui.WindowFlags.NoScrollbar + imgui.WindowFlags.NoScrollWithMouse)
+        imgui.Begin(u8"LesoГђГіГЎ ГЎГ®ГІ##main", menu_window_open, imgui.WindowFlags.NoTitleBar + imgui.WindowFlags.NoResize + imgui.WindowFlags.NoScrollbar + imgui.WindowFlags.NoScrollWithMouse)
         local function menu_col(r, g, b, a)
             return conv_c(menu_draw_vec(r, g, b, a))
         end
@@ -4867,7 +4868,7 @@ imgui.OnFrame(function() return cVARS.menu[0] or menu_anim_alpha > 0.001 end,
 
         dl:AddRectFilled(iv2(win_pos.x, win_pos.y), iv2(win_pos.x + win_size.x, win_pos.y + win_size.y), menu_col(0.05, 0.05, 0.05, 1), window_rounding)
         dl:AddRectFilled(iv2(win_pos.x, win_pos.y), iv2(win_pos.x + sidebar_width, win_pos.y + win_size.y), menu_col(0.07, 0.07, 0.07, 1), window_rounding, imgui.DrawCornerFlags.Left)
-        local title_text = u8"LesoРуб бот"
+        local title_text = u8"LesoГђГіГЎ ГЎГ®ГІ"
         local version_text = "v 1.8.1"
         local title_pos_y = win_pos.y + 20
         imgui.PushFont(fonts[28] or fonts[24] or fonts[20])
@@ -4982,15 +4983,15 @@ imgui.OnFrame(function() return cVARS.menu[0] or menu_anim_alpha > 0.001 end,
         end
         if imgui.BeginPopupModal("##telegram_offer", telegram_popup_open, imgui.WindowFlags.NoTitleBar + imgui.WindowFlags.NoResize + imgui.WindowFlags.AlwaysAutoResize) then
             imgui.SetWindowFontScale(1.1)
-            imgui.CenterText(u8"Для получения актуальной информации по скрипту")
-            imgui.CenterText(u8"и свежих обновлений — присоединяйся к нашему Телеграмм Каналу!")
+            imgui.CenterText(u8"Г„Г«Гї ГЇГ®Г«ГіГ·ГҐГ­ГЁГї Г ГЄГІГіГ Г«ГјГ­Г®Г© ГЁГ­ГґГ®Г°Г¬Г Г¶ГЁГЁ ГЇГ® Г±ГЄГ°ГЁГЇГІГі")
+            imgui.CenterText(u8"ГЁ Г±ГўГҐГ¦ГЁГµ Г®ГЎГ­Г®ГўГ«ГҐГ­ГЁГ© В— ГЇГ°ГЁГ±Г®ГҐГ¤ГЁГ­ГїГ©Г±Гї ГЄ Г­Г ГёГҐГ¬Гі Г’ГҐГ«ГҐГЈГ°Г Г¬Г¬ ГЉГ Г­Г Г«Гі!")
             imgui.NewLine()
-            imgui.CenterText(ti.ICON_BRAND_TELEGRAM .. u8" Наш Телеграм Канал " .. ti.ICON_BRAND_TELEGRAM)
+            imgui.CenterText(ti.ICON_BRAND_TELEGRAM .. u8" ГЌГ Гё Г’ГҐГ«ГҐГЈГ°Г Г¬ ГЉГ Г­Г Г« " .. ti.ICON_BRAND_TELEGRAM)
             imgui.NewLine()
             imgui.NewLine()
 
             imgui.SetCursorPosX((imgui.GetWindowWidth() - 340) / 2)
-            if imgui.Button(u8"Перейти в Telegram Канал", iv2(340, 45)) then
+            if imgui.Button(u8"ГЏГҐГ°ГҐГ©ГІГЁ Гў Telegram ГЉГ Г­Г Г«", iv2(340, 45)) then
                 cVARS.offer_telegram[0] = true
                 config.offer_telegram = true
                 save_cfg()
@@ -5002,23 +5003,23 @@ imgui.OnFrame(function() return cVARS.menu[0] or menu_anim_alpha > 0.001 end,
             imgui.EndPopup()
         end
         imgui.PushFont(fonts[16])
-        if render_tab == u8"Бот" then
-            if imgui.ToggleButton(ti.ICON_TREES .. u8" Бот дерева", cVARS.bot, 0.15) then
+        if render_tab == u8"ГЃГ®ГІ" then
+            if imgui.ToggleButton(ti.ICON_TREES .. u8" ГЃГ®ГІ Г¤ГҐГ°ГҐГўГ ", cVARS.bot, 0.15) then
                 save_cfg()
             end
             imgui.SetCursorPosX(0)
-            imgui.ToggleButton(ti.ICON_RADAR .. u8" Радар", cVARS.radar, 0.15)
+            imgui.ToggleButton(ti.ICON_RADAR .. u8" ГђГ Г¤Г Г°", cVARS.radar, 0.15)
             imgui.SetCursorPosX(0)
-            imgui.ToggleButton(ti.ICON_VECTOR_OFF .. u8" Трасеры", cVARS.tracers, 0.15)
+            imgui.ToggleButton(ti.ICON_VECTOR_OFF .. u8" Г’Г°Г Г±ГҐГ°Г»", cVARS.tracers, 0.15)
             imgui.SetCursorPosX(0)
             imgui.ToggleButton(ti.ICON_BUG .. u8" Debug", cVARS.debug, 0.15)
             imgui.PushItemWidth(260)
             imgui.SetCursorPosX(0)
-            ui_smooth_slider_int(ti.ICON_RULER_2 .. u8" Размер радара", cVARS.radar_size, 100, 500)
-            ui_smooth_slider_int(ti.ICON_RULER_2 .. u8" Зум радара", cVARS.radar_zoom, 5, 100)
+            ui_smooth_slider_int(ti.ICON_RULER_2 .. u8" ГђГ Г§Г¬ГҐГ° Г°Г Г¤Г Г°Г ", cVARS.radar_size, 100, 500)
+            ui_smooth_slider_int(ti.ICON_RULER_2 .. u8" Г‡ГіГ¬ Г°Г Г¤Г Г°Г ", cVARS.radar_zoom, 5, 100)
             imgui.PopItemWidth()
-            if menu_collapsing_header_begin(u8'Доп.функции##extra_funcs') then
-                if imgui.ToggleButton(u8'Скин CJ', cVARS.cjSkin, 0.15) then
+            if menu_collapsing_header_begin(u8'Г„Г®ГЇ.ГґГіГ­ГЄГ¶ГЁГЁ##extra_funcs') then
+                if imgui.ToggleButton(u8'Г‘ГЄГЁГ­ CJ', cVARS.cjSkin, 0.15) then
                     local skinNow = getCharModel(PLAYER_PED)
                     if cVARS.cjSkin[0] and sampGetGamestate() == 3 and skinNow ~= 74 then
                         set_player_skin(select(2, sampGetPlayerIdByCharHandle(PLAYER_PED)), 74)
@@ -5028,31 +5029,31 @@ imgui.OnFrame(function() return cVARS.menu[0] or menu_anim_alpha > 0.001 end,
                     config.cjSkin = cVARS.cjSkin[0]
                 end
                 imgui.SetCursorPosX(0)
-                imgui.ToggleButton(u8"Ускорение анимаций", cVARS.animspeed_enabled, 0.15)
+                imgui.ToggleButton(u8"Г“Г±ГЄГ®Г°ГҐГ­ГЁГҐ Г Г­ГЁГ¬Г Г¶ГЁГ©", cVARS.animspeed_enabled, 0.15)
                 if cVARS.animspeed_enabled[0] then
                     imgui.PushItemWidth(260)
-                    ui_smooth_slider_float(u8"Скорость анимаций", cVARS.animspeed_value, 0.1, 10.0)
+                    ui_smooth_slider_float(u8"Г‘ГЄГ®Г°Г®Г±ГІГј Г Г­ГЁГ¬Г Г¶ГЁГ©", cVARS.animspeed_value, 0.1, 10.0)
                     imgui.PopItemWidth()
                 end
                 imgui.SetCursorPosX(0)
-                if imgui.ToggleButton(u8"Беспалевный бег CJ", cVARS.runskincj, 0.15) then
+                if imgui.ToggleButton(u8"ГЃГҐГ±ГЇГ Г«ГҐГўГ­Г»Г© ГЎГҐГЈ CJ", cVARS.runskincj, 0.15) then
                     config.runskincj = cVARS.runskincj[0]
                     save_cfg()
                 end
-                imgui.SameLine() imgui.ShowHelpMarker(u8"Выдаст бег сиджея на любой скин")
+                imgui.SameLine() imgui.ShowHelpMarker(u8"Г‚Г»Г¤Г Г±ГІ ГЎГҐГЈ Г±ГЁГ¤Г¦ГҐГї Г­Г  Г«ГѕГЎГ®Г© Г±ГЄГЁГ­")
                 imgui.SetCursorPosX(0)
-                if imgui.ToggleButton(ti.ICON_RUN .. u8" Бесконечный бег", cVARS.infinite_run, 0.15) then
+                if imgui.ToggleButton(ti.ICON_RUN .. u8" ГЃГҐГ±ГЄГ®Г­ГҐГ·Г­Г»Г© ГЎГҐГЈ", cVARS.infinite_run, 0.15) then
                     config.infinite_run = cVARS.infinite_run[0]
                     save_cfg()
                 end
                 imgui.SetCursorPosX(0)
-                if imgui.ToggleButton(u8"Автоустройство на работу", cVARS.auto_job, 0.15) then
+                if imgui.ToggleButton(u8"ГЂГўГІГ®ГіГ±ГІГ°Г®Г©Г±ГІГўГ® Г­Г  Г°Г ГЎГ®ГІГі", cVARS.auto_job, 0.15) then
                     config.auto_job = cVARS.auto_job[0]
                     save_cfg()
                 end
                 if cVARS.auto_job[0] then
                     imgui.SetCursorPosX(20)
-                    if ui_minimal_checkbox(u8"Автопокупка бензопилы", cVARS.auto_buy_chainsaw) then
+                    if ui_minimal_checkbox(u8"ГЂГўГІГ®ГЇГ®ГЄГіГЇГЄГ  ГЎГҐГ­Г§Г®ГЇГЁГ«Г»", cVARS.auto_buy_chainsaw) then
                         config.auto_buy_chainsaw = cVARS.auto_buy_chainsaw[0]
                         save_cfg()
                     end
@@ -5066,9 +5067,9 @@ imgui.OnFrame(function() return cVARS.menu[0] or menu_anim_alpha > 0.001 end,
                     clearCharTasksImmediately(PLAYER_PED)
                 end
                 imgui.SetCursorPosX(0)
-                if menu_collapsing_header_begin(u8"Коллизия##collision_hide") then
+                if menu_collapsing_header_begin(u8"ГЉГ®Г«Г«ГЁГ§ГЁГї##collision_hide") then
                     imgui.SetCursorPosX(0)
-                    imgui.Text(u8"На объекты")
+                    imgui.Text(u8"ГЌГ  Г®ГЎГєГҐГЄГІГ»")
                     imgui.SameLine(110)
                     if imgui.Button(ti.ICON_SETTINGS .. "##ObjSettingsBtn", imgui.ImVec2(28, 28)) then
                         objectsettngs[0] = true
@@ -5077,24 +5078,24 @@ imgui.OnFrame(function() return cVARS.menu[0] or menu_anim_alpha > 0.001 end,
                     local object_popup_open = new.bool(true)
                     if imgui.BeginPopupModal("##object_popup", object_popup_open, imgui.WindowFlags.NoTitleBar + imgui.WindowFlags.NoResize + imgui.WindowFlags.AlwaysAutoResize) then
                         imgui.SetCursorPosX(10)
-                        if imgui.ToggleButton(u8" На все объекты", object, 0.15) then save_cfg() end
-                        if imgui.ToggleButton(u8" Только на пни", objectpen, 0.15) then save_cfg() end
-                        if imgui.ToggleButton(u8" Не включать на деревья", objectnotree, 0.15) then save_cfg() end
+                        if imgui.ToggleButton(u8" ГЌГ  ГўГ±ГҐ Г®ГЎГєГҐГЄГІГ»", object, 0.15) then save_cfg() end
+                        if imgui.ToggleButton(u8" Г’Г®Г«ГјГЄГ® Г­Г  ГЇГ­ГЁ", objectpen, 0.15) then save_cfg() end
+                        if imgui.ToggleButton(u8" ГЌГҐ ГўГЄГ«ГѕГ·Г ГІГј Г­Г  Г¤ГҐГ°ГҐГўГјГї", objectnotree, 0.15) then save_cfg() end
             
-                        if imgui.Button(u8"Выключи его нахуй", iv2(340, 45)) then
+                        if imgui.Button(u8"Г‚Г»ГЄГ«ГѕГ·ГЁ ГҐГЈГ® Г­Г ГµГіГ©", iv2(340, 45)) then
                             imgui.CloseCurrentPopup()
                         end
                         imgui.EndPopup()
                     end
                     imgui.SetCursorPosX(0)
-                    if imgui.ToggleButton(u8" На игроков", player, 0.15) then save_cfg() end
+                    if imgui.ToggleButton(u8" ГЌГ  ГЁГЈГ°Г®ГЄГ®Гў", player, 0.15) then save_cfg() end
                     imgui.SetCursorPosX(0)
-                    if imgui.ToggleButton(u8"На машины", vehicle, 0.15) then save_cfg() end
+                    if imgui.ToggleButton(u8"ГЌГ  Г¬Г ГёГЁГ­Г»", vehicle, 0.15) then save_cfg() end
                 menu_collapsing_header_end()
                 end
                 imgui.SetCursorPosX(0)
                 imgui.PushItemWidth(260)
-                imgui.Text(u8'Прозрачность объектов')
+                imgui.Text(u8'ГЏГ°Г®Г§Г°Г Г·Г­Г®Г±ГІГј Г®ГЎГєГҐГЄГІГ®Гў')
                 imgui.SameLine(0, 16)
                 if ui_smooth_slider_int(u8"", objectAlpha, 0, 250) then
                     mainIni.alpha.object = objectAlpha[0]
@@ -5102,42 +5103,42 @@ imgui.OnFrame(function() return cVARS.menu[0] or menu_anim_alpha > 0.001 end,
                 imgui.PopItemWidth()
             menu_collapsing_header_end()
             end
-            if menu_collapsing_header_begin(u8'Настройки мигания') then
-                if imgui.Button(u8'Выбрать цвет мигания', iv2(300, 30)) then
+            if menu_collapsing_header_begin(u8'ГЌГ Г±ГІГ°Г®Г©ГЄГЁ Г¬ГЁГЈГ Г­ГЁГї') then
+                if imgui.Button(u8'Г‚Г»ГЎГ°Г ГІГј Г¶ГўГҐГІ Г¬ГЁГЈГ Г­ГЁГї', iv2(300, 30)) then
                     warning_color_window[0] = true
                 end
-                imgui.ToggleButton(u8"Звуковое оповещение", cVARS.antiadmin_play_sound, 0.15)
+                imgui.ToggleButton(u8"Г‡ГўГіГЄГ®ГўГ®ГҐ Г®ГЇГ®ГўГҐГ№ГҐГ­ГЁГҐ", cVARS.antiadmin_play_sound, 0.15)
                 if cVARS.antiadmin_play_sound[0] then
-                    imgui.Text(u8"Путь к файлу:")
+                    imgui.Text(u8"ГЏГіГІГј ГЄ ГґГ Г©Г«Гі:")
                     if ui_smooth_input_text(u8"##sound_path", cVARS.antiadmin_sound_path, 256) then
                         save_cfg()
                     end
-                    if imgui.Button(u8"Тест звука", iv2(200, 50)) then
+                    if imgui.Button(u8"Г’ГҐГ±ГІ Г§ГўГіГЄГ ", iv2(200, 50)) then
                         playAlertSound()
                     end
                 end
             menu_collapsing_header_end()
             end
-        elseif render_tab == u8"Меню" then
+        elseif render_tab == u8"ГЊГҐГ­Гѕ" then
             imgui.PushFont(fonts[16])
-            imgui.Text(u8"Команда меню:")
+            imgui.Text(u8"ГЉГ®Г¬Г Г­Г¤Г  Г¬ГҐГ­Гѕ:")
             imgui.SameLine()
             if ui_smooth_input_text("##menu_command", cVARS.menu_command, 64) then
                 config.menu_command = ffi.string(cVARS.menu_command)
                 save_cfg()
             end
             imgui.PushItemWidth(268)
-            imgui.Text(u8"Команда запуска бота:")
+            imgui.Text(u8"ГЉГ®Г¬Г Г­Г¤Г  Г§Г ГЇГіГ±ГЄГ  ГЎГ®ГІГ :")
             imgui.SameLine()
             if ui_smooth_input_text("##bot_command", cVARS.bot_command, 64) then
                 config.bot_command = ffi.string(cVARS.bot_command)
                 save_cfg()
             end
             imgui.PopItemWidth()
-            imgui.Text(u8"Клавиша для открытия меню:")
-            local menu_button_text = u8"Выбрать клавишу меню"
+            imgui.Text(u8"ГЉГ«Г ГўГЁГёГ  Г¤Г«Гї Г®ГІГЄГ°Г»ГІГЁГї Г¬ГҐГ­Гѕ:")
+            local menu_button_text = u8"Г‚Г»ГЎГ°Г ГІГј ГЄГ«Г ГўГЁГёГі Г¬ГҐГ­Гѕ"
             if cVARS.waiting_for_menu_key then
-                menu_button_text = u8"Нажмите клавишу..."
+                menu_button_text = u8"ГЌГ Г¦Г¬ГЁГІГҐ ГЄГ«Г ГўГЁГёГі..."
                 local key = getPressedKey()
                 if key then
                     cVARS.menu_hotkey[0] = key
@@ -5145,15 +5146,15 @@ imgui.OnFrame(function() return cVARS.menu[0] or menu_anim_alpha > 0.001 end,
                     cVARS.waiting_for_menu_key = false
                 end
             elseif cVARS.menu_hotkey[0] and cVARS.menu_hotkey[0] ~= 0 then
-                menu_button_text = u8(getKeyName(cVARS.menu_hotkey[0]) or u8"Не выбрано")
+                menu_button_text = u8(getKeyName(cVARS.menu_hotkey[0]) or u8"ГЌГҐ ГўГ»ГЎГ°Г Г­Г®")
             end
             if imgui.Button(menu_button_text) then
                 cVARS.waiting_for_menu_key = true
             end
-            imgui.Text(u8"Клавиша для активации бота:")
-            local bot_button_text = u8"Выбрать клавишу бота"
+            imgui.Text(u8"ГЉГ«Г ГўГЁГёГ  Г¤Г«Гї Г ГЄГІГЁГўГ Г¶ГЁГЁ ГЎГ®ГІГ :")
+            local bot_button_text = u8"Г‚Г»ГЎГ°Г ГІГј ГЄГ«Г ГўГЁГёГі ГЎГ®ГІГ "
             if cVARS.waiting_for_bot_key then
-                bot_button_text = u8"Нажмите клавишу..."
+                bot_button_text = u8"ГЌГ Г¦Г¬ГЁГІГҐ ГЄГ«Г ГўГЁГёГі..."
                 local key = getPressedKey()
                 if key then
                     cVARS.bot_hotkey[0] = key
@@ -5161,15 +5162,15 @@ imgui.OnFrame(function() return cVARS.menu[0] or menu_anim_alpha > 0.001 end,
                     cVARS.waiting_for_bot_key = false
                 end
             elseif cVARS.bot_hotkey[0] and cVARS.bot_hotkey[0] ~= 0 then
-                bot_button_text = u8(getKeyName(cVARS.bot_hotkey[0]) or u8"Не выбрано")
+                bot_button_text = u8(getKeyName(cVARS.bot_hotkey[0]) or u8"ГЌГҐ ГўГ»ГЎГ°Г Г­Г®")
             end
             if imgui.Button(bot_button_text) then
                 cVARS.waiting_for_bot_key = true
             end
-            imgui.Text(u8"Комбинация клавиш для открытия меню:")
-            local combo1_text = u8"Выбрать первую клавишу"
+            imgui.Text(u8"ГЉГ®Г¬ГЎГЁГ­Г Г¶ГЁГї ГЄГ«Г ГўГЁГё Г¤Г«Гї Г®ГІГЄГ°Г»ГІГЁГї Г¬ГҐГ­Гѕ:")
+            local combo1_text = u8"Г‚Г»ГЎГ°Г ГІГј ГЇГҐГ°ГўГіГѕ ГЄГ«Г ГўГЁГёГі"
             if cVARS.waiting_for_combo_key1 then
-                combo1_text = u8"Нажмите первую клавишу..."
+                combo1_text = u8"ГЌГ Г¦Г¬ГЁГІГҐ ГЇГҐГ°ГўГіГѕ ГЄГ«Г ГўГЁГёГі..."
                 local key = getPressedKey()
                 if key then
                     cVARS.combo_key1[0] = key
@@ -5177,7 +5178,7 @@ imgui.OnFrame(function() return cVARS.menu[0] or menu_anim_alpha > 0.001 end,
                     save_cfg()
                 end
             elseif cVARS.combo_key1[0] and cVARS.combo_key1[0] ~= 0 then
-                combo1_text = u8(getKeyName(cVARS.combo_key1[0]) or u8"Не выбрано")
+                combo1_text = u8(getKeyName(cVARS.combo_key1[0]) or u8"ГЌГҐ ГўГ»ГЎГ°Г Г­Г®")
             end
             if imgui.Button(combo1_text) then
                 cVARS.waiting_for_combo_key1 = true
@@ -5185,9 +5186,9 @@ imgui.OnFrame(function() return cVARS.menu[0] or menu_anim_alpha > 0.001 end,
             imgui.SameLine()
             imgui.Text("+")
             imgui.SameLine()
-            local combo2_text = u8"Выбрать вторую клавишу"
+            local combo2_text = u8"Г‚Г»ГЎГ°Г ГІГј ГўГІГ®Г°ГіГѕ ГЄГ«Г ГўГЁГёГі"
             if cVARS.waiting_for_combo_key2 then
-                combo2_text = u8"Нажмите вторую клавишу..."
+                combo2_text = u8"ГЌГ Г¦Г¬ГЁГІГҐ ГўГІГ®Г°ГіГѕ ГЄГ«Г ГўГЁГёГі..."
                 local key = getPressedKey()
                 if key then
                     cVARS.combo_key2[0] = key
@@ -5195,13 +5196,13 @@ imgui.OnFrame(function() return cVARS.menu[0] or menu_anim_alpha > 0.001 end,
                     save_cfg()
                 end
             elseif cVARS.combo_key2[0] and cVARS.combo_key2[0] ~= 0 then
-                combo2_text = u8(getKeyName(cVARS.combo_key2[0]) or u8"Не выбрано")
+                combo2_text = u8(getKeyName(cVARS.combo_key2[0]) or u8"ГЌГҐ ГўГ»ГЎГ°Г Г­Г®")
             end
             if imgui.Button(combo2_text) then
                 cVARS.waiting_for_combo_key2 = true
             end
             imgui.Spacing()
-            if imgui.Button(u8"Сбросить все бинды на стандартные") then
+            if imgui.Button(u8"Г‘ГЎГ°Г®Г±ГЁГІГј ГўГ±ГҐ ГЎГЁГ­Г¤Г» Г­Г  Г±ГІГ Г­Г¤Г Г°ГІГ­Г»ГҐ") then
                 cVARS.menu_hotkey[0] = 0
                 cVARS.bot_hotkey[0] = 0
                 cVARS.combo_key1[0] = 0
@@ -5215,7 +5216,7 @@ imgui.OnFrame(function() return cVARS.menu[0] or menu_anim_alpha > 0.001 end,
             end
             imgui.PopFont()
             imgui.Separator()
-            if imgui.ToggleButton(u8"Разрешить перемещение меню", cVARS.menu_movable, 0.15) then
+            if imgui.ToggleButton(u8"ГђГ Г§Г°ГҐГёГЁГІГј ГЇГҐГ°ГҐГ¬ГҐГ№ГҐГ­ГЁГҐ Г¬ГҐГ­Гѕ", cVARS.menu_movable, 0.15) then
                 config.menu_movable = cVARS.menu_movable[0]
                 save_cfg()
                 if not cVARS.menu_movable[0] then
@@ -5226,18 +5227,18 @@ imgui.OnFrame(function() return cVARS.menu[0] or menu_anim_alpha > 0.001 end,
                 end
             end
             imgui.SameLine()
-            imgui.ShowHelpMarker(u8"Если включено можно перетаскивать меню мышкой\nВыключено то меню фиксировано по центру экрана")
+            imgui.ShowHelpMarker(u8"Г…Г±Г«ГЁ ГўГЄГ«ГѕГ·ГҐГ­Г® Г¬Г®Г¦Г­Г® ГЇГҐГ°ГҐГІГ Г±ГЄГЁГўГ ГІГј Г¬ГҐГ­Гѕ Г¬Г»ГёГЄГ®Г©\nГ‚Г»ГЄГ«ГѕГ·ГҐГ­Г® ГІГ® Г¬ГҐГ­Гѕ ГґГЁГЄГ±ГЁГ°Г®ГўГ Г­Г® ГЇГ® Г¶ГҐГ­ГІГ°Гі ГЅГЄГ°Г Г­Г ")
             
             if cVARS.menu_movable[0] then
-                imgui.Text(u8"Текущая позиция: X = " .. cVARS.menu_pos_x[0] .. " | Y = " .. cVARS.menu_pos_y[0])
+                imgui.Text(u8"Г’ГҐГЄГіГ№Г Гї ГЇГ®Г§ГЁГ¶ГЁГї: X = " .. cVARS.menu_pos_x[0] .. " | Y = " .. cVARS.menu_pos_y[0])
             end
         elseif render_tab == u8"Telegram" then
-            if imgui.ToggleButton(ti.ICON_DOWNLOAD .. u8" Включить Telegram", cVARS.telegram, 0.15) then
+            if imgui.ToggleButton(ti.ICON_DOWNLOAD .. u8" Г‚ГЄГ«ГѕГ·ГЁГІГј Telegram", cVARS.telegram, 0.15) then
                 config.telegram = cVARS.telegram[0]
                 save_cfg()
             end
             imgui.SetCursorPosX(0)
-            imgui.Text(u8"Token бота:")
+            imgui.Text(u8"Token ГЎГ®ГІГ :")
             if ui_smooth_input_text("##token", cVARS.telegram_token, 256, imgui.InputTextFlags.Password) then
                 config.telegram_token = u8:decode(ffi.string(cVARS.telegram_token)):gsub("%s", "")
                 save_cfg()
@@ -5247,7 +5248,7 @@ imgui.OnFrame(function() return cVARS.menu[0] or menu_anim_alpha > 0.001 end,
                 config.telegram_chat_id = u8:decode(ffi.string(cVARS.telegram_chat_id)):gsub("%s", "")
                 save_cfg()
             end
-            if imgui.Button(u8"Тест уведомления", iv2(200, 50)) then
+            if imgui.Button(u8"Г’ГҐГ±ГІ ГіГўГҐГ¤Г®Г¬Г«ГҐГ­ГЁГї", iv2(200, 50)) then
                 config.telegram_token  = u8:decode(ffi.string(cVARS.telegram_token)):gsub("%s+", "")
                 config.telegram_chat_id = u8:decode(ffi.string(cVARS.telegram_chat_id)):gsub("%s+", "")
                 save_cfg()
@@ -5256,148 +5257,148 @@ imgui.OnFrame(function() return cVARS.menu[0] or menu_anim_alpha > 0.001 end,
 
                 if cVARS.telegram[0] and #token > 5 and #chat_id > 3 then
                     getLastUpdate()
-                    sendTelegramNotification('Тестовое сообщение от бота!')
+                    sendTelegramNotification('Г’ГҐГ±ГІГ®ГўГ®ГҐ Г±Г®Г®ГЎГ№ГҐГ­ГЁГҐ Г®ГІ ГЎГ®ГІГ !')
                 elseif #token < 5 and #chat_id < 3 then
-                    cMsg("Токен или chat_id выглядят некорректно")
+                    cMsg("Г’Г®ГЄГҐГ­ ГЁГ«ГЁ chat_id ГўГ»ГЈГ«ГїГ¤ГїГІ Г­ГҐГЄГ®Г°Г°ГҐГЄГІГ­Г®")
                 elseif not cVARS.telegram[0] then
-                    cMsg("Нажми кнопку Включить Telegram, чтобы заработало")
+                    cMsg("ГЌГ Г¦Г¬ГЁ ГЄГ­Г®ГЇГЄГі Г‚ГЄГ«ГѕГ·ГЁГІГј Telegram, Г·ГІГ®ГЎГ» Г§Г Г°Г ГЎГ®ГІГ Г«Г®")
                 end
             end
-            if imgui.ToggleButton(u8'Уведомления на общение', cVARS.warningseytg, 0.15) then
+            if imgui.ToggleButton(u8'Г“ГўГҐГ¤Г®Г¬Г«ГҐГ­ГЁГї Г­Г  Г®ГЎГ№ГҐГ­ГЁГҐ', cVARS.warningseytg, 0.15) then
                 config.warningseytg = cVARS.warningseytg[0]
                 save_cfg()
             end
             if cVARS.warningseytg[0] then
                 imgui.SetCursorPosX(18)
-                if ui_minimal_checkbox(u8"Управление ботом только из одного чата", cVARS.telegram_allow_only_saved_chat) then
+                if ui_minimal_checkbox(u8"Г“ГЇГ°Г ГўГ«ГҐГ­ГЁГҐ ГЎГ®ГІГ®Г¬ ГІГ®Г«ГјГЄГ® ГЁГ§ Г®Г¤Г­Г®ГЈГ® Г·Г ГІГ ", cVARS.telegram_allow_only_saved_chat) then
                     config.telegram_allow_only_saved_chat = cVARS.telegram_allow_only_saved_chat[0]
                     save_cfg()
                 end
                 imgui.SetCursorPosX(18)
-                if ui_minimal_checkbox(u8"Разрешить /q через ТГ", cVARS.telegram_allow_exit) then
+                if ui_minimal_checkbox(u8"ГђГ Г§Г°ГҐГёГЁГІГј /q Г·ГҐГ°ГҐГ§ Г’Гѓ", cVARS.telegram_allow_exit) then
                     config.telegram_allow_exit = cVARS.telegram_allow_exit[0]
                     save_cfg()
                 end
                 imgui.SetCursorPosX(18)
-                if ui_minimal_checkbox(u8"Разрешить краш игры через ТГ", cVARS.telegram_allow_crash) then
+                if ui_minimal_checkbox(u8"ГђГ Г§Г°ГҐГёГЁГІГј ГЄГ°Г Гё ГЁГЈГ°Г» Г·ГҐГ°ГҐГ§ Г’Гѓ", cVARS.telegram_allow_crash) then
                     config.telegram_allow_crash = cVARS.telegram_allow_crash[0]
                     save_cfg()
                 end
                 imgui.SetCursorPosX(18)
-                if ui_minimal_checkbox(u8"Разрешить !send (писать в чат) через ТГ", cVARS.telegram_allow_chat_send) then
+                if ui_minimal_checkbox(u8"ГђГ Г§Г°ГҐГёГЁГІГј !send (ГЇГЁГ±Г ГІГј Гў Г·Г ГІ) Г·ГҐГ°ГҐГ§ Г’Гѓ", cVARS.telegram_allow_chat_send) then
                     config.telegram_allow_chat_send = cVARS.telegram_allow_chat_send[0]
                     save_cfg()
                 end
             end
-        elseif render_tab == u8"Анти-админ" then
-            if imgui.ToggleButton(u8" Выключение бота при админе", cVARS.antiadmin_autoOff, 0.15) then config.antiadmin_autoOff = cVARS.antiadmin_autoOff[0] save_cfg() end
-            imgui.SameLine() imgui.ShowHelpMarker(u8"Выключает бота при сообщении админа")
-            if imgui.ToggleButton(u8" Уведомление в TG", cVARS.antiadmin_telegramNotf, 0.15) then config.antiadmin_telegramNotf = cVARS.antiadmin_telegramNotf[0] save_cfg() end
-            imgui.SameLine() imgui.ShowHelpMarker(u8"Отправляет уведомление в Telegram")
-            if imgui.ToggleButton(u8" Разворот окна", cVARS.antiadmin_reversal, 0.15) then config.antiadmin_reversal = cVARS.antiadmin_reversal[0] save_cfg() end
-            imgui.SameLine() imgui.ShowHelpMarker(u8"Разворачивает игру")
-            if imgui.ToggleButton(u8" Мигание экраном", cVARS.antiadmin_blinking, 0.15) then config.antiadmin_blinking = cVARS.antiadmin_blinking[0] save_cfg() end
-            imgui.SameLine() imgui.ShowHelpMarker(u8"Мигает экраном")
-            if imgui.RadioButtonIntPtr(u8"Мигание 350мс", cVARS.antiadmin_flash, 1) then config.antiadmin_flash = 1 save_cfg() end
+        elseif render_tab == u8"ГЂГ­ГІГЁ-Г Г¤Г¬ГЁГ­" then
+            if imgui.ToggleButton(u8" Г‚Г»ГЄГ«ГѕГ·ГҐГ­ГЁГҐ ГЎГ®ГІГ  ГЇГ°ГЁ Г Г¤Г¬ГЁГ­ГҐ", cVARS.antiadmin_autoOff, 0.15) then config.antiadmin_autoOff = cVARS.antiadmin_autoOff[0] save_cfg() end
+            imgui.SameLine() imgui.ShowHelpMarker(u8"Г‚Г»ГЄГ«ГѕГ·Г ГҐГІ ГЎГ®ГІГ  ГЇГ°ГЁ Г±Г®Г®ГЎГ№ГҐГ­ГЁГЁ Г Г¤Г¬ГЁГ­Г ")
+            if imgui.ToggleButton(u8" Г“ГўГҐГ¤Г®Г¬Г«ГҐГ­ГЁГҐ Гў TG", cVARS.antiadmin_telegramNotf, 0.15) then config.antiadmin_telegramNotf = cVARS.antiadmin_telegramNotf[0] save_cfg() end
+            imgui.SameLine() imgui.ShowHelpMarker(u8"ГЋГІГЇГ°Г ГўГ«ГїГҐГІ ГіГўГҐГ¤Г®Г¬Г«ГҐГ­ГЁГҐ Гў Telegram")
+            if imgui.ToggleButton(u8" ГђГ Г§ГўГ®Г°Г®ГІ Г®ГЄГ­Г ", cVARS.antiadmin_reversal, 0.15) then config.antiadmin_reversal = cVARS.antiadmin_reversal[0] save_cfg() end
+            imgui.SameLine() imgui.ShowHelpMarker(u8"ГђГ Г§ГўГ®Г°Г Г·ГЁГўГ ГҐГІ ГЁГЈГ°Гі")
+            if imgui.ToggleButton(u8" ГЊГЁГЈГ Г­ГЁГҐ ГЅГЄГ°Г Г­Г®Г¬", cVARS.antiadmin_blinking, 0.15) then config.antiadmin_blinking = cVARS.antiadmin_blinking[0] save_cfg() end
+            imgui.SameLine() imgui.ShowHelpMarker(u8"ГЊГЁГЈГ ГҐГІ ГЅГЄГ°Г Г­Г®Г¬")
+            if imgui.RadioButtonIntPtr(u8"ГЊГЁГЈГ Г­ГЁГҐ 350Г¬Г±", cVARS.antiadmin_flash, 1) then config.antiadmin_flash = 1 save_cfg() end
             imgui.SameLine()
-            if imgui.RadioButtonIntPtr(u8"Мигание 500мс", cVARS.antiadmin_flash, 2) then config.antiadmin_flash = 2 save_cfg() end
-            if imgui.ToggleButton(u8" Краш игры", cVARS.antiadmin_autoExit, 0.15) then config.antiadmin_autoExit = cVARS.antiadmin_autoExit[0] save_cfg() end
-            imgui.SameLine() imgui.ShowHelpMarker(u8"Крашит игру при админе")
-            if imgui.ToggleButton(u8" Скип диалога", cVARS.antiadmin_skipdialog, 0.15) then config.antiadmin_skipdialog = cVARS.antiadmin_skipdialog[0] save_cfg() end
-            imgui.SameLine() imgui.ShowHelpMarker(u8"Автоматически закрывает диалог")
-            if imgui.ToggleButton(u8" Автоответ 'Вы тут?'", cVARS.auto, 0.15) then config.auto = cVARS.auto[0] save_cfg() end
-            imgui.SameLine() imgui.ShowHelpMarker(u8"Автоматически отвечает на проверки")
-            if imgui.ToggleButton(u8" Мигание при подозрении", cVARS.antiadmin_warningsey, 0.15) then config.antiadmin_warningsey = cVARS.antiadmin_warningsey[0] save_cfg() end
+            if imgui.RadioButtonIntPtr(u8"ГЊГЁГЈГ Г­ГЁГҐ 500Г¬Г±", cVARS.antiadmin_flash, 2) then config.antiadmin_flash = 2 save_cfg() end
+            if imgui.ToggleButton(u8" ГЉГ°Г Гё ГЁГЈГ°Г»", cVARS.antiadmin_autoExit, 0.15) then config.antiadmin_autoExit = cVARS.antiadmin_autoExit[0] save_cfg() end
+            imgui.SameLine() imgui.ShowHelpMarker(u8"ГЉГ°Г ГёГЁГІ ГЁГЈГ°Гі ГЇГ°ГЁ Г Г¤Г¬ГЁГ­ГҐ")
+            if imgui.ToggleButton(u8" Г‘ГЄГЁГЇ Г¤ГЁГ Г«Г®ГЈГ ", cVARS.antiadmin_skipdialog, 0.15) then config.antiadmin_skipdialog = cVARS.antiadmin_skipdialog[0] save_cfg() end
+            imgui.SameLine() imgui.ShowHelpMarker(u8"ГЂГўГІГ®Г¬Г ГІГЁГ·ГҐГ±ГЄГЁ Г§Г ГЄГ°Г»ГўГ ГҐГІ Г¤ГЁГ Г«Г®ГЈ")
+            if imgui.ToggleButton(u8" ГЂГўГІГ®Г®ГІГўГҐГІ 'Г‚Г» ГІГіГІ?'", cVARS.auto, 0.15) then config.auto = cVARS.auto[0] save_cfg() end
+            imgui.SameLine() imgui.ShowHelpMarker(u8"ГЂГўГІГ®Г¬Г ГІГЁГ·ГҐГ±ГЄГЁ Г®ГІГўГҐГ·Г ГҐГІ Г­Г  ГЇГ°Г®ГўГҐГ°ГЄГЁ")
+            if imgui.ToggleButton(u8" ГЊГЁГЈГ Г­ГЁГҐ ГЇГ°ГЁ ГЇГ®Г¤Г®Г§Г°ГҐГ­ГЁГЁ", cVARS.antiadmin_warningsey, 0.15) then config.antiadmin_warningsey = cVARS.antiadmin_warningsey[0] save_cfg() end
             imgui.SetCursorPosX(0)
-            if imgui.ToggleButton(u8" Реакция на фриз", cVARS.antibot_antifreeze, 0.15) then config.antibot_antifreeze = cVARS.antibot_antifreeze[0] save_cfg() end
+            if imgui.ToggleButton(u8" ГђГҐГ ГЄГ¶ГЁГї Г­Г  ГґГ°ГЁГ§", cVARS.antibot_antifreeze, 0.15) then config.antibot_antifreeze = cVARS.antibot_antifreeze[0] save_cfg() end
             imgui.SetCursorPosX(0)
-            if imgui.ToggleButton(u8" Кик при админе", cVARS.antiadmin_kick, 0.15) then 
+            if imgui.ToggleButton(u8" ГЉГЁГЄ ГЇГ°ГЁ Г Г¤Г¬ГЁГ­ГҐ", cVARS.antiadmin_kick, 0.15) then 
                 config.antiadmin_kick = cVARS.antiadmin_kick[0] 
                 save_cfg() 
             end
             imgui.SameLine()
-            imgui.ShowHelpMarker(u8"При подозрении на админа:\nВыдаёт M4 или телепортирует в небо (рандомно)\nТолько если вы не в машине") 
+            imgui.ShowHelpMarker(u8"ГЏГ°ГЁ ГЇГ®Г¤Г®Г§Г°ГҐГ­ГЁГЁ Г­Г  Г Г¤Г¬ГЁГ­Г :\nГ‚Г»Г¤Г ВёГІ M4 ГЁГ«ГЁ ГІГҐГ«ГҐГЇГ®Г°ГІГЁГ°ГіГҐГІ Гў Г­ГҐГЎГ® (Г°Г Г­Г¤Г®Г¬Г­Г®)\nГ’Г®Г«ГјГЄГ® ГҐГ±Г«ГЁ ГўГ» Г­ГҐ Гў Г¬Г ГёГЁГ­ГҐ") 
             imgui.SetCursorPosX(0)
-            imgui.Text(u8"Скип диалога от")
+            imgui.Text(u8"Г‘ГЄГЁГЇ Г¤ГЁГ Г«Г®ГЈГ  Г®ГІ")
             imgui.SameLine()
             imgui.PushItemWidth(140)
-            if imgui.InputInt(u8"до", cVARS.antiadmin_skip11) then
+            if imgui.InputInt(u8"Г¤Г®", cVARS.antiadmin_skip11) then
                 cVARS.antiadmin_skip11[0] = math.max(500, cVARS.antiadmin_skip11[0])
                 config.antiadmin_skip11 = cVARS.antiadmin_skip11[0]
                 save_cfg()
             end
             imgui.SameLine()
-            if imgui.InputInt(u8"мс", cVARS.antiadmin_skip22) then
+            if imgui.InputInt(u8"Г¬Г±", cVARS.antiadmin_skip22) then
                 cVARS.antiadmin_skip22[0] = math.max(cVARS.antiadmin_skip11[0] + 100, cVARS.antiadmin_skip22[0])
                 config.antiadmin_skip22 = cVARS.antiadmin_skip22[0]
                 save_cfg()
             end
             imgui.PopItemWidth()
-        elseif render_tab == u8"Анти-Еда" then
-            if menu_collapsing_header_begin(u8'Автоеда') then
-                if imgui.ToggleButton(u8" Автоеда", cVARS.autoeat, 0.15) then config.autoeat = cVARS.autoeat[0] save_cfg() end
+        elseif render_tab == u8"ГЂГ­ГІГЁ-Г…Г¤Г " then
+            if menu_collapsing_header_begin(u8'ГЂГўГІГ®ГҐГ¤Г ') then
+                if imgui.ToggleButton(u8" ГЂГўГІГ®ГҐГ¤Г ", cVARS.autoeat, 0.15) then config.autoeat = cVARS.autoeat[0] save_cfg() end
                 if cVARS.autoeat[0] then
                     imgui.PushItemWidth(250)
-                    if ui_smooth_combo(u8'Способ еды', cVARS.eatmethod, ImItems, #method) then config.eatmethod = cVARS.eatmethod[0] save_cfg() end
+                    if ui_smooth_combo(u8'Г‘ГЇГ®Г±Г®ГЎ ГҐГ¤Г»', cVARS.eatmethod, ImItems, #method) then config.eatmethod = cVARS.eatmethod[0] save_cfg() end
                     imgui.PopItemWidth()
-                    imgui.Text(u8'Кушать при сытости')
+                    imgui.Text(u8'ГЉГіГёГ ГІГј ГЇГ°ГЁ Г±Г»ГІГ®Г±ГІГЁ')
                     ui_smooth_slider_int(u8"", cVARS.eatpercent, 1, 99)
                     config.eatpercent = cVARS.eatpercent[0] save_cfg()
                 end
                 menu_collapsing_header_end()
             end
             imgui.SetCursorPosX(0)
-            if menu_collapsing_header_begin(u8'Автоеда из ларька') then
-                if imgui.ToggleButton(u8" Включить", cVARS.autolarek, 0.15) then config.autolarek = cVARS.autolarek[0] save_cfg() end
+            if menu_collapsing_header_begin(u8'ГЂГўГІГ®ГҐГ¤Г  ГЁГ§ Г«Г Г°ГјГЄГ ') then
+                if imgui.ToggleButton(u8" Г‚ГЄГ«ГѕГ·ГЁГІГј", cVARS.autolarek, 0.15) then config.autolarek = cVARS.autolarek[0] save_cfg() end
             menu_collapsing_header_end()
             end
             imgui.SetCursorPosX(0)
-            if menu_collapsing_header_begin(u8'Автопиво') then
-                if imgui.ToggleButton(u8" Включить автопиво", cVARS.autobeer, 0.15) then config.autobeer = cVARS.autobeer[0] save_cfg() end
+            if menu_collapsing_header_begin(u8'ГЂГўГІГ®ГЇГЁГўГ®') then
+                if imgui.ToggleButton(u8" Г‚ГЄГ«ГѕГ·ГЁГІГј Г ГўГІГ®ГЇГЁГўГ®", cVARS.autobeer, 0.15) then config.autobeer = cVARS.autobeer[0] save_cfg() end
             menu_collapsing_header_end()
             end
-        elseif render_tab == u8"Анти-бот" then
-            if imgui.ToggleButton(u8"Умный выбор точки сдачи", cVARS.smart_sdacha, 0.15) then
+        elseif render_tab == u8"ГЂГ­ГІГЁ-ГЎГ®ГІ" then
+            if imgui.ToggleButton(u8"Г“Г¬Г­Г»Г© ГўГ»ГЎГ®Г° ГІГ®Г·ГЄГЁ Г±Г¤Г Г·ГЁ", cVARS.smart_sdacha, 0.15) then
                 config.smart_sdacha = cVARS.smart_sdacha[0]
                 save_cfg()
             end
             imgui.SameLine()
-            imgui.ShowHelpMarker(u8"Бот сам выберет ближайшую точку")
+            imgui.ShowHelpMarker(u8"ГЃГ®ГІ Г±Г Г¬ ГўГ»ГЎГҐГ°ГҐГІ ГЎГ«ГЁГ¦Г Г©ГёГіГѕ ГІГ®Г·ГЄГі")
             if not cVARS.smart_sdacha[0] then
                 imgui.PushItemWidth(300)
-                if ui_smooth_combo(u8"Ручной выбор точки", cVARS.selected_sdacha_index, ImItems_sdacha, #sdacha_names) then
+                if ui_smooth_combo(u8"ГђГіГ·Г­Г®Г© ГўГ»ГЎГ®Г° ГІГ®Г·ГЄГЁ", cVARS.selected_sdacha_index, ImItems_sdacha, #sdacha_names) then
                     config.selected_sdacha_index = cVARS.selected_sdacha_index[0]
                     save_cfg()
                 end
                 imgui.PopItemWidth()
             end
-            imgui.ToggleButton(u8" Анти-машина (убегать от транспорта)", cVARS.anti_vehicle, 0.15)
+            imgui.ToggleButton(u8" ГЂГ­ГІГЁ-Г¬Г ГёГЁГ­Г  (ГіГЎГҐГЈГ ГІГј Г®ГІ ГІГ°Г Г­Г±ГЇГ®Г°ГІГ )", cVARS.anti_vehicle, 0.15)
             imgui.SameLine()
-            imgui.ShowHelpMarker(u8"Если перед ботом машина, бот убежит и отключится")
-            imgui.ToggleButton(u8"Собирать деревья в поле зрения", cVARS.use_tree_fov, 0.15)
+            imgui.ShowHelpMarker(u8"Г…Г±Г«ГЁ ГЇГҐГ°ГҐГ¤ ГЎГ®ГІГ®Г¬ Г¬Г ГёГЁГ­Г , ГЎГ®ГІ ГіГЎГҐГ¦ГЁГІ ГЁ Г®ГІГЄГ«ГѕГ·ГЁГІГ±Гї")
+            imgui.ToggleButton(u8"Г‘Г®ГЎГЁГ°Г ГІГј Г¤ГҐГ°ГҐГўГјГї Гў ГЇГ®Г«ГҐ Г§Г°ГҐГ­ГЁГї", cVARS.use_tree_fov, 0.15)
             imgui.SameLine()
-            imgui.ShowHelpMarker(u8"Вкл - будет собирать деревья перед ним, выкл обычная логика")
+            imgui.ShowHelpMarker(u8"Г‚ГЄГ« - ГЎГіГ¤ГҐГІ Г±Г®ГЎГЁГ°Г ГІГј Г¤ГҐГ°ГҐГўГјГї ГЇГҐГ°ГҐГ¤ Г­ГЁГ¬, ГўГ»ГЄГ« Г®ГЎГ»Г·Г­Г Гї Г«Г®ГЈГЁГЄГ ")
             imgui.SetCursorPosX(0)
-            if imgui.ToggleButton(u8" Рандомные паузы", cVARS.enable_random_pauses, 0.15) then
+            if imgui.ToggleButton(u8" ГђГ Г­Г¤Г®Г¬Г­Г»ГҐ ГЇГ ГіГ§Г»", cVARS.enable_random_pauses, 0.15) then
                 config.enable_random_pauses = cVARS.enable_random_pauses[0]
                 save_cfg()
             end
             imgui.SameLine()
-            imgui.ShowHelpMarker(u8"Бот будет делать небольшие случайные остановки во время движения, чтобы выглядеть естественнее")
+            imgui.ShowHelpMarker(u8"ГЃГ®ГІ ГЎГіГ¤ГҐГІ Г¤ГҐГ«Г ГІГј Г­ГҐГЎГ®Г«ГјГёГЁГҐ Г±Г«ГіГ·Г Г©Г­Г»ГҐ Г®Г±ГІГ Г­Г®ГўГЄГЁ ГўГ® ГўГ°ГҐГ¬Гї Г¤ГўГЁГ¦ГҐГ­ГЁГї, Г·ГІГ®ГЎГ» ГўГ»ГЈГ«ГїГ¤ГҐГІГј ГҐГ±ГІГҐГ±ГІГўГҐГ­Г­ГҐГҐ")
             imgui.SetCursorPosX(0)
-            if imgui.ToggleButton(u8"Анти-застревание", cVARS.check_stuck, 0.15) then
+            if imgui.ToggleButton(u8"ГЂГ­ГІГЁ-Г§Г Г±ГІГ°ГҐГўГ Г­ГЁГҐ", cVARS.check_stuck, 0.15) then
                 config.check_stuck = cVARS.check_stuck[0]
                 save_cfg()
             end
             imgui.SameLine()
-            imgui.ShowHelpMarker(u8"Уведомление в тг о ходьбе в стену (Может срабатывать ложно)")
+            imgui.ShowHelpMarker(u8"Г“ГўГҐГ¤Г®Г¬Г«ГҐГ­ГЁГҐ Гў ГІГЈ Г® ГµГ®Г¤ГјГЎГҐ Гў Г±ГІГҐГ­Гі (ГЊГ®Г¦ГҐГІ Г±Г°Г ГЎГ ГІГ»ГўГ ГІГј Г«Г®Г¦Г­Г®)")
             if imgui.ToggleButton(u8" State watchdog", cVARS.state_watchdog_enabled, 0.15) then
                 config.state_watchdog_enabled = cVARS.state_watchdog_enabled[0]
                 save_cfg()
             end
             imgui.SameLine()
             imgui.ShowHelpMarker(u8"If bot hangs too long in one state, watchdog returns it to RUN_FIX_ZABOR.")
-            if imgui.ToggleButton(u8" Пробитие /time", cVARS.time_probe_enabled, 0.15) then
+            if imgui.ToggleButton(u8" ГЏГ°Г®ГЎГЁГІГЁГҐ /time", cVARS.time_probe_enabled, 0.15) then
                 config.time_probe_enabled = cVARS.time_probe_enabled[0]
                 if cVARS.time_probe_enabled[0] then
                     reset_time_probe_cycle()
@@ -5407,11 +5408,11 @@ imgui.OnFrame(function() return cVARS.menu[0] or menu_anim_alpha > 0.001 end,
                 save_cfg()
             end
             imgui.SameLine()
-            imgui.ShowHelpMarker(u8"Пробитие времени каждые N сдач (где N это ваше значение)")
+            imgui.ShowHelpMarker(u8"ГЏГ°Г®ГЎГЁГІГЁГҐ ГўГ°ГҐГ¬ГҐГ­ГЁ ГЄГ Г¦Г¤Г»ГҐ N Г±Г¤Г Г· (ГЈГ¤ГҐ N ГЅГІГ® ГўГ ГёГҐ Г§Г­Г Г·ГҐГ­ГЁГҐ)")
             if cVARS.time_probe_enabled[0] then
                 imgui.SetCursorPosX(0)
                 imgui.PushItemWidth(220)
-                if imgui.InputInt(u8"Через сколько сдач", cVARS.time_probe_interval) then
+                if imgui.InputInt(u8"Г—ГҐГ°ГҐГ§ Г±ГЄГ®Г«ГјГЄГ® Г±Г¤Г Г·", cVARS.time_probe_interval) then
                     cVARS.time_probe_interval[0] = clamp_time_probe_interval(cVARS.time_probe_interval[0])
                     config.time_probe_interval = cVARS.time_probe_interval[0]
                     reset_time_probe_cycle()
@@ -5419,13 +5420,13 @@ imgui.OnFrame(function() return cVARS.menu[0] or menu_anim_alpha > 0.001 end,
                 end
                 imgui.PopItemWidth()
                 imgui.SameLine()
-                imgui.ShowHelpMarker(u8"0 = рандомное пробитие /time. При 0 бот заранее выбирает случайное число от 3 до 20 сдач. От 3 до 20 - фиксированное значение.")
-                if ui_minimal_checkbox(u8" Показывать через сколько сдач пробьется /time", cVARS.time_probe_show_remaining) then
+                imgui.ShowHelpMarker(u8"0 = Г°Г Г­Г¤Г®Г¬Г­Г®ГҐ ГЇГ°Г®ГЎГЁГІГЁГҐ /time. ГЏГ°ГЁ 0 ГЎГ®ГІ Г§Г Г°Г Г­ГҐГҐ ГўГ»ГЎГЁГ°Г ГҐГІ Г±Г«ГіГ·Г Г©Г­Г®ГҐ Г·ГЁГ±Г«Г® Г®ГІ 3 Г¤Г® 20 Г±Г¤Г Г·. ГЋГІ 3 Г¤Г® 20 - ГґГЁГЄГ±ГЁГ°Г®ГўГ Г­Г­Г®ГҐ Г§Г­Г Г·ГҐГ­ГЁГҐ.")
+                if ui_minimal_checkbox(u8" ГЏГ®ГЄГ Г§Г»ГўГ ГІГј Г·ГҐГ°ГҐГ§ Г±ГЄГ®Г«ГјГЄГ® Г±Г¤Г Г· ГЇГ°Г®ГЎГјГҐГІГ±Гї /time", cVARS.time_probe_show_remaining) then
                     config.time_probe_show_remaining = cVARS.time_probe_show_remaining[0]
                     save_cfg()
                 end
             end
-            if imgui.ToggleButton(u8" Рандомное открытие инвентаря (/invent)", cVARS.random_inventory_enabled, 0.15) then
+            if imgui.ToggleButton(u8" ГђГ Г­Г¤Г®Г¬Г­Г®ГҐ Г®ГІГЄГ°Г»ГІГЁГҐ ГЁГ­ГўГҐГ­ГІГ Г°Гї (/invent)", cVARS.random_inventory_enabled, 0.15) then
                 config.random_inventory_enabled = cVARS.random_inventory_enabled[0]
                 if cVARS.random_inventory_enabled[0] then
                     reset_random_inventory_cycle()
@@ -5435,29 +5436,29 @@ imgui.OnFrame(function() return cVARS.menu[0] or menu_anim_alpha > 0.001 end,
                 save_cfg()
             end
             imgui.SameLine()
-            imgui.ShowHelpMarker(u8"Бот рандомно открывает инвентарь через /invent, держит его открытым 5 секунд и закрывает на ESC. Удержание клавиши не нужно.")
+            imgui.ShowHelpMarker(u8"ГЃГ®ГІ Г°Г Г­Г¤Г®Г¬Г­Г® Г®ГІГЄГ°Г»ГўГ ГҐГІ ГЁГ­ГўГҐГ­ГІГ Г°Гј Г·ГҐГ°ГҐГ§ /invent, Г¤ГҐГ°Г¦ГЁГІ ГҐГЈГ® Г®ГІГЄГ°Г»ГІГ»Г¬ 5 Г±ГҐГЄГіГ­Г¤ ГЁ Г§Г ГЄГ°Г»ГўГ ГҐГІ Г­Г  ESC. Г“Г¤ГҐГ°Г¦Г Г­ГЁГҐ ГЄГ«Г ГўГЁГёГЁ Г­ГҐ Г­ГіГ¦Г­Г®.")
             if cVARS.random_inventory_enabled[0] then
                 imgui.SetCursorPosX(0)
-                if ui_minimal_checkbox(u8" Показывать отсчет инвентаря", cVARS.random_inventory_show_remaining) then
+                if ui_minimal_checkbox(u8" ГЏГ®ГЄГ Г§Г»ГўГ ГІГј Г®ГІГ±Г·ГҐГІ ГЁГ­ГўГҐГ­ГІГ Г°Гї", cVARS.random_inventory_show_remaining) then
                     config.random_inventory_show_remaining = cVARS.random_inventory_show_remaining[0]
                     save_cfg()
                 end
             end
-            imgui.ToggleButton(u8" Прыжки при беге", cVARS.enable_jump, 0.15)
+            imgui.ToggleButton(u8" ГЏГ°Г»Г¦ГЄГЁ ГЇГ°ГЁ ГЎГҐГЈГҐ", cVARS.enable_jump, 0.15)
             imgui.SetCursorPosX(0)
-            imgui.ToggleButton(u8" Рандомные повороты", cVARS.enable_random_turns, 0.15)
+            imgui.ToggleButton(u8" ГђГ Г­Г¤Г®Г¬Г­Г»ГҐ ГЇГ®ГўГ®Г°Г®ГІГ»", cVARS.enable_random_turns, 0.15)
             imgui.SetCursorPosX(0)
-            if menu_collapsing_header_begin(u8'Настройки камеры') then
+            if menu_collapsing_header_begin(u8'ГЌГ Г±ГІГ°Г®Г©ГЄГЁ ГЄГ Г¬ГҐГ°Г»') then
                 imgui.PushItemWidth(250)
-                ui_smooth_slider_float(u8"Сглаживание ближнее (<8м)", cVARS.camera_smooth_close, 0.01, 0.5)
-                ui_smooth_slider_float(u8"Сглаживание среднее <25м", cVARS.camera_smooth_mid, 0.01, 0.5)
-                ui_smooth_slider_float(u8"Сглаживание дальнее", cVARS.camera_smooth_far, 0.01, 0.5)
-                ui_smooth_slider_float(u8"Дистанция камеры", cVARS.camera_dist, 5.0, 20.0)
-                ui_smooth_slider_float(u8"Высота камеры", cVARS.camera_height_offset, 0.0, 3.0)
+                ui_smooth_slider_float(u8"Г‘ГЈГ«Г Г¦ГЁГўГ Г­ГЁГҐ ГЎГ«ГЁГ¦Г­ГҐГҐ (<8Г¬)", cVARS.camera_smooth_close, 0.01, 0.5)
+                ui_smooth_slider_float(u8"Г‘ГЈГ«Г Г¦ГЁГўГ Г­ГЁГҐ Г±Г°ГҐГ¤Г­ГҐГҐ <25Г¬", cVARS.camera_smooth_mid, 0.01, 0.5)
+                ui_smooth_slider_float(u8"Г‘ГЈГ«Г Г¦ГЁГўГ Г­ГЁГҐ Г¤Г Г«ГјГ­ГҐГҐ", cVARS.camera_smooth_far, 0.01, 0.5)
+                ui_smooth_slider_float(u8"Г„ГЁГ±ГІГ Г­Г¶ГЁГї ГЄГ Г¬ГҐГ°Г»", cVARS.camera_dist, 5.0, 20.0)
+                ui_smooth_slider_float(u8"Г‚Г»Г±Г®ГІГ  ГЄГ Г¬ГҐГ°Г»", cVARS.camera_height_offset, 0.0, 3.0)
                 imgui.PopItemWidth()
             menu_collapsing_header_end()
             end
-            if imgui.Button(u8"Сохранить настройки", iv2(300, 40)) then
+            if imgui.Button(u8"Г‘Г®ГµГ°Г Г­ГЁГІГј Г­Г Г±ГІГ°Г®Г©ГЄГЁ", iv2(300, 40)) then
                 config.enable_jump = cVARS.enable_jump[0]
                 config.enable_random_turns = cVARS.enable_random_turns[0]
                 config.camera_smooth_close = cVARS.camera_smooth_close[0]
@@ -5467,26 +5468,26 @@ imgui.OnFrame(function() return cVARS.menu[0] or menu_anim_alpha > 0.001 end,
                 config.camera_height_offset = cVARS.camera_height_offset[0]
                 config.enable_random_pauses = cVARS.enable_random_pauses[0]
                 save_cfg()
-                sampAddChatMessage("Настройки анти-бота сохранены!", -1)
+                sampAddChatMessage("ГЌГ Г±ГІГ°Г®Г©ГЄГЁ Г Г­ГІГЁ-ГЎГ®ГІГ  Г±Г®ГµГ°Г Г­ГҐГ­Г»!", -1)
             end
-        elseif render_tab == u8"Телепорт" then
-            imgui.TextWrapped(u8"Раздел для телепорта на стартовую точку фарма лесоруба.")
+        elseif render_tab == u8"Г’ГҐГ«ГҐГЇГ®Г°ГІ" then
+            imgui.TextWrapped(u8"ГђГ Г§Г¤ГҐГ« Г¤Г«Гї ГІГҐГ«ГҐГЇГ®Г°ГІГ  Г­Г  Г±ГІГ Г°ГІГ®ГўГіГѕ ГІГ®Г·ГЄГі ГґГ Г°Г¬Г  Г«ГҐГ±Г®Г°ГіГЎГ .")
             imgui.SetCursorPosX(0)
-            imgui.TextWrapped(u8"Кнопка использует подземный телепорт, затем локально доводит позицию до чемодана с 3D-текстом 'Устройство на работу'.")
+            imgui.TextWrapped(u8"ГЉГ­Г®ГЇГЄГ  ГЁГ±ГЇГ®Г«ГјГ§ГіГҐГІ ГЇГ®Г¤Г§ГҐГ¬Г­Г»Г© ГІГҐГ«ГҐГЇГ®Г°ГІ, Г§Г ГІГҐГ¬ Г«Г®ГЄГ Г«ГјГ­Г® Г¤Г®ГўГ®Г¤ГЁГІ ГЇГ®Г§ГЁГ¶ГЁГѕ Г¤Г® Г·ГҐГ¬Г®Г¤Г Г­Г  Г± 3D-ГІГҐГЄГ±ГІГ®Г¬ 'Г“Г±ГІГ°Г®Г©Г±ГІГўГ® Г­Г  Г°Г ГЎГ®ГІГі'.")
             imgui.Dummy(iv2(0, 10))
             if tp_state.active then
-                imgui.TextColored(menu_style_vec(1.0, 0.8, 0.2, 1.0), u8"Сейчас выполняется телепорт...")
+                imgui.TextColored(menu_style_vec(1.0, 0.8, 0.2, 1.0), u8"Г‘ГҐГ©Г·Г Г± ГўГ»ГЇГ®Г«Г­ГїГҐГІГ±Гї ГІГҐГ«ГҐГЇГ®Г°ГІ...")
                 imgui.Dummy(iv2(0, 6))
             end
-            if imgui.Button(u8"Телепортироваться на фарм", iv2(320, 45)) then
+            if imgui.Button(u8"Г’ГҐГ«ГҐГЇГ®Г°ГІГЁГ°Г®ГўГ ГІГјГ±Гї Г­Г  ГґГ Г°Г¬", iv2(320, 45)) then
                 cVARS.menu[0] = false
                 sampToggleCursor(false)
                 teleport_to_farm_job()
             end
             imgui.SameLine()
-            imgui.ShowHelpMarker(u8"Телепортирует на чемодан с 3D-текстом 'Устройство на работу'. Сначала идёт на опорную точку фермы, потом делает локальный поиск 3D-текста и точный доворот по месту.")
+            imgui.ShowHelpMarker(u8"Г’ГҐГ«ГҐГЇГ®Г°ГІГЁГ°ГіГҐГІ Г­Г  Г·ГҐГ¬Г®Г¤Г Г­ Г± 3D-ГІГҐГЄГ±ГІГ®Г¬ 'Г“Г±ГІГ°Г®Г©Г±ГІГўГ® Г­Г  Г°Г ГЎГ®ГІГі'. Г‘Г­Г Г·Г Г«Г  ГЁГ¤ВёГІ Г­Г  Г®ГЇГ®Г°Г­ГіГѕ ГІГ®Г·ГЄГі ГґГҐГ°Г¬Г», ГЇГ®ГІГ®Г¬ Г¤ГҐГ«Г ГҐГІ Г«Г®ГЄГ Г«ГјГ­Г»Г© ГЇГ®ГЁГ±ГЄ 3D-ГІГҐГЄГ±ГІГ  ГЁ ГІГ®Г·Г­Г»Г© Г¤Г®ГўГ®Г°Г®ГІ ГЇГ® Г¬ГҐГ±ГІГі.")
             imgui.Dummy(iv2(0, 8))
-            if imgui.ToggleButton(u8" Авто телепорт", cVARS.auto_teleport_enabled, 0.15) then
+            if imgui.ToggleButton(u8" ГЂГўГІГ® ГІГҐГ«ГҐГЇГ®Г°ГІ", cVARS.auto_teleport_enabled, 0.15) then
                 config.auto_teleport_enabled = cVARS.auto_teleport_enabled[0]
                 if cVARS.auto_teleport_enabled[0] and tp_is_spawn_ready() then
                     tp_begin_spawn_cleanup()
@@ -5496,15 +5497,15 @@ imgui.OnFrame(function() return cVARS.menu[0] or menu_anim_alpha > 0.001 end,
                 save_cfg()
             end
             imgui.SameLine()
-            imgui.ShowHelpMarker(u8"Автоматически закрывает стартовые окна и скипает диалоги до 15 секунд, а потом через 5 секунд запускает телепорт на фарм.")
+            imgui.ShowHelpMarker(u8"ГЂГўГІГ®Г¬Г ГІГЁГ·ГҐГ±ГЄГЁ Г§Г ГЄГ°Г»ГўГ ГҐГІ Г±ГІГ Г°ГІГ®ГўГ»ГҐ Г®ГЄГ­Г  ГЁ Г±ГЄГЁГЇГ ГҐГІ Г¤ГЁГ Г«Г®ГЈГЁ Г¤Г® 15 Г±ГҐГЄГіГ­Г¤, Г  ГЇГ®ГІГ®Г¬ Г·ГҐГ°ГҐГ§ 5 Г±ГҐГЄГіГ­Г¤ Г§Г ГЇГіГ±ГЄГ ГҐГІ ГІГҐГ«ГҐГЇГ®Г°ГІ Г­Г  ГґГ Г°Г¬.")
             if cVARS.auto_teleport_enabled[0] and tp_auto_state.cleanup_active then
                 local remain = math.max(0, math.ceil(tp_auto_state.cleanup_deadline - os.clock()))
-                imgui.Text(u8"Очистка спавна: " .. remain .. u8" с")
+                imgui.Text(u8"ГЋГ·ГЁГ±ГІГЄГ  Г±ГЇГ ГўГ­Г : " .. remain .. u8" Г±")
             elseif cVARS.auto_teleport_enabled[0] and tp_auto_state.armed then
                 local remain = math.max(0, math.ceil(tp_auto_state.trigger_at - os.clock()))
-                imgui.Text(u8"Авто телепорт через: " .. remain .. u8" с")
+                imgui.Text(u8"ГЂГўГІГ® ГІГҐГ«ГҐГЇГ®Г°ГІ Г·ГҐГ°ГҐГ§: " .. remain .. u8" Г±")
             end
-            if imgui.ToggleButton(u8" Авто /rec", cVARS.auto_reconnect_enabled, 0.15) then
+            if imgui.ToggleButton(u8" ГЂГўГІГ® /rec", cVARS.auto_reconnect_enabled, 0.15) then
                 config.auto_reconnect_enabled = cVARS.auto_reconnect_enabled[0]
                 if not cVARS.auto_reconnect_enabled[0] then
                     tp_reset_reconnect()
@@ -5514,29 +5515,29 @@ imgui.OnFrame(function() return cVARS.menu[0] or menu_anim_alpha > 0.001 end,
                 save_cfg()
             end
             imgui.SameLine()
-            imgui.ShowHelpMarker(u8"После срыва соединения автоматически пытается выполнить /rec и не даёт старому телепорту продолжаться.")
+            imgui.ShowHelpMarker(u8"ГЏГ®Г±Г«ГҐ Г±Г°Г»ГўГ  Г±Г®ГҐГ¤ГЁГ­ГҐГ­ГЁГї Г ГўГІГ®Г¬Г ГІГЁГ·ГҐГ±ГЄГЁ ГЇГ»ГІГ ГҐГІГ±Гї ГўГ»ГЇГ®Г«Г­ГЁГІГј /rec ГЁ Г­ГҐ Г¤Г ВёГІ Г±ГІГ Г°Г®Г¬Гі ГІГҐГ«ГҐГЇГ®Г°ГІГі ГЇГ°Г®Г¤Г®Г«Г¦Г ГІГјГ±Гї.")
             if cVARS.auto_reconnect_enabled[0] and tp_reconnect_state.armed then
-                imgui.Text(u8"Авто /rec активен")
+                imgui.Text(u8"ГЂГўГІГ® /rec Г ГЄГІГЁГўГҐГ­")
             end
             imgui.Dummy(iv2(0, 8))
-            imgui.Text(u8"Опорная точка:")
+            imgui.Text(u8"ГЋГЇГ®Г°Г­Г Гї ГІГ®Г·ГЄГ :")
             imgui.SameLine()
             imgui.Text(string.format("X: %.3f  Y: %.3f  Z: %.3f", TP_FARM_FALLBACK.x, TP_FARM_FALLBACK.y, TP_FARM_FALLBACK.z))
-        elseif render_tab == u8"Статистика" then
+        elseif render_tab == u8"Г‘ГІГ ГІГЁГ±ГІГЁГЄГ " then
             imgui.BeginGroup()
-                if imgui.ToggleButton(ti.ICON_PRESENTATION .. u8" Показывать статистику", cVARS.stat_status, 0.15) then save_cfg() end
+                if imgui.ToggleButton(ti.ICON_PRESENTATION .. u8" ГЏГ®ГЄГ Г§Г»ГўГ ГІГј Г±ГІГ ГІГЁГ±ГІГЁГЄГі", cVARS.stat_status, 0.15) then save_cfg() end
                 imgui.SetCursorPosX(0)
-                if ui_minimal_checkbox(ti.ICON_RAINBOW .. u8" Радужный текст", cVARS.rainbowcolor) then save_cfg() end
+                if ui_minimal_checkbox(ti.ICON_RAINBOW .. u8" ГђГ Г¤ГіГ¦Г­Г»Г© ГІГҐГЄГ±ГІ", cVARS.rainbowcolor) then save_cfg() end
                 imgui.SetCursorPosX(0)
                 imgui.PushItemWidth(150)
-                if imgui.InputInt(u8"Цена за дерево $", cVARS.derevo_value) then
+                if imgui.InputInt(u8"Г–ГҐГ­Г  Г§Г  Г¤ГҐГ°ГҐГўГ® $", cVARS.derevo_value) then
                     save_cfg()
                 end
-                if imgui.InputInt(u8"Срублено деревьев", cVARS.derevo_amount) then
+                if imgui.InputInt(u8"Г‘Г°ГіГЎГ«ГҐГ­Г® Г¤ГҐГ°ГҐГўГјГҐГў", cVARS.derevo_amount) then
                     save_cfg()
                 end
                 imgui.PopItemWidth()
-                imgui.Text(u8"Текущий заработок: " ..(cVARS.derevo_amount[0] * cVARS.derevo_value[0]) .. u8" $")
+                imgui.Text(u8"Г’ГҐГЄГіГ№ГЁГ© Г§Г Г°Г ГЎГ®ГІГ®ГЄ: " ..(cVARS.derevo_amount[0] * cVARS.derevo_value[0]) .. u8" $")
             imgui.EndGroup()
             imgui.SameLine()
             imgui.SetCursorPosX(0)
@@ -5551,51 +5552,51 @@ imgui.OnFrame(function() return cVARS.menu[0] or menu_anim_alpha > 0.001 end,
             imgui.BeginGroup()
                 imgui.SetCursorPos(iv2(10, imgui.GetCursorPosY() + 14))
                 imgui.PushFont(fonts[18])
-                imgui.Text(ti.ICON_WOOD .. u8" Дерево высшего качества")
+                imgui.Text(ti.ICON_WOOD .. u8" Г„ГҐГ°ГҐГўГ® ГўГ»Г±ГёГҐГЈГ® ГЄГ Г·ГҐГ±ГІГўГ ")
                 imgui.PopFont()
                 local sep_p = imgui.GetCursorScreenPos()
                 local sep_w = block_size.x
                 dl:AddLine(iv2(sep_p.x, sep_p.y), iv2(sep_p.x + sep_w, sep_p.y), border_col, 1.2)
                 imgui.Dummy(iv2(0, 10))
-                imgui.Text(u8"    За день:   " .. cVARS.daily_trees[0])
-                imgui.Text(u8"    За неделю: " .. cVARS.weekly_trees[0])
+                imgui.Text(u8"    Г‡Г  Г¤ГҐГ­Гј:   " .. cVARS.daily_trees[0])
+                imgui.Text(u8"    Г‡Г  Г­ГҐГ¤ГҐГ«Гѕ: " .. cVARS.weekly_trees[0])
                 imgui.Dummy(iv2(0, 12))
             imgui.EndGroup()
             imgui.SetCursorPosY(imgui.GetCursorPosY() + 20)
-            if imgui.Button(u8"Очистить статистику", iv2(200, 28)) then
+            if imgui.Button(u8"ГЋГ·ГЁГ±ГІГЁГІГј Г±ГІГ ГІГЁГ±ГІГЁГЄГі", iv2(200, 28)) then
                 cVARS.daily_trees[0] = 0
                 cVARS.weekly_trees[0] = 0
                 cVARS.derevo_amount[0] = 0
                 save_cfg()
             end
-        elseif render_tab == u8"Инструкция" then
+        elseif render_tab == u8"Г€Г­Г±ГІГ°ГіГЄГ¶ГЁГї" then
             imgui.TextWrapped(u8[[
-Бот полностью автоматизирует работу лесоруба на Arizona RP.
+ГЃГ®ГІ ГЇГ®Г«Г­Г®Г±ГІГјГѕ Г ГўГІГ®Г¬Г ГІГЁГ§ГЁГ°ГіГҐГІ Г°Г ГЎГ®ГІГі Г«ГҐГ±Г®Г°ГіГЎГ  Г­Г  Arizona RP.
 
-Включите бота в разделе "Главная -> Бот"
-Настройте анти-админ - функции для безопасности
-Подключите Telegram бот будет присылать уведомления и принимать команды
-Автоеда и автопиво помогут не умереть от голода
-Умная сдача сама выберет ближайшую точку
+Г‚ГЄГ«ГѕГ·ГЁГІГҐ ГЎГ®ГІГ  Гў Г°Г Г§Г¤ГҐГ«ГҐ "ГѓГ«Г ГўГ­Г Гї -> ГЃГ®ГІ"
+ГЌГ Г±ГІГ°Г®Г©ГІГҐ Г Г­ГІГЁ-Г Г¤Г¬ГЁГ­ - ГґГіГ­ГЄГ¶ГЁГЁ Г¤Г«Гї ГЎГҐГ§Г®ГЇГ Г±Г­Г®Г±ГІГЁ
+ГЏГ®Г¤ГЄГ«ГѕГ·ГЁГІГҐ Telegram ГЎГ®ГІ ГЎГіГ¤ГҐГІ ГЇГ°ГЁГ±Г»Г«Г ГІГј ГіГўГҐГ¤Г®Г¬Г«ГҐГ­ГЁГї ГЁ ГЇГ°ГЁГ­ГЁГ¬Г ГІГј ГЄГ®Г¬Г Г­Г¤Г»
+ГЂГўГІГ®ГҐГ¤Г  ГЁ Г ГўГІГ®ГЇГЁГўГ® ГЇГ®Г¬Г®ГЈГіГІ Г­ГҐ ГіГ¬ГҐГ°ГҐГІГј Г®ГІ ГЈГ®Г«Г®Г¤Г 
+Г“Г¬Г­Г Гї Г±Г¤Г Г·Г  Г±Г Г¬Г  ГўГ»ГЎГҐГ°ГҐГІ ГЎГ«ГЁГ¦Г Г©ГёГіГѕ ГІГ®Г·ГЄГі
 
-По всем вопросам: @Official_Peredoz \ @yakov
+ГЏГ® ГўГ±ГҐГ¬ ГўГ®ГЇГ°Г®Г±Г Г¬: @Official_Peredoz \ @yakov
             ]])
             imgui.PushFont(fonts[12])
-            if menu_collapsing_header_begin(u8'1. Как подключить ТГ бота?') then
-                imgui.Text(u8"1. Зайди в Telegram и найди бота @BotFather")
-                imgui.Text(u8"2. Нажми на 'Start' или введи /start")
-                imgui.Text(u8"3. Введи команду /newbot для создания нового бота")
-                imgui.Text(u8"4. Придумай имя для бота (отображаемое)")
-                imgui.Text(u8"5. Придумай юзернейм бота, например: MyTestBot")
-                imgui.Text(u8"6. После BotFather выдаст тебе.. токен(типо: 123456789:ABCDeKltuVWXyz)")
-                imgui.Text(u8"7. Скопируй токен и вставь его в поле Token бота")
-                imgui.Text(u8"8. Убедись, что включена кнопка Включить Telegram")
-                imgui.Text(u8"9. Дальше заходи в бота @GetMyChatID_Bot или подобного")
-                imgui.Text(u8"10. Пиши старт /start и ищи строку User ID (например 14881337)")
-                imgui.Text(u8"11. Копируй циферки и вставляй в поле Chat ID")
-                imgui.Text(u8"12. Нажми кнопку тест уведомления, если не пришлёт ничего бот")
-                imgui.Text(u8"12. ..то перезагрузи скрипт")
-                imgui.Text(u8"13. Теперь всо заибата и можешь пользоваться!")
+            if menu_collapsing_header_begin(u8'1. ГЉГ ГЄ ГЇГ®Г¤ГЄГ«ГѕГ·ГЁГІГј Г’Гѓ ГЎГ®ГІГ ?') then
+                imgui.Text(u8"1. Г‡Г Г©Г¤ГЁ Гў Telegram ГЁ Г­Г Г©Г¤ГЁ ГЎГ®ГІГ  @BotFather")
+                imgui.Text(u8"2. ГЌГ Г¦Г¬ГЁ Г­Г  'Start' ГЁГ«ГЁ ГўГўГҐГ¤ГЁ /start")
+                imgui.Text(u8"3. Г‚ГўГҐГ¤ГЁ ГЄГ®Г¬Г Г­Г¤Гі /newbot Г¤Г«Гї Г±Г®Г§Г¤Г Г­ГЁГї Г­Г®ГўГ®ГЈГ® ГЎГ®ГІГ ")
+                imgui.Text(u8"4. ГЏГ°ГЁГ¤ГіГ¬Г Г© ГЁГ¬Гї Г¤Г«Гї ГЎГ®ГІГ  (Г®ГІГ®ГЎГ°Г Г¦Г ГҐГ¬Г®ГҐ)")
+                imgui.Text(u8"5. ГЏГ°ГЁГ¤ГіГ¬Г Г© ГѕГ§ГҐГ°Г­ГҐГ©Г¬ ГЎГ®ГІГ , Г­Г ГЇГ°ГЁГ¬ГҐГ°: MyTestBot")
+                imgui.Text(u8"6. ГЏГ®Г±Г«ГҐ BotFather ГўГ»Г¤Г Г±ГІ ГІГҐГЎГҐ.. ГІГ®ГЄГҐГ­(ГІГЁГЇГ®: 123456789:ABCDeKltuVWXyz)")
+                imgui.Text(u8"7. Г‘ГЄГ®ГЇГЁГ°ГіГ© ГІГ®ГЄГҐГ­ ГЁ ГўГ±ГІГ ГўГј ГҐГЈГ® Гў ГЇГ®Г«ГҐ Token ГЎГ®ГІГ ")
+                imgui.Text(u8"8. Г“ГЎГҐГ¤ГЁГ±Гј, Г·ГІГ® ГўГЄГ«ГѕГ·ГҐГ­Г  ГЄГ­Г®ГЇГЄГ  Г‚ГЄГ«ГѕГ·ГЁГІГј Telegram")
+                imgui.Text(u8"9. Г„Г Г«ГјГёГҐ Г§Г ГµГ®Г¤ГЁ Гў ГЎГ®ГІГ  @GetMyChatID_Bot ГЁГ«ГЁ ГЇГ®Г¤Г®ГЎГ­Г®ГЈГ®")
+                imgui.Text(u8"10. ГЏГЁГёГЁ Г±ГІГ Г°ГІ /start ГЁ ГЁГ№ГЁ Г±ГІГ°Г®ГЄГі User ID (Г­Г ГЇГ°ГЁГ¬ГҐГ° 14881337)")
+                imgui.Text(u8"11. ГЉГ®ГЇГЁГ°ГіГ© Г¶ГЁГґГҐГ°ГЄГЁ ГЁ ГўГ±ГІГ ГўГ«ГїГ© Гў ГЇГ®Г«ГҐ Chat ID")
+                imgui.Text(u8"12. ГЌГ Г¦Г¬ГЁ ГЄГ­Г®ГЇГЄГі ГІГҐГ±ГІ ГіГўГҐГ¤Г®Г¬Г«ГҐГ­ГЁГї, ГҐГ±Г«ГЁ Г­ГҐ ГЇГ°ГЁГёГ«ВёГІ Г­ГЁГ·ГҐГЈГ® ГЎГ®ГІ")
+                imgui.Text(u8"12. ..ГІГ® ГЇГҐГ°ГҐГ§Г ГЈГ°ГіГ§ГЁ Г±ГЄГ°ГЁГЇГІ")
+                imgui.Text(u8"13. Г’ГҐГЇГҐГ°Гј ГўГ±Г® Г§Г ГЁГЎГ ГІГ  ГЁ Г¬Г®Г¦ГҐГёГј ГЇГ®Г«ГјГ§Г®ГўГ ГІГјГ±Гї!")
             menu_collapsing_header_end()
             end
             imgui.PopFont()
@@ -5642,9 +5643,9 @@ imgui.OnFrame(
     function()
         local window_size = imgui.ImVec2(300, 200)
         imgui.SetNextWindowSize(window_size, imgui.Cond.FirstUseEver)
-        if imgui.Begin(u8"Выбор цвета мигания", warning_color_window, imgui.WindowFlags.NoCollapse + imgui.WindowFlags.NoResize) then
-            imgui.ColorEdit4(u8"Цвет", cVARS.warning_color)
-            if imgui.Button(u8"Закрыть", imgui.ImVec2(100, 30)) then
+        if imgui.Begin(u8"Г‚Г»ГЎГ®Г° Г¶ГўГҐГІГ  Г¬ГЁГЈГ Г­ГЁГї", warning_color_window, imgui.WindowFlags.NoCollapse + imgui.WindowFlags.NoResize) then
+            imgui.ColorEdit4(u8"Г–ГўГҐГІ", cVARS.warning_color)
+            if imgui.Button(u8"Г‡Г ГЄГ°Г»ГІГј", imgui.ImVec2(100, 30)) then
                 warning_color_window[0] = false
             end
             imgui.End()
@@ -5793,36 +5794,36 @@ local MOUSEEVENTF_LEFTDOWN = 0x0002
 local MOUSEEVENTF_LEFTUP = 0x0004
 
 local TP_CLOSE_WORDS = {
-    "Закры", "закры", "close", "Close", "skip", "Skip", "Пропус", "пропус", "Позже", "позже"
+    "Г‡Г ГЄГ°Г»", "Г§Г ГЄГ°Г»", "close", "Close", "skip", "Skip", "ГЏГ°Г®ГЇГіГ±", "ГЇГ°Г®ГЇГіГ±", "ГЏГ®Г§Г¦ГҐ", "ГЇГ®Г§Г¦ГҐ"
 }
 
 local TP_ACCEPT_WORDS = {
-    "Окей", "окей", "ОК", "Ок", "ок",
-    "Выдвига", "выдвига",
-    "Продолж", "продолж",
-    "Отправ", "отправ",
-    "Принять", "принять",
-    "Перейти", "перейти",
-    "Поех", "поех"
+    "ГЋГЄГҐГ©", "Г®ГЄГҐГ©", "ГЋГЉ", "ГЋГЄ", "Г®ГЄ",
+    "Г‚Г»Г¤ГўГЁГЈГ ", "ГўГ»Г¤ГўГЁГЈГ ",
+    "ГЏГ°Г®Г¤Г®Г«Г¦", "ГЇГ°Г®Г¤Г®Г«Г¦",
+    "ГЋГІГЇГ°Г Гў", "Г®ГІГЇГ°Г Гў",
+    "ГЏГ°ГЁГ­ГїГІГј", "ГЇГ°ГЁГ­ГїГІГј",
+    "ГЏГҐГ°ГҐГ©ГІГЁ", "ГЇГҐГ°ГҐГ©ГІГЁ",
+    "ГЏГ®ГҐГµ", "ГЇГ®ГҐГµ"
 }
 
 local TP_AD_HINTS = {
     "BATTLEPASS", "BattlePass", "battlepass",
     "PayDay", "payday",
-    "Кейс", "кейс",
-    "Донат", "донат",
-    "Скин", "скин",
-    "Автомобиль", "автомобиль",
+    "ГЉГҐГ©Г±", "ГЄГҐГ©Г±",
+    "Г„Г®Г­Г ГІ", "Г¤Г®Г­Г ГІ",
+    "Г‘ГЄГЁГ­", "Г±ГЄГЁГ­",
+    "ГЂГўГІГ®Г¬Г®ГЎГЁГ«Гј", "Г ГўГІГ®Г¬Г®ГЎГЁГ«Гј",
     "Mansory", "McLaren", "BMW"
 }
 
 local TP_QUEST_HINTS = {
-    "паспорт", "Паспорт",
-    "Марию", "марию",
-    "Мэрию", "мэрию",
-    "миникарте", "Миникарте",
-    "задание", "Задание",
-    "выдвигаюсь", "Выдвигаюсь"
+    "ГЇГ Г±ГЇГ®Г°ГІ", "ГЏГ Г±ГЇГ®Г°ГІ",
+    "ГЊГ Г°ГЁГѕ", "Г¬Г Г°ГЁГѕ",
+    "ГЊГЅГ°ГЁГѕ", "Г¬ГЅГ°ГЁГѕ",
+    "Г¬ГЁГ­ГЁГЄГ Г°ГІГҐ", "ГЊГЁГ­ГЁГЄГ Г°ГІГҐ",
+    "Г§Г Г¤Г Г­ГЁГҐ", "Г‡Г Г¤Г Г­ГЁГҐ",
+    "ГўГ»Г¤ГўГЁГЈГ ГѕГ±Гј", "Г‚Г»Г¤ГўГЁГЈГ ГѕГ±Гј"
 }
 
 local function tp_mouse_click_screen(x, y)
@@ -5917,7 +5918,7 @@ tp_trigger_overlay_buttons = function(now)
             return
         end
 
-        -- 1) Закрываем battlepass/promo сверху справа.
+        -- 1) Г‡Г ГЄГ°Г»ГўГ ГҐГ¬ battlepass/promo Г±ГўГҐГ°ГµГі Г±ГЇГ°Г ГўГ .
         tp_click_points(TP_OVERLAY_CLOSE_POINTS, 60)
         wait(140)
 
@@ -5925,7 +5926,7 @@ tp_trigger_overlay_buttons = function(now)
             return
         end
 
-        -- 2) Жмем только маленькую кнопку диалога бота внизу (Да! / Окей, выдвигаюсь).
+        -- 2) Г†Г¬ГҐГ¬ ГІГ®Г«ГјГЄГ® Г¬Г Г«ГҐГ­ГјГЄГіГѕ ГЄГ­Г®ГЇГЄГі Г¤ГЁГ Г«Г®ГЈГ  ГЎГ®ГІГ  ГўГ­ГЁГ§Гі (Г„Г ! / ГЋГЄГҐГ©, ГўГ»Г¤ГўГЁГЈГ ГѕГ±Гј).
         tp_click_points(TP_OVERLAY_DIALOG_POINTS, 50)
     end)
 end
@@ -6102,7 +6103,7 @@ tp_mark_connection_closed = function(reason, schedule_reconnect)
         return
     end
     tp_state.connection_closed = true
-    tp_cancel_all(reason or "отмена телепорта из-за закрытия соединения")
+    tp_cancel_all(reason or "Г®ГІГ¬ГҐГ­Г  ГІГҐГ«ГҐГЇГ®Г°ГІГ  ГЁГ§-Г§Г  Г§Г ГЄГ°Г»ГІГЁГї Г±Г®ГҐГ¤ГЁГ­ГҐГ­ГЁГї")
     if schedule_reconnect == false then
         tp_reset_reconnect()
     else
@@ -6445,8 +6446,8 @@ local function tp_clean_label_text(text)
     return text
 end
 
-local TP_JOB_LABEL_TEXT = "Устройство на работу"
-local TP_JOB_LABEL_SHORT = "Устройство"
+local TP_JOB_LABEL_TEXT = "Г“Г±ГІГ°Г®Г©Г±ГІГўГ® Г­Г  Г°Г ГЎГ®ГІГі"
+local TP_JOB_LABEL_SHORT = "Г“Г±ГІГ°Г®Г©Г±ГІГўГ®"
 
 local function tp_is_exact_job_label(text)
     return text == TP_JOB_LABEL_TEXT or text:find(TP_JOB_LABEL_TEXT, 1, true) ~= nil
@@ -6524,7 +6525,7 @@ end
 
 local function tp_perform_farm_teleport(target_x, target_y, target_z, session)
     if tp_state.active then
-        tp_chat("Телепорт уже выполняется.")
+        tp_chat("Г’ГҐГ«ГҐГЇГ®Г°ГІ ГіГ¦ГҐ ГўГ»ГЇГ®Г«Г­ГїГҐГІГ±Гї.")
         return false
     end
 
@@ -6561,7 +6562,7 @@ local function tp_perform_farm_teleport(target_x, target_y, target_z, session)
             pre_land_z = math.max(transit_z, math.min(resolved_target_z - 12.0, resolved_target_z - 0.75))
         else
             tp_abort_if_needed(session)
-            tp_chat("Точный 3D-текст не найден, поиск продолжен в зоне фарма.")
+            tp_chat("Г’Г®Г·Г­Г»Г© 3D-ГІГҐГЄГ±ГІ Г­ГҐ Г­Г Г©Г¤ГҐГ­, ГЇГ®ГЁГ±ГЄ ГЇГ°Г®Г¤Г®Г«Г¦ГҐГ­ Гў Г§Г®Г­ГҐ ГґГ Г°Г¬Г .")
         end
 
         tp_abort_if_needed(session)
@@ -6597,7 +6598,7 @@ local function tp_perform_farm_teleport(target_x, target_y, target_z, session)
         if tostring(err) == TP_ABORT_TOKEN then
             return false, "aborted"
         end
-        tp_chat("Ошибка телепорта: " .. tostring(err))
+        tp_chat("ГЋГёГЁГЎГЄГ  ГІГҐГ«ГҐГЇГ®Г°ГІГ : " .. tostring(err))
         return false, tostring(err)
     end
 
@@ -6610,7 +6611,7 @@ end
 
 function teleport_to_farm_job()
     if tp_state.active or tp_state.pending then
-        tp_chat("Телепорт уже выполняется.")
+        tp_chat("Г’ГҐГ«ГҐГЇГ®Г°ГІ ГіГ¦ГҐ ГўГ»ГЇГ®Г«Г­ГїГҐГІГ±Гї.")
         return
     end
 
@@ -6643,7 +6644,7 @@ function teleport_to_farm_job()
             tp_try_snap_to_job_label(1.0)
             tp_abort_if_needed(session)
             if not tp_should_abort(session) then
-                tp_chat("Телепорт на фарм завершён.")
+                tp_chat("Г’ГҐГ«ГҐГЇГ®Г°ГІ Г­Г  ГґГ Г°Г¬ Г§Г ГўГҐГ°ГёВёГ­.")
             end
         end)
 
@@ -6656,20 +6657,20 @@ function teleport_to_farm_job()
         end
 
         if not ok_thread and tostring(err) ~= TP_ABORT_TOKEN then
-            tp_chat("Ошибка запуска телепорта: " .. tostring(err))
+            tp_chat("ГЋГёГЁГЎГЄГ  Г§Г ГЇГіГ±ГЄГ  ГІГҐГ«ГҐГЇГ®Г°ГІГ : " .. tostring(err))
         end
     end)
 end
 
-function cMsg(text) -- чтобы делать 5 строк при загрузке
-    sampAddChatMessage("[{7208fc}Leso{6207d9}Руб{FFFFFF}] " .. text, -1)
+function cMsg(text) -- Г·ГІГ®ГЎГ» Г¤ГҐГ«Г ГІГј 5 Г±ГІГ°Г®ГЄ ГЇГ°ГЁ Г§Г ГЈГ°ГіГ§ГЄГҐ
+    sampAddChatMessage("[{7208fc}Leso{6207d9}ГђГіГЎ{FFFFFF}] " .. text, -1)
 end
 
 imgui.OnInitialize(function()
     imgui.GetIO().IniFilename = nil
 
     local my_font_compressed_data_base85 = "7])#######d?fma'/###[),##2(V$#Q6>##u@;*>vo>Z)7KMiK6f>11fY;996He8#CD2MK]sEn/(RdL<#)'McY5S>-FqEn/NFxF>milS;Z4S>-+B^01kZn42Vm:H%x.>>#fWN$5aNV=B%U$8ncPUV$77YY#_`(*H>*>>#M>:@-ud5&5#-0%JIv<7eN)35&<7h(E?/d<BoL3NPcq.>-r@pV-TT$=(k8nO$],>>#gqEn/<_[FHZiaWs9euH2T@uu#G4JuBN4*SU8mQS%F3kn/`K[^I*Tj)#vfG<-T)NU/+>00F<eeZgF&O>HJx?U2<%S+HL0a5Nnsp4J2H:;$>>N+2]slx4k)-UAeI1=#G<5)MRZ<igKQP?MSF(VGS8'DE6S7&4n.[w'OMYY#0]Wh#Ys%_#[/;,#NR)8ve_nI-TbW3M<DT;-,b@U.jE,+#8eIU.%####1F;=-s.g,MN_vY#W#juLke)Z#DY2uLf.BrM0oU%kP:c@t`^W1#rP'##bkLEN%hO`<xfo+#KFBv-bWn*.FkUxL;xSfLLLZY#keJ(MoPG&#*s/kL%8gV-M@2I$tIbA#,xkA#S@@I->LE/1`>uu#'5YY#7;uu#ss:T..%###^Z`=-L#iP/LKMigEk^oes2>PpceL]lWc8GjYjUJDHpI&GMiefLMpFD<j,ZS@@Q^_&..(B#L2KWN&rJfL[f1p.f@C>#u,2_A-p=xt_dS-H)LF_&I*2^#@N#<-$sG<-.p8gLZghlL^3IA4Ud62BnIhumGRt-$'Af-HfK'9AHR@/1Dg_k4M2V7n:]$YlUnL+iUcpI_C)5;nt/QD-498ZM'</#M[;X'M'4DhLIxRiLHcCH-*hLtL8a]rQ-]F&#J.#'#te'f#?mm*Mr^GVd?I(^#W-u-$5P*rLnaSwuo*T,M-Tpwuahk*v*>-$vF=W%v6,h#v8]gwMh(Vp.=wV:v:BCwK+#q-$TDa-6lrFkO1PLJ:jefS8f=OkknEo^f<Rd--%206vEp57vCxj5vcgG<-#>/SRp?$'vCd+;.<^Np#=ec/$AF0Gn]xQjLhr>8%IQ*REnhm7RBw_G%oQN;)nJT:v.YjfLihr7[mp@)=(S_`b*nxP/```%XMN*##5iGd<M^ouGRPpe<94CGDE:*#>1E&2^,'b`<T<Kkb]<bSA9CY&#)?jp'5G;:%P8a-62>Q+`Xr5f_W^j9;ukL+i^Ab8&v2QD-sTG-M>Fw/vi5?;#r$a..dx6qLTZ]#M0g>oLd6>xuilF?-F(m<-x4T;->=DiLQlD;?P4_S.Y%tV.?:t-$D5?F%rh+;dP%$F@T1Xk4%n>_/W3vW.H^H;6md8/1UL#l+m)Ow9'uT^#/YFm#_dEB--=K$.FPoVM8G5gLBrJfL?.*$#M%###%2/vLf?jZ#<OI@#jbO_.3.>>#5AT;-4$T,MemsmL+SMpL@Y%iLu4$##1lA,Me2#&#)(MT.sQ>+#-.MT.DDc>#ekw6/$:F&#k?hhLt3L7'CPDcV/Jc._dr*Pf.'S%kNI=ipoSf=uGjKSIvKI`j,qWD<jb_VQMp9v-gaDj(0on34RC/2'LFQk4oLwCah4b1g3HOxkRbtIq0.tk4--k>#7H9&=@CP/)ar)<-tPf9vxo64v6(>uu$-S1vvv@1vpd%1vlWi0vCl9BuabpS1fL(##)B&##nA)i]#`p?^CCt-$L8:I$VRc8/:qTq)RAl-$]`l-$3=0jCmj]b%5Rae$[.LcDSuh'&<I#AXxUX&#RYPe$Dnu=YB64F%1rsOogd+poWkX.qG&/C&h/hiqI?Se$@nhFro]+##g;Ig<8nw6/&)###`*v=P[aEL#.xHs$Ew/6&UjlN'f]Rh(vO9+*0CvC+@6]],P)Cv-ar)9/qefQ0+XLk1;K3.3K>pF4[1V`5l$=#7&n#<86a`T9FSFn:VF-1<g9jI=w,Pc>1v6&@Ais>AQ[YWBgbR.GW2SvK>_anNOQP1P`D7JQp7tcR*+Q&T<*S?UsJUfCOPr+swUb&#u`U6M4=f6M*SpV-0@(`&UsuXK[OJdqJUFErXTk9WDunF3rNmlEP3$aIc5/?KOH_9MC&$7X2bjcWLudYP:K.m.jM7YY0vHS@E*^xbKU@/1JxR`Wlwh(jw_V5&k$^S@dDRfqeNvfC[x+/hu(Q;H)PQG`s_Rm&/rrSIqe<N'Qj6gLbX?)j&rPm8.%:aN2PJ/q2@Zm8FS%HVkkog(vg4NT4&.Tn6XMN9ZROaWT$)Hr*sma3^9=<H7I4BbUhnN0*n86SHU:HrJ'R68_w,$YN6<BtV2lH;aqTBXu3Ph(G(iBFMsiTenHSn/P@gBXZ##%#5<r6AudQ$YuG+bs%<ShCDUQ*s@@ZtZHvcb<B7Lhqdc++N-`i=$9aaOB8=Vbsj]&iLUB_+37J-o]*#Jc3E6v[cR&-J;.jrUnTLuCXVuW]>]#1]u#>3J`W&N2(p&vuHCK7j(X4KJVco%d<^5A>dsn'^>Bv-&lWeJ&Gb6K2_L?Xp8E^R,WO?69&,,OpJ:E1dj3N=QBa14^lCNnv?l;*Eb.bS?-(-$'GB_%9fw6Q??*xdpfHAwQ0ww93U$Co?-9vK?Z*=a',])$_Po*dWn&2Y3L2n4@-5k?kUfP44(v-SkCftj9].cuk(J<g'P/$j9o7D;:8h0^q]Jm:x-Q7/:]q=F.<0Zik_:I[.*0:3rAOW@4U?G).sSCa:8cU>xHSue+M,jwQKd`>8%6]###@d%H)+,Bf3L]B.*d.Ls-cNeF4PDes.f^T,5Tat]#d52s%_=gK1]EV`NLm)A+$xe7nNQrB8K)###hm#DW)1eU&:i###wlqB#cc``3Qh%i)HCD9.LJ4Q',u<2C*xK^#iY&nJp(;b7q3n0#5MwqL,IL*#=sgo.=66N'iQGw.W$<8.=lZq;$P1gMf]Zx6$^iA.'$CD3`&T,3-BAqD1(nW_+@Qv$hnGI61sUD30)JS@6f7^#X?':%b2kMC_>G$GxEl0(q'ZJ(P'Xp%/c@p,<IlA#X<kR/#&`'%VWA#G[D1PUFPF&)j'&k'X(g.&$^.tdb/W?YP-O9%(UGs-jN7#M*RH/&YNOp%F*MB#M0*##Qle+MGdhsLQv'*#kg*iMcd6lLft+G43`<9/ko&T/O(;9.x<7f3O7oA,@g=t_JTvv-=@[s$;xs9):i^F*U9Gj'8+P?g=#JaJQv(4'1D8A,`$r%,QxTN2$sB8.nM/iL'#38(E?ZpMVfv40T?;O1x+iT/khl3+$Qtx%YMI-)Pu.60jQHL2D=T60#LQ4(3`j0(5BR.M[Ofi1OA422ZBp]=8AP##tR0^#m,`g%fQ_c)nZai0]$%##sbLs-<)'J31E.H)*)TF4+87<.(Ot(3?RYn*qxpI*JAHg)8qLhLA+p+M.fWa4(m]npYrjT9>^Xacl=+j1l@4j1]K$X976oZI[X=X(%iNX.7M>YuRLhW-/L$C#5+iZ#J-iT9EfH03),Yj1Td.k2:Y3B-@f:T0H8h9%xFRN'1gcI8g_b&#r&eiL+tI(#e,>>#+Q0W-lI[?TE4vr-gc``3d^s/Mh:U%6uW2B%pBFA#4(XD##.(:)uT4x#-/7#Nrb623kiW%;8<=h:)xZP;]6t%,Fcv6LoJ,$Gjb6k2#>M0(AabVfj_6k2IhhE#T0l;-L.4LEb^Dp9nC,`4)t6LEcD.h()NV)3nuJ-)IYZ@b<Z@=7e8umL[pM...82mL9&RQ8<0%w%u/0s$O),##$.A5#Dud(#hD?9/Kp?d)=9..Mx?,gLh6<9//W8f3LhwLM$*>>%llBF+Mfe.2oKx8%n>1q%(0jLFaWgm&gUw8%c=4h8ZdERDH2XW/fKgq%6kGhm7<MG*fOu;-s4pr-Pf[+MmQ2AN=[,5M-Qo'.+x4gLRZfF-Zu0@/O29f3G`8ZRWo=sLE$Kfhh+qumeoDE-jn-E.Z1X#A1s7&ugwpo7O)cH3:E-)*B.i?#G+i5/*e75/.Mo+M7h'E#er%@'G)l3+e?lD##Dd8.lf/+*W5q58'ix]$:^Xv#t1wj'-^HE3j,q`3_Gik'h?<v#<V?X$?8D_=DnE9%V$'q%=cQX$MFRX$O=R<$<eYN'3wlB$UA*hLfS0k9OAa]+bxeL(LkI8%=c;Q&=&4&%LNKY$&VdL-%lL5/_1N`#M_?iLN@7^$Ig,BZ.9j'%2+j5/krvN'qf3jL'V5W-It/`&#;t3+fYi9;_dh7#]P`S%[P###G@3Q/7x<=.*W8f3*^B.*`<$R&s6)D+,kn=-O(:B+'/fh(4oJfLlTqLpIPLJ1WRS70Sg'u$ZVd8/lPi63k&B.*/DmT%i[em&]1US.Q/*&+K7p,Mw-,GMT.,GMfov##>`x<CTR(f)_M0E+T#S.MBv7RM<gQ:vkLGM9j@72'#5;x-o$258>?qB#d/1U%1DcY#-aEjLO:-uuCqN9%rU6I$UrllLCGZY#r+TV-[JMk4tiou,7xH)4mm9h$Bb:hLe&2s-,r:T.RJ))3pBtR/OINO@Ff'K++?_s-_XB^77V;^@B-*H#V4BtL]s1O@QEt*A')Sk7us2E#nea5MDat[tPSs+j?090)l^;P(?W]88Wu_3='4FW-cn'mTY3v7&j(npI)qm4(sri0(j1>#&OEpm&U8D?u1.$I6FJXGMGW?LMKCR#%Xl-F%-HW'8viWI)K.De$.#nA,1U@q.iUYV-O8`$'NiJ5'Qe&7CjbH03ifZ3)'I1hL_o7LE_VPh2BXO>'e5)4''VI=9&?Oe-8B4m'i8x21R$J03>ekKMHY[;#ap3$Mx]WmLkDPA#Lp--X?/B.*:'ihL@t_.Q;x/o8N`ptUwcAZ/1ts'/cG7h(gNPwTd%g-)#48r8'F]M3(M39%h*e)E*l9LEKMN]'p$O2Mgma0(fCRR9cP^/3@*m3'_r,++p6Nh3?hjp%+nm---Fc&>fwpxuW=^;-8-NM-&cmM&W:%T.oaVa4bWw*.>dO59,WD^4NE/M^@^[w%X3aZuOuvr%S<^F*3.9AXEd14'Cu:?#xIF2(`V(0(.D#A#VMtT%`8ZA';iwcV)]Z<-2bBH%m'mo7iBdAmpMGA#,39Z-?:^k$,++m^OOPk'svwKumR[r.mo;MKQv(4'5g>CMui[R;r`P??/g0E+Igpq%tu=O/fL5C?sg*58.r(T/T$Gp^?r0@/BKc8/5>PjL[H]s$,Y8a#?x>[KZstP9B.p,3wc``3tTw*.SjLnLSHRV%Gv:1;Jvh>$Q@d2Ca7,gLpxon9SB]R;ODW+GCWI/(Y7[R97EL%Q3d<JMV]1DNxl25MFi:p.$,>>#`(6I$df$>l8c###IwAv-%3<gLc1Ej9^O1E4^MCoI2O0T6.vR[#4HHH)d>***&^Qk'dD24'`PP>u*^M$#lNp$.$]m&M[N,&#8>N)#mp@.*[M:9.g18C#*OWW-fHRpKml@d)-i+%OL[jr?Ah(w8IIsm;oWpIEYM8LEuL0e9Ub]R9,H$9.-@H03@OpZ78<9X7Y+OS:&S=<BX08b>dG7#%=G_R;4G?kMLE@v$)(L^uhOTR9hc9R1idb2M#&;'#S(jI.dZ'u$##q;-Y#vp%H77]6gt9DNLgN1)iP&gL/_'%1j#-J;<124;@279%dNLV%>?.]E[Xpm=NM,($FwaT%>==9/k)Ig(?L0:9gVg=PeN03M^?#k2Cw9lMPVaG##LRg:Y`l8/a<c4:,Vu'&$4Es-Sp7iL5K0D9R';Dbt4)F7^dh7#m7Hm'dW-Elk.)697+=WoB9u99[XIAGl$TT%n/>>#3l1v#b:3/(Ia9B#ak4D#:N.)*Ja-)*:Su>#F;8Q(VcfI&UQ^m&$p)AXUd>7&+UH8'@gru5bf.5'T(tpu+1>$,]3n0#Q)###NeXfLlH42'd=Hq;UCwP/r&+Z6[B9u.>XqB#Yfjp%%C#_'vRsNNDS,m%ZTOp%b,E?Y/n(R<F^8xt-;g=u0;Lu%ZY?C#5_<?#k%AA4f`aI)O#<S7h*-B#Q:L5MF5E?#F)=D<^fUwTr&_B#;G)e.S=:G'PE;U3)L+m#bOc##1=t(3+dfF4Q?TR/U2Cp.A3ed3V@A,tZ<j?#Y*DM%g5uh:WeZp.+HHu.UGt8ACnd:7Q6ti0'@H<6cMk.)SlXv>M7PY>s6s<-+$Ee-wi31`FF1L1Daio0@P9s&Wg:,)dK*>JU.vaGYb.9(%,<K1q6.DjOH%29gsAv-Ja=L#75Dm/Rq@.*dZ'u$d*2.MA@;X-88hd4nALh$KBIIMAK=:.bl@d)#=oT%m@3AF'AC32:0GA#^PlU8+C>D@kA;ZuV^d(5C)0D5h-$k'4qF[Ic2fP1._x@#q]ZjNGEkt$Is*^?V3aK,>L&r8_EXsDe^7MLZr$-'KAni;@98S'I&IS#s$cL++2GC55vW_AQ7=t$l&LA7?,if1mx;+&(>PV-cSs8/#'pS80IGBZ[toe%EVYV-+87<.M:O-)Dl74'5vQ#8jOt8(]Cga4,#@V/Fl(v#?j6h(TS1u7saZDuPqn(WHB4rl:ut&HN1qt#oH.%#fWt&#5g02:e7nwB5V'f)eS(I;8o5Q8(,Bf31EQJ(q@2V8BGQ@tb;)4'+^FY7>3fo5vHYA-FD7D6^^$5+C3,>J=o3DWOH`*4[W*qu:nv(5T*vN>$Ps[kmaA<-i#B%)qg/<-a%Cl%#-#9.,r?Z@s]%$-*jZpS``CI$n`1W@:]L=MH7a0(L3ia41si7@gg29/4PsB4d'CW]`9W$#[U(d-q,os&Ift/Mc8V-Ml7+/M.V.)*'-$,sUb<B-?hU]2C^^q@T9H#8s9?V/*Qna4<))P-CED=/[*'u$P0;hL/#6<-NMKS1K7)4'-=rl/S$xs$c4mNM#(^fLwDj0(@P,uuY6Xt$8USCMX[=?/tWp%4wH7lL0]T4MD?mk0fl)4'-#&#/sri0(QZ`Qs&f8;[g,pq7@kG,*?:;p7$Ws6hg1kZ%s'tn/vH%1(FN9U@,&iE%p/i0(K7I'&1V/4'd;24'Okk,#nwD<-cP#E(C6Bg)#<^3MqL]L(OdnJ&$$d3'Ix$5)`Ai0(Lfe88+'=hG5N'%M%m6xkZlQEnY4;mLO$TfLXP$##Fx#;#eWp%4=XER<1mqB#*cj>.sri0(Nt5AuB31[-VBV0P<GZw0oTVKan>GA#Qj+W-1shweJq+[$N/>Z@M9'b4Awda42`gq%cg-XqskKh($jaa43(jV$Y?t9%JF)?uF,$aM&<Huu#>`5/;;.$$d_LP8Uj[$TH*YO:PAZ0)dg'B#<LqDjCebRMXw%$4.t*qefcD8&oKZruGB53'qMT[u>h$.18[:8.H+mYu'_wd%&$0<-B]@Q-hbNvN)5dp%:deB#?K%1(LKw4](i)M-2>rn;f%sc<C<mv-WKBD3B6:h$ap*P(XAqB#Nk9x^(k4A#Fq]r.)';=/uPWU.*N'[M6/%0):fp0&krK?unVtv/(34^(/U>Fu9#>g.X[?K#mDiF8GD0Z-m+?N)ipf@#9GZT.16mYu;c;a-IXw'&VQ^]=u5IAuXgwv7C7xJjkZP2.U'AW-F$$w7T3>V/O-Xp.pS=Z@I$f^6^IUp$r+vs-A0JS8GgpTT:+&Z$(rE4::O9j(b;@#%f?T;772/a3Iv%E'Yo(NMi'jXuOx&2B.vl$0r`oZ2=m.MgvW(&+Vh$##`uUv-rf9L&.Tkwnr6Sr8WZ'=Sx-h`$<^[tdW;dt$lO#61Y6Xt$2[a69CO:a4bZDhL`r2?>Y7qk.<epq%wcGl$w'2=(QOLKaKlcd$rC$##;;.$$6qAo%EON:8KdM<%LW1,)dg'B#k.BB#o7j>P&>H&N+dSA,Z>hI$d74cM+'0N(I:cZIojWV$'+Bq/7dN@t)Ip&$VUHuuq.>>#%$$;#A6r:)J=[/:J-KaY+Pj/%8a,F%W:W;RFadd2[%v)8F60TKFaXw,g.KQKo6cX(sT3H4$XN6/@n0NCvCS#8A3nU&D&ba4i@P$8W4n0#WgO+`d+?H.rjP]4o@Z29i_Ove)fb,WrI%1(5KQh(_G(t$cQ(0(,j-4'1Y15/Y3*]F+1Zm8ag[A,SX.n8@,,d3kVQX$b?hMUUbN0)VF'U@Y)Wa#TF/j-1ZnE['#x5'g*(oeh-$B#(iDwTpG(>ldeIk=@XI5/x0oG*9-X7%dN8s$9oe:%ZTNT%m[w`am-0f)Z<q4fYTx[#[UWE*$`x(NLiP>u.p>>#Z#+##vq3dtgna^-%)V/sU'N?#J(v]O2ECK*`%Bm$c<Xp%:SsD*O=4)WPE>(+:r%l#cCpF*[njh$lptX$Sf]>*#P>i9+'lc2q,7+*F26Q&94ol##(s?u$6n0#wdI+ir8nCs]re#-_tu,*VUx3Fa8t1)^Zr,2$f2T%f2:U%t6WN'[IRW$TLMp%f8_6&t<&0(ZCIW$5pPj'ZsK^us;k9%0q08@*ob]uRo&kLKXb@XAT.2_[Q(2hHNgG*-F6$$#mqB#]p*P(Do0C#fn#=-w;8T$d:bM(B0B)6dNFT%4<Rl8Cw39%7/Lc`FIVZu4.Uv'2,Guu^Cj20c`08.cc``3%N$xe<=S;%'.c)3Mh%@#YxcC'':-AOQ_`ZuC2'sL2gg309Q-&4Of$T.oN/@ul^n'&P.A5#qtd(#O$(,)kC@xe&Csi-#r]@'eWeNBru@I,RS:JD]trW'rbn.(qI4Q'kxp=uJPHb%MW>Y&@>_;.Y@lo7kF$C#w#?A4TPGYu5RET%1X6C#9Xap%ScZm&mnX>%qt,YSQ?I*.,N<%?8qG,*&k2gL5HII-'VI*.O5.'NoDv:$*5PwKQGY>#taN1#L)MP-mK>w.k%AA4wdCwK5,<Q/+K;<%NtgD3H3&#Gtfp#Gag^D3xjHs&>4IW$S0J]&SuhS%'/`Q&b'Q'#ih/*#r(V$#$U.M3OnUP8qI%rmK-kT%Tg^m&3QR:&GfsDtwob._],MfL22ut$aaf;-bK0b%PbEs$0J#n&SWp6&;NVfU$l<a&QK53'pvYY#GEW:v9ZLA4dnho.8Gr_=v`6#6k]M&='4r4)8mSc$A6gIE_[T#8Y*:HW]cgQ]7%54'a.Gc41elo@q7;Z@aC8V8qtd_uvr@@#ZA0*+Y-m9#%&>uu5BCn#8*kW8'@$a$`rUs-8Fo79VS$9.O^c3']8^v@b89(sx%9.0A,IdjRGW1%,<a^OT%Z48u?HV/8>J&#rCbA#(@PS]ZMoP0i:H,3N0OW-F=Tet:6wA%GXR,;sawQKd:pP'YFCW-3:_x5l55`1MSlq&[Y2W%_L_<-3@6$g=;CZ@>ME<%Rs3c4vVl&5pm,3'MpAwPv:*;&NmIElSVCI;[l`L)1vQJ(fT2^@bL04'ST(0(.kcp00>b;0,`gq%v&j5(Twk'A2Q,tN*,f(#Rl$bO$.uo$kv849_8jedT$+kk&H8f3vh#h/7%54''tBV/1hG3ke&kc4tOKK/LVW?'DNSdNl;[E.@vba4Fh&6/5x#;#4Yu.:cA]'J_:tV?wEtM(&O4U%s:S#8re_g(VXca4'ADO'&LF2(]d<Z@Oal3'OFDNCcG7h(^jl0(Nk>-05@Cn#tke%#:(5*:<9cD4^n[6%&%x[-]B&(%CEK&ZxdvO(?oBEWLK?18tv;E#3&[#8SVhW/A/[)kCF.h(hf#u@.tAZ@@A`/8]Bjn4+8pa4c4(##LFS/1ksp:#frgo.e*gm00$ArNs.E.3iuOo$OMRj4[Z*b[X#8gLfTs?#a5o_uH_d68`XX]u?ca9`6a387aoUP&1hr+;KbR_8lm7f3Wjhh$>4vr-ldYh#uJI-)Ilmo']Yi0(sXH[#g0Jh(P_`$#%2Puu8(2,#`RGw.]Qk&#o0p&$sWtO:F5?v$s_M/)<M-<-EnN30Tv-4']<mu%wA4-v2E%bWp-1hLt,@v$v&tV$7G]=%^3C4fqXfY>+fb,MF$g(%S2YY#osp:#HPUV$CI;8.80g0N+q8V-.*.#%$g&+*-t-AOp3UkHMk'H2XB.0(^IIW$`L:T%+?i/qdlG9%d,nVqF+mYu(rmo%%%u];mcn92,XTD31EFM0CUH=J^he'M%XOjL;ICp7Xv?@'=[8Q/l/^I*(pcoR^'MgLb**j$thWP&u6q-<PF]#8e)m0(cNma4io;(&3L-iLrTS1(&RfI4vqJfLTl,J_TsgG*#bK*<vpBwKIJ4gLFDfRMreaNMExVf:W?bM__7*;?(wFoLvu_#$TNb<-1UP)%o80TK5w>V/80Gc4;T?)uBC0I$x?pw47YFR*Lbe8.%&>uuR+@p.S'+&#mPA_m5g](%XnR29lD_B#*cV#AbO94'<P;:%R4/AbkW(CAGmM-)dPvD-4[?YPo1Ds-W&l[&,)]L(1xD9.283h(m8Bm8Ah'#Z>?ab$aPqs$rSB[#qR2a-pa'dt[Exo%s@AD*f]/E>*8I.%RkvDc35FW@&dm5&bvQX/4,Yv,CLr?#fjrU%lwV)%Y+@p.`2+##<MTw9wb$##qIMW-_2Qd5Au;9/BI?)Nc/s<%`&PA#S$]I*L@[s$ZVd8/W:d#u10Y]#.sgr.<CMO11L>L2Lv_p%5uFG0xw*_553WN2^=g020-`*MF6n3'DG250US@i1Vr0N2>uB)Nh)nL2.M4O1A:39.)cV4#=EBN9uQRm0`@0+*d1:HM1pYA';iwcV0/::'MPwS@e5C7%GlsPAX6Xt$On8c/MaGb%<uwKs0#5$M`Ro?(Nn[D4/iA01hf`#&YJI-)(Q5$0HFp?.'gZ#8`nbEOQv(4']Bda4RD%5JCuF^u7jk,#$,GuuB=^;-W$^5;u<*wZZ2I4$b1B+*bAF>Mjm&w#lwaI)GE#3']aBB#(NtT%Vk^hLgLu9#]OFgL/?+jL2flA+b=X)3HD<1%n,C:%OOV)*m=7)adX=gLZG/-W66gb*m2M7W`;$;%OBFAu<6J@#7Z<Q)Ots9%+>4S7NXTI)9Q^%b-Ua9`mZ*RE^n@K*>ACv-a1[s$hDQ/;spE#-u_x('Q0Yq%...0([Xns$a7Up%?btx'fuf?jI:2?#0%eS%:oG<-q.TV-w2.[B/@v7vvDH&MpkA%#gQKl:n@mQqPId)O2dMZ.cH+5&a?bp%r@1&4dbrs-hOugLWWmuu>v5D->#tnLVbZY#Ii08.&ufg2?mkT`Qah1;nF6.4<f2u$ex],3d:l.:LU[S%TM?xbQqns$`j1h(jM,N#9UYH2QV$gu<_jQ/+pl.UY6Xt$2+D9.FrxICV,N*IX),##%7]P#0sd(#g$(,)YsHd)sS%_Qc%Tn$%BOZ6PX<9/JS5W-s'7s0Zju[$/lAd)drc31%/AM1K<%b4&qTr.G-ia46FvQ'L`HS/u#Ot7n40p7fRNS/[MC*<]rv?-PU&m&[+iV$w-np4)P`X-rG3:MD3.87]k32'+'fO9>CN;7T>BX%ZN4T%'jIw#:hjp%it.CP,+ih$,726:#4_F*(M)I.=@[s$0d/dMlb6lLgu=c4[(=MKcb[a45=3q.?76F[>WrA#]Nsi-gbl-ZVlI21JYIPg^b8_]aD:;$YVm$$PXt&#&dTv-CV>c43Y7%-J^D.3[GO,MhHUv-GH5<.[dCE3w6x8%lHr%,6IM%,[5`0(@17W$E)(n';[mc*o,qQ&M;g]$<X3t$r#?R&Hhjp%EbE9%rv>R&FR39%cN@*Hhbx<?[gB#$*j,*4ao^I*`bP/C41T;.6(1E37YSd3Ji7CuXv(?#x6;ZuMu($#lGa^#%V0^#2<@*H>]d8/vmO9`1DXI)Gb8`&NR$(+&`5C++o@TLkA>]#@6x-)B+bt(&PF&#m8*B#i>dgBINF&#:vkG3ER,@.2m@d)hk,E3jsjT9D=H?ImCI[-Kx7C#[v-t9VF72LL:k>-?Slw9nBbA#o(x%#s)xpAt=L/)KRxQ/7I9^'KC0^'B4g;.h2XSUr1%5Jo]WVRMnp*%6'+m%ZN4T%nZ+T.`l53#S:J3%Vq'E#*b0T%]7%s$da@hCSKK6&0v^pR3B7X)/nX6&/pBTR*),##SG6(#qQ;e.VH?D*SRl_$GG>c4TMrB#TekD#fFuw5Qrun%g(^iB?NiZ>RKPJ(m.4e),&uV-RF@qffMM0(boNe)2%l?%l4fM19xxV?A$qj(0k'u$SxP:A7V2<%l[KF*13Dx.wc``3q=9#]Ex;9/l#l7%/sTm?Ei1^#`OfO.).'N0Cppl&v/^f1r6[c;JeT/)6um>-`JO=&.'_e?5<1^#B*Gs%7F4q?E3G&#7(n;-/DOJ-&#sb&FN-5gU0J<-j=t(8(N4Au7xToNg0P1#[?O&#%NOV-@S]-Fe]jm$BM4I)JtC.3#VYV-OM>c4PkWX-wqAv8u(e3'Ix$5)/]da/=##p4mJ^@)f&'EN<krr?e<tiC9/uaNFts,#0>N)#f[a`/_PiMi#'j#9qblA#dJ2n)lD:Y-$Hd)GeIH##'1qB#].S-#EXI%#diPlLH<H:*^0b>-lkNc'.doJZoLFgjG)ACs9[IRWuorQW2C&/151'SWDDRv$^^D.3%46XVHr^a44t`a4b#U$-9_@x,b83I.)oEV/6f'<RY5Y>-%_,#U%B_l8Sr9B#/$$;#qlP<-9WvX(lTX1DakSm_*A*f%JLgv>X'4B,];(B#WOw2(];AalWV,p8ev<#-9@Ns-aB2W@krw21EDc>-ZSMU%7-0<-_PSn$?S9dtZ^Gx'gV_%eL&F?)AO*W-kBt,ODm;+riL.&exY,;HAwDn8J&i52[=6##klc8.@n:$#PlajMH=AGV/,'%'sg*6O<NupRiS?M9MoUPgu<IQLQUw[-sc``3ICuM(r6KZ$NC^;.r;am$r0EQL'*[V@hD['5S)24'q'3;HQ_`Zuk&qK-7iCU)$KI-)UKos$1Gp;-8Q3b$Zx:<'J)Ys'Hk.Q8t:>^ZaC&l-D_3X-Z<n)5KI_P8hp`#7lnZY#e@(##6$x+`H)w%+A8(`dY+]S@jJjV7aBJ<-l=`5%lt`W-uQtlr$rJfLj>a*M-<UsNvVSc&TbF$@v(N0(cJ%1(P>9]t7)C<-CQQD-[C2&.3PvtLp_P&#RQvw5:APD%mDps76(Hq;w22k'h5F&dY?-1%Ot[E5UIZuui6J'.?oMuLo$T%#)kP]4BJC<-Ik45*D^x2)(9:99IGmv&.pq`3DK*hLtG9@%u5ko.L>kjV<R+<+KT>?-NMr*)%1Vr@rQH&mbSv6#Kww%#uQ6Q'3D5jB1Oj?oqJ;B'6(]E,iS7U&dr+q@7I^'-.aS%9I2RmO+VQ<-h#kC8BhrS&GO'3)/vF1#Q3=&#Kc:J:0uxc3%d>W-hQ^f+Rx%W?TZLk)9D7'TA5rDc$NoI-[&He'q3n0##5B6$PXt&#5oE<8@]L/)-fV<-[da((r$4?-7]wJ8tB9Zh>q$@%$v1'#isb<'jk;68`5-'?UThLRr+Fo(2_d'#v]8xto_h._;d`]+EYMH*O7%s$QUwG;])VT/k%AA4R`>lLsuU:%26Hc&ZT'q%3`,q%#0g*%*0g*%M*N4Y:X%u-%'<fMMT.JM?*/YMh*eN9X^K/`YnDM02S678Z$okrxO]L(;K3X&@;ADAE;3EGf#eI)4D^jD:Hw^8x`k2(cN7LCtc*Htdn06Ad#AKsn8,&#W*s^%Ua+Q8tQP8/+NB9r?S)3r9D7'T;TQm2@sJw92FLWJd[_p$Lr<^Qba@G*H7`q7x0_dkGTh[1Gb9oec[*SnHg?D*;aR#St:Vm9AlkA#qa(x(ppR@<w_0^[jm`>9iZO&#p-;p$Vd%-#Wj9'#W0or'f[/?-#P:]&5&t)$RvAZ&B:ww@o8P&#<4`>:NXCIR;EV^$0C(XS_kcp%NYDkWhmC`jhg=G2.hN)dkkpiBM076Mt&.Z?j[g/)j>0gMj4AZ9o`%T&C0ON&Ns(M'3n'W]Y:O9@dDP)kA.Gc44ZkK*cq5fCjJ$5JQ_+K1vNt,+-Vkc)sF0*+OCMd4/c(Dj44co7=$eK3hqTk$a&S5AsPnY6SJ)?-b(84**8-8(,>nLKo[@>-d,Uh$16Ts-,GnV8WSd0dq<xmqJwBHSbOE3(Ui6vT$stC0ChNP&jsXc2>e>lX<eWs-'(D58?7W`bE0X<-c>eL-%Y)Y&>(L+*?-QTWS&###^f4P]NK[i9%ro,3Ss]q$a&ur7iq+-5<reC#?K*u$o(jX87[c,MJ=UL*17xT%1.BH<R>op&E_?q7'Zv&@W7$##e-N9`Ya4J_;Vml&po%^=Oua)>3kHA%#rEY-2;)?[26)$B[Xp2`a+c'BGcXlXDg<q@mN;W^oX8,9Ct/g22+1k$beu@>:Z=AuMcW#AqQSZ*%qm^#jH.%#5iWs8lSia4Bhp:/#3m;%Sp,W-^m:CZ8heq.[5MG)%Vu42)C<v:>2Sf3)Wr?-F[WT%`n/m&i#p^/nfc;'S80TKn(Tp/d/i+9kn.U/%<$3'Eq(&5t'54'DR#&uYp`gO>FL585#>3)0=4)##?U='fj8q7UI_VI,:*78qpC</`J'a+W####R9<-vgnf&$7g1$#c.HP/2$<JuZxB-'8<LE6dCv98+:E?8AMEk>66%O=H/5##vm,D-i',M<)DSW9MbW$'&S[k=Gr(?@R8Rr9iIRk=X)&vLNk#m#jH.%#F>uu#X'==-PGS3%?4vr-SmsZ)Krq0GkS)O0fr@[#Z_`$#;//vLF_k,885T;.c'7=]mw.f$2^Q88;@e<-:[@$8i3KGNHDV,;bN'N_&^oo.ljS-+$`^iB0T7*-XNMu9u`lA#/D@e%f[EpL.jmi9GF%^P92pmBoulG*Odna$Rr:m8iru'Z]c^-'F2?n8NfpvJRVB-'(9DKOc?Pw$pXZj;PINv'A22Hb8KEC8iL4Au?_*(8^2h^#jH.%#ko6r8>pYD4<rHm8f/+vK%rp9*'+Yv86ftU($ut%(,.oDSRu:W-IXMLWnS$7,^=3?-h/Go(V]$>-t^Ml-E[It''l4_$#C-2Uv;wJ*NGcQ8pV^VIvk^&#CXwZTUpVfLK>62'[=PV-XT^`3Z2Cv-3mDF375^+45a1,d,<^'&>cM*I5=H;[_H-pM/FwM0`m4T%k)(U%8$Dr@&?1Al@l-[BW1r8.;Vml&b9JPBxLYjDJeY@(T2l<-PMBW*<]^jDXRa6&>]^jD9da_8b;c8N3)'586qfcj9TYjD6MO;&bk/J+b>rX%mEU.2Pdl3'i.KQKL]34'IY<T@#qg6Sqhx_%evcA=O9`s/.rBx(8bn68eb6^TT2Puu$3MG#mf%-#RKb&#)X_E'hsK=-l^*_&7+0tB]DXg&#A3*Ct6C#$MNH'6l-4O:]I#WMaNuT9]8<JS_sN0(cJo4R(6$##?0Hl$0*'2#^Kb&#-P@V+`*ub<e<@>Q'soqgf5,*?dUUB#'H(v>sCC`j#Fp98>rX&#TKNh#Xq[+`t^8W-)K#r`rZ8<-7Y(E'-l>UTU7$##6DK-QNRjf1)P'hFtSA@+um;t?kUv'#v6YY#)#$;#0jd(#_rBfb.U%I'w_>2t3+ce),39Z-m&B.*:D>H$/DEO'5vQ#8/aYYux`.='/5B$,0gd<(/gf2)KHmSIV2-sKE2w=lG5c;-lQ%V-D?R://`($#RlIfLR6gq$NIcI):`TqDAM>c4@N*.3LC<A&jmgs-Ja:^JMxe5'Z6n0#Q,no@*x);n$PpD3fH=GJ=o3DWBrY>#cD.h(klqFVi*2mJ&l4B#MHDigf-sM(7d,g)[Dau'W_w[-<n8')wU/>(r5)4':T7^#ITAj-j^a;KPF$##FG*5v/g?iLY>M'#wrgo.SjQW%=fXI)f2qM:[^A<7jr/+4rkCI3_(<v6k+J^$xuXV-?7&M'1?v`-2md'Axh6X7Z$E?#<3*a*Y74h(8Q:87&n9*<Ln#12IJK:'$ViA#_<oA#Iu%h(k`2iK$',fUa;MfL1^CL.L?)Mg(i@CRLimI+YnlX.2>uu#`8x#/(NOV-6ZV/YBcd8/Y^Tv-w^uVHS;Q0)1vQJ(+gB.*,:<p`fSH$$)3Uq%O>'v-/hRX-6$81&e^kp%kv[5%f:XM((TA[,&MXi(8s*qe4D]>gx_n5JG;sl(/dtf*btoK(?G=I#<nu3'o[v@#)j*.)9hjGm+h&'&YIO7Wq3n0#x+'q#vsn%#I8nSJ0]bA#*K$K:GE$C#m(j0(cJI-)-x&-)q'b8.RI=H)EVm8.Fe:S(wvh/15Bo$#%)>>#N.96$pn,D-bv?D-.+cR':H*XCjn7@#a6j'O[jir?_e:wIWqlc-:Bl`@Q=-##Bg732ocl&#C7B0/dKVvgp(8h(n4=@-m>&n.9$$;#f41Q8#5T;.<.Jm/vw?=7v-R=75&pc$?<TF(KA&'f_D?V%*l568mZD?54,:`<-3frQ[dYk'@OkQ-_9fA#Jx.h(d3n0#Epi&#Gn)uJ^IPjtK[LW/tb9b*-jApJv1mA#<a@N%%*:dOYA9s7sl:e35IL,3sTNE(SeuUZ6^^j((osA'KS:a%4[n;-xIl8KA]A:V6(tkD0Re902U)##3Q'>ltr,F%.hBd2T?A#G(Y&g2)sKs6Ao8C4Rq@.*7HZ+0or<K(T.iv#I<)T%d/CU%3*V%Mp78X%NGeouST4mNH+)?#9dvg%a-1oeE-Uv'5G:;$-A###acY8%p##,2DLKV6aJ#-3t(4I)d6c^AB$lD#ikkj1IUFb3[uJL(#,GgL4gZx6`<E:.b@Fj0&$nO(VT<Z@lN)e3>WZ20wocB,/tF/sL>L9;p'Yu%Xq`EO<9M0(]Li>7g4a#84a498UAO9'Fjl>>lK1</pOUv@0afY#7*Zr/*Xha4b+3`#2Sp--Di.P##X&*#SYU(.$7`j9B%/t%QPW]+rgai0=BcW-rmVNt,IL,3aWPJ(rPB%67?;)NP,#1:[AqB#tNDZu[uR[#N8(:8Jp0^ukZWw,K>J;M+rL5/vi*.)iQjMMZDx4]$RirQxG^e$A/E/2so$(#dA$i$4kf;->,sE-6?kV$%`nR9R^#<.U0m:&%N(T.I52k';:rp.e'Ld#`S?tLPRha4O91h(qw%T.pMQ#8wAm`-iBMQE_/QJ(mxlP9a#^G3DJ)UD.+L^#]O?1g?r2ZdY,?v$1]x?Br]wSu/r@[#J3ZT13*jrQC_39%ku%,MwQ#F@`p?o#ierA.qrgo.g8)jT)j]L(KQ#]#QKF2(-emuC4v.h([Uk0(#x?=0^dp7)%5YY#^x5I$/e<kF4+.5/%Pg?[QSK(%iJ))3&V9+*>HjL)DM%[[ku0t:Ba&wQK-kT%HH2?#rMcBZ=ui$'VZ^m&gu[fLMe;v#SsGw[O:$##Ur[fLUrOrL%f8%#L`L*Obkrm$3Jke)_rBCOk8W$>i1RLauKnl//L*8ox;:d*V,lS2e&59%Zkjp%XD7h(APsGZ41*U-e?7E.Jn7`<CqC^##hb,ME_;;$x9+_JE9%RNh=NP&nN*20iYv*3?X1N(QXkD#:cko7PLi'SHFS30hnRs$mSIh(O@ULP975B$6Fw=lmuo:-=SmmSef_E'R;7A45x^=)Ct=d;H<YD46<hm/7%x[-LVd8/:rXGkov>V/*xw4(EvQ#8aT2^@p$:4'j.k@O7t;r7]TND#a0Gc4%Bi0(.cV#AT9H#8dKh?'/Nps$+4c3`Ur8d#%<F&#pp[j%B4vr-Ut;8.7r5dM.FA+4n8ct-g]&=<u0N;7w.r;-s-iI&QLO`#uN_%/uv6muWWEe+s8.lftaXGuu-Z)/0iba4eNrQN2A'gLFO,&#(F9D3a8t1)I^/gL;cSUJ6$;9/:E_#$fle`*AH*?5OF@<$tjLC,6v;E#iG%1(bF%L_#jI@#U&Eh>:C'.(>_8Q&emmH3Yq#6)88Y7(Fl(v#%rQ[#TgCKMqLsYKoF;9&=iD]b:,^v^n%`oI71Hv$EVj]$M@?m8'J(E4?p;%$;k+T.b@.@#xBR-&`E^0K_r0^#5]<e&rS1u7jI]g4+8pa4h]MfLGC?##tGYE4Ui8>,JC$##R@'fFq[K%%AV'f)O4OF3;X^:/ns7f3NLp+MsLND#CbNW@,k?h(]7IY4*(kFV'%#G4#;AV/=Iga4g(_O9Y@Vv@=j3`s1pu40?+$pWrba^uAM`a4+aO*Idk<m/?mLA4<o###[di.0_SQ$$$_Aj0*,6X$8_t`#Oh)>PCr:v#QUg#&Yv>3'Bi1LJ]XZP/RnR[#A?Tu$KK>R&-P>s%mT=@/%&>uuas3$MFWb;IV8###xnj]4e<%##I^7<CncM]$l4NT/&lA:/R7#WI[scH3xKeF4St@.*B_gsLvh/a#c:qQ&p2eY#U#6v$+5G>##CLI&edkp%][4k$iLk2(hQL:&Fw82'qi@G&iptp%^KZ2%kFn/p3x-W$Uu2:/_:aGqww=gLeZoS%em3?kBqNp%vrT%k9<**3,V1vu7NUn#O=#+#t*(f)0*NbNTi;E4S$]I*udJe$@P,G42$ZvK]%>o$D7[x6[O:U'U+M&MwLF02@EWL)OKOA#6eM>#kQJG5h0)'4Mv2PK,@n>#&^P14F#I-)_08s$@^xU7@m@v71pn:/,KDJ%?F[s$'/s</&B6N';fei1[R3T%6)*L5%E.h(-1BO10Q=r7$%a<@9)uX&j3%##.+35&&U8a4*``$'^5GW-T#MnWiei8.a'/@#3WEC#SGPj'v(U@k==@s$2o'HM$+;8.=:.W$.7L^#2F`o$NOlB#wgbu%3(@W$*f@['>A0P8+qO['G5YY#;I=>ZiWaG3,GpS/j8dp.gc``3VUqZLR;MQ&iV9%kK-kT%BP6pJpLO[Re5[UMV^oo#$:F&#G0+KNaVSa$SZQ#B4sb[&s?kj-rDd=-?Zap$o6Op%h(q)5'%g+M4`YgLLH^l#wV)K;mD^;.suQ.%>2K+4&eaC5SZbA=axdC#bKF2(=1CC#]5$;%t0rs-'r%'=Uom_#B:fI(rBdru+2(j'9PcY#nHK4&E>5REWYvU7BHZ8&jx,abxhX]+Bm(Z6c_1p$rUFb3YZTC,ShH1Mfq<]bK#W]uG_sfL-Msu5(.h^#B/)H(m-TjAB/,F%glXa*c>W`-W]s-Z0sZeOV=w[-P%<..SZ2eM%s+Sna;HqVkBB`&<Slo;*WCFIIfhs-,PYi9t_A6(?u;Y$PIw[-,cQ%)4w89%FYR,VSn%@#KmZP/Q[rZuTkjp%&AM))P_`$#j4[,<nvV]+O_(Jh*^88.mN#]>3m^99jrM#RN[fDZpMGA#IOFb3.1P<%k;n)4TMrB#eGId)k_+D#TV2^@?Ixs$s:1<-]R9^7s+Yv,^J@E-/8l(53@br/4K(p/EZ+Y@T;CZ@:94R-*;001joRV6+8.j4POha4,d1p.93Av#>rC9r^2?X0Dld@ba&d]470Sc;A:Hg)vv`0CGRcH3p.mY#b0aZuh<Ke$XxclL@CJr%+Zi0($R+Sn5QT/)<Mfo7%FlD4<r7W]>;Uv-2^7&.YF_^%iq<]bX]b*kl/uu-O^c3's.[)kX6Xt$?+sY$Wa*g)?6D/%>4JKU5-uL'7IrJ:ca0^#BXVU%,:as-YOMIN-$;T.HaJ?u8M&N-1>)6Mtp#D-8-<#MZj;;$Dld@bKS1R<qj?D*od&/1j,KZ-ipC=%:I-AOjkaG<53Z<.)^B.*:#wu5NPo9D;82YNqilrHWv^p.6G$:7m:3IHUvM*I9ZbA<]S,=785YY#(=V:vlAHA4^Ilr-OaAv&1nsj&iX`V$Tl<H29T2^@,nQ-)+G,n&S),@#W.h%%NF^#8Bp#6)lTn-'VZ^m&+p0t*<(a95SxefL+Lmu#d#jE-gsUX%KIs;-+Xb,%B_N/):7*9.u3YD#$>X8/J$AQ'e8M0(Jg%Q^Y,?v$+A^;-Gq_).n)wENt38S[qb`p%LjQD*vIF&#v%cq9JI^n*]SdsQYhx7RZm/F-d:'w%&o$##1@6&%%A0T/Uv-U99XkD#Z&Gr$7oiM:F5JT&dMO$6C0oQ'QZk',T5o_u&p57&Vb8P:$$1B#ZLHS/A*DH2b'>V/X<M0(hI#[/EaHr%q)<Q.J:f]4QF[/:FIR@%/9j'%-Hc,*DWN=&jxnA.8U.+8t+@p.<,Yv,g)BI$%YS#88UcjL?+Xf-pRcd=?YR#8hru--5O-.MI8MjA'0xFDa.Gc4G>^;-]r:]0+2YY#uqd(#d+/-<QatWS5e'E#h[]V%h:j=.uiWI)wl4P]6q84(xadHJcMZr%t$$H-(G'F*&>t(k,:+<-k2ps$qb`p%e51Ip4nK5olb5C+bOlo7mrUq4R4f(#pH^Gaf^'Q/oqd(#'sgo.La0aE4a=x>7kQnrbuGf_Q++11u.q^/;8F6'E`YYu9ND>&CB3E>sn`:8V6C^#;Tm%+_7FNDPdkB#.D###%HW;-so,F%&h'u$I4ww-rpL#?'EG3`:DcI'05G>#x6xoq.DM;(fKG/(;rew#)EOR%2ha$#f3UhL(2ej#7fHiLnJGA#?1[s$RxR7(A;,f*I'Pm/w#ui'28>Yukt2u$)Wis%YQXp%/4^F#RkE.+n[`q8K&pE@j3.lBxWQPpoG/lBS#7_#YrlYuHE,n&@?H%+UNYq.wdt1K_VAwgcRNE,&DgF4>gQv$Y12w&?b;39X#Nm1^v'&=^0/3M`L[t1'qa)+IAW+M2OJs8^YkL:1Ol)4u?lD#*fwA-wrwA-_U<^-@ZUwKK_$QUVkvv&P3@*.AMre;KXCS*;0sbNmllq&0rg=CQoN7WKvFwPD4<YPuSSw>$m*B,bkh8.JHm;.(GeF<+i]m(^IwnS'cF<Un]-##MxW9#YD*1#ca5A4j?:K1Pd0f3R8qZ3*K/f3h5'F.l?I1C9:<_Auf[fLmJ12'N$'6/r&+Z6Nx,f*><B<-@aA32P=$##ca''#(DoHH9+^*#lA`T.+Mc##pB`T.-V(?#1@`T.VG?C#DA`T.71r?#?B`T.6%`?#lB`T.::7[#C@`T.l[Aa#)B`T.J<tx#IrG<-/fG<-OA`T.]GZ$$sK%q.HLn<$MdX3F)SFgL<-kuL0=`T.2xL$#hg`=-(fG<-xB`T.0d@H#9@`T.F6OA#uA`T.Ct*A#KtG<-8X`=-$C`T.U-*h#S@`T.f1W`#jB`T.h:s%$k@`T.3Q@)$1-#t6WQK>$+c/*#Xst.#e)1/#I<x-#U5C/#lj9'#2_jjL-o@(#/K6(#ZY5<-Ow^8/<O>+#7tarLVe=rL?QG&#QZhpLlwXrLSWG&#x/f-#t]W#.n)eQMt/^NM@fipL>+m<-5V3B-hfG<-MYL&OM:CSM8(8qL')8qL6:(sLc.<5CQX$##k^T%J$'4RDCKlmB$eZL2cS^PBJBYwnB(8fGXWmmDjF/p8iEv<B_b+m9xAkjEEU0@-^meF-xq($H9CM*H,,lVCvC^$.))trL^*B-#9Nkv/=NSiB+RZWB@T,<--NSF-Hr.>-PH<+0=`/A='DvlE/T,<-aq5=OG8)UP,'[lLKO/b-,X(G@MxXs8DHo(<XQDnaYEv6a%P1,N.X0,N68<MM.sK5PUkiMN'1Rx-QmXoLf#YrLua5.#.T3rLjd7(#[D5LMR`HY>->hoDRB*g273IL2Y4hM1HFme?vkr,+&B@5./5[qL0LG&#GA1).7mWrL1x.qLhY+rLj92/#FSrt-&$@qL5XVD5C.P@-,YD5B6J/>BgTV=B;kl`F]QKA,>2a5_i.(589BLq>h>$U8A[t#7*dxd-v(+GMQJtL^7uZb%&ji(txcc/C'8P>#)8>##*;G##.GY##2Sl##6`($#:l:$#>xL$#B.`$#F:r$#JF.%#NR@%#R_R%#Vke%#Zww%#_-4&#c9F&#gEX&#kQk&#o^''#sj9'#wvK'#%-_'#)9q'#-E-(#`QK'&w?V`39V7A4=onx4A1OY5EI0;6Ibgr6M$HS7Q<)58UT`l8Ym@M9^/x.:bGXf:f`9G;jxp(<n:Q`<rR2A=vkix=$.JY>(F+;?,_br?0wBS@49$5A8QZlA(a$DW5rj+MD0%>PO&d(WEH1VdDMSrZ>vViBS(f7eQfi:di++PfiuIoeX,WfCsOFlfOuo7[&+T.q$(_.hbS8GD$Sp(EM(1DER=L`EV[H]FZndxF_6auGcH&;Hggx7Il2u4Jn>:PJsSUlJ[wSiKx%n.L<U=loDF`+`/*S%kW2K;$0o$s$41[S%8I<5&<bsl&@$TM'D<5/(HTlf(LmLG)P/.)*TGe`*X`EA+]x&#,a:^Y,eR>;-ikur-m-VS.qE75/u^nl/#wNM0'90/1+Qgf1/jGG23,))37D``3;]@A4?uwx4C7XY5GO9;6Khpr6O*QS7SB258WZil8[sIM9`5+/:dMbf:hfBG;$Vg4]8Y,M^:SKl]aa-DN%#<ipmj?P;]N<H=x':oD>Heh2Z&#d3]8YD4^Au`4Wg/g2hIP)N$t2.3b5^G3oSkk41_E.NnUwA-;YwA-oe`=-`Y#<-hY#<-iY#<-jY#<-kY#<-lY#<-m`>W-irQF%WuQF%&*F,3&*F,3&*F,3&*F,3&*F,3&*F,3&*F,3&*F,3&*F,3&*F,3&*F,3&*F,3&*F,3(9kG3rX:d-kuQF%'3bG3'3bG3'3bG3'3bG3'3bG3'3bG3'3bG3'3bG3'3bG3'3bG3'3bG3'3bG3'3bG3)B0d3rX:d-luQF%(<'d3(<'d3(<'d3(<'d3(<'d3(<'d3(<'d3(<'d3(<'d3(<'d3(<'d3(<'d3(<'d3*KK)4rOuG-gG8F-_mDE-`v`a-1E+.-N?lk:=k9^#Z2c'&*tj-$4<k-$'LSDXS]%:).m6@'Mfv--x>sx+B1?>#Ner*>/`:;$31lxu.i&gLuwSfL(XPgLsNX?QX64V.h$2eGia$]-``6@'YZ2^#+7`T.,),##9K<$5&5>##^vK'#YGY##N)d3#jkF6#.W*9#aM#<-N6T;-t).m/^%*)#gMc###Y`=-O6T;-P6T;-Q6T;-R6T;-S6T;-T6T;-hH,[.<>N)#('HpLU['(i-D=G17S>:12%###=s)/,,u)1^t=R4#"
-    -- НАСРАЛ В ОЧКО, НУ ДА
+    -- ГЌГЂГ‘ГђГЂГ‹ Г‚ ГЋГ—ГЉГЋ, ГЌГ“ Г„ГЂ
     fonts = {}
     local config = imgui.ImFontConfig()
     local iconfig = imgui.ImFontConfig()
@@ -6721,7 +6722,7 @@ imgui.OnInitialize(function()
     end
     builder:BuildRanges(defaultGlyphRanges)
     local iconRanges = imgui.new.ImWchar[3](ti.min_range, ti.max_range, 0)
-    imgui.GetIO().Fonts:AddFontFromMemoryCompressedBase85TTF(ti.get_font_data_base85(), 14, config, defaultGlyphRanges[0].Data) -- Обязательно
+    imgui.GetIO().Fonts:AddFontFromMemoryCompressedBase85TTF(ti.get_font_data_base85(), 14, config, defaultGlyphRanges[0].Data) -- ГЋГЎГїГ§Г ГІГҐГ«ГјГ­Г®
     fonts[12] = imgui.GetIO().Fonts:AddFontFromMemoryCompressedBase85TTF(my_font_compressed_data_base85, 13, iconfig, imgui.GetIO().Fonts:GetGlyphRangesCyrillic())
     imgui.GetIO().Fonts:AddFontFromMemoryCompressedBase85TTF(ti.get_font_data_base85(), 13, config, defaultGlyphRanges[0].Data)
     fonts[14] = imgui.GetIO().Fonts:AddFontFromMemoryCompressedBase85TTF(my_font_compressed_data_base85, 15, iconfig, imgui.GetIO().Fonts:GetGlyphRangesCyrillic())
